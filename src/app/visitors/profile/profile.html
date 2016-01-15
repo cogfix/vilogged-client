@@ -1,0 +1,370 @@
+<div class="page-header">
+  <h1>
+    User Profile Page
+  </h1>
+</div><!-- /.page-header -->
+
+<div class="row">
+  <div class="col-xs-12">
+
+    <div>
+      <div id="user-profile-1" class="user-profile row">
+        <div class="col-xs-12 col-sm-3 center">
+          <div>
+            <!-- #section:pages/profile.picture -->
+            <span class="profile-picture">
+              <img style="max-height: 200px; max-width: 180px;" ng-if="!profileCtrl.profile.image" id="avatar" class="editable img-responsive" alt="" src="../assets/avatars/profile-pic.jpg" />
+              <img ng-if="profileCtrl.profile.image" id="avatar" class="editable img-responsive" alt="" ng-src="{{ profileCtrl.profile.image }}" />
+            </span>
+
+            <!-- /section:pages/profile.picture -->
+            <div class="space-4"></div>
+
+            <div class="width-80 label label-info label-xlg arrowed-in arrowed-in-right">
+              <div class="inline position-relative">
+                <a ui-sref="users.edit({_id: profileCtrl.profile._id})" class="user-title-label dropdown-toggle" data-toggle="dropdown">
+                  <i class="ace-icon fa fa-circle light-green"></i>
+                  &nbsp;
+                  <span class="white" ng-bind="profileCtrl.profile.last_name+ ' '+ profileCtrl.profile.first_name"></span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-6"></div>
+
+          <!-- /section:pages/profile.contact -->
+          <div class="hr hr12 dotted"></div>
+
+          <!-- #section:custom/extra.grid -->
+        </div>
+
+        <div class="col-xs-12 col-sm-9">
+
+
+          <!-- #section:pages/profile.info -->
+          <div class="profile-user-info profile-user-info-striped">
+            <div class="profile-info-row">
+              <div class="profile-info-name">First Name </div>
+
+              <div class="profile-info-value">
+                <span class="editable" id="firstname" ng-bind="profileCtrl.profile.first_name"></span>
+              </div>
+            </div>
+
+            <div class="profile-info-row">
+              <div class="profile-info-name">Last Name </div>
+
+              <div class="profile-info-value">
+                <span class="editable" id="lastname" ng-bind="profileCtrl.profile.last_name"></span>
+              </div>
+            </div>
+
+
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Email </div>
+
+              <div class="profile-info-value" ng-bind="profileCtrl.profile.email">
+
+              </div>
+            </div>
+
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Gender </div>
+
+              <div class="profile-info-value" ng-bind="profileCtrl.profile.gender">
+
+              </div>
+            </div>
+
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Created </div>
+
+              <div class="profile-info-value">
+                <span class="editable" id="signup" ng-bind="profileCtrl.profile.created | date:'yyyy/MM/dd'">2010/06/20</span>
+              </div>
+            </div>
+
+            <div class="profile-info-row">
+              <div class="profile-info-name"> Last Online </div>
+
+              <div class="profile-info-value">
+                <span class="editable" id="login">3 hours ago</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- /section:pages/profile.info -->
+          <div class="space-20"></div>
+
+          <div class="widget-box transparent">
+            <div class="widget-header widget-header-small">
+              <h4 class="widget-title blue smaller">
+                <i class="ace-icon fa fa-rss orange"></i>
+                Recent Activities
+              </h4>
+
+              <div class="widget-toolbar action-buttons">
+                <a href="#" data-action="reload">
+                  <i class="ace-icon fa fa-refresh blue"></i>
+                </a>
+                &nbsp;
+                <a href="#" class="pink">
+                  <i class="ace-icon fa fa-trash-o"></i>
+                </a>
+              </div>
+            </div>
+
+            <div class="widget-body">
+              <div class="widget-main padding-8">
+                <!-- #section:pages/profile.feed -->
+                <!--
+                <div id="profile-feed-1" class="profile-feed">
+                  <div class="profile-activity clearfix">
+                    <div>
+                      <img class="pull-left" alt="Alex Doe's avatar" src="../assets/avatars/avatar5.png" />
+                      <a class="user" href="#"> Alex Doe </a>
+                      changed his profile photo.
+                      <a href="#">Take a look</a>
+
+                      <div class="time">
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        an hour ago
+                      </div>
+                    </div>
+
+                    <div class="tools action-buttons">
+                      <a href="#" class="blue">
+                        <i class="ace-icon fa fa-pencil bigger-125"></i>
+                      </a>
+
+                      <a href="#" class="red">
+                        <i class="ace-icon fa fa-times bigger-125"></i>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="profile-activity clearfix">
+                    <div>
+                      <img class="pull-left" alt="Susan Smith's avatar" src="../assets/avatars/avatar1.png" />
+                      <a class="user" href="#"> Susan Smith </a>
+
+                      is now friends with Alex Doe.
+                      <div class="time">
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        2 hours ago
+                      </div>
+                    </div>
+
+                    <div class="tools action-buttons">
+                      <a href="#" class="blue">
+                        <i class="ace-icon fa fa-pencil bigger-125"></i>
+                      </a>
+
+                      <a href="#" class="red">
+                        <i class="ace-icon fa fa-times bigger-125"></i>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="profile-activity clearfix">
+                    <div>
+                      <i class="pull-left thumbicon fa fa-check btn-success no-hover"></i>
+                      <a class="user" href="#"> Alex Doe </a>
+                      joined
+                      <a href="#">Country Music</a>
+
+                      group.
+                      <div class="time">
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        5 hours ago
+                      </div>
+                    </div>
+
+                    <div class="tools action-buttons">
+                      <a href="#" class="blue">
+                        <i class="ace-icon fa fa-pencil bigger-125"></i>
+                      </a>
+
+                      <a href="#" class="red">
+                        <i class="ace-icon fa fa-times bigger-125"></i>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="profile-activity clearfix">
+                    <div>
+                      <i class="pull-left thumbicon fa fa-picture-o btn-info no-hover"></i>
+                      <a class="user" href="#"> Alex Doe </a>
+                      uploaded a new photo.
+                      <a href="#">Take a look</a>
+
+                      <div class="time">
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        5 hours ago
+                      </div>
+                    </div>
+
+                    <div class="tools action-buttons">
+                      <a href="#" class="blue">
+                        <i class="ace-icon fa fa-pencil bigger-125"></i>
+                      </a>
+
+                      <a href="#" class="red">
+                        <i class="ace-icon fa fa-times bigger-125"></i>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="profile-activity clearfix">
+                    <div>
+                      <img class="pull-left" alt="David Palms's avatar" src="../assets/avatars/avatar4.png" />
+                      <a class="user" href="#"> David Palms </a>
+
+                      left a comment on Alex's wall.
+                      <div class="time">
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        8 hours ago
+                      </div>
+                    </div>
+
+                    <div class="tools action-buttons">
+                      <a href="#" class="blue">
+                        <i class="ace-icon fa fa-pencil bigger-125"></i>
+                      </a>
+
+                      <a href="#" class="red">
+                        <i class="ace-icon fa fa-times bigger-125"></i>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="profile-activity clearfix">
+                    <div>
+                      <i class="pull-left thumbicon fa fa-pencil-square-o btn-pink no-hover"></i>
+                      <a class="user" href="#"> Alex Doe </a>
+                      published a new blog post.
+                      <a href="#">Read now</a>
+
+                      <div class="time">
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        11 hours ago
+                      </div>
+                    </div>
+
+                    <div class="tools action-buttons">
+                      <a href="#" class="blue">
+                        <i class="ace-icon fa fa-pencil bigger-125"></i>
+                      </a>
+
+                      <a href="#" class="red">
+                        <i class="ace-icon fa fa-times bigger-125"></i>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="profile-activity clearfix">
+                    <div>
+                      <img class="pull-left" alt="Alex Doe's avatar" src="../assets/avatars/avatar5.png" />
+                      <a class="user" href="#"> Alex Doe </a>
+
+                      upgraded his skills.
+                      <div class="time">
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        12 hours ago
+                      </div>
+                    </div>
+
+                    <div class="tools action-buttons">
+                      <a href="#" class="blue">
+                        <i class="ace-icon fa fa-pencil bigger-125"></i>
+                      </a>
+
+                      <a href="#" class="red">
+                        <i class="ace-icon fa fa-times bigger-125"></i>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="profile-activity clearfix">
+                    <div>
+                      <i class="pull-left thumbicon fa fa-key btn-info no-hover"></i>
+                      <a class="user" href="#"> Alex Doe </a>
+
+                      logged in.
+                      <div class="time">
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        12 hours ago
+                      </div>
+                    </div>
+
+                    <div class="tools action-buttons">
+                      <a href="#" class="blue">
+                        <i class="ace-icon fa fa-pencil bigger-125"></i>
+                      </a>
+
+                      <a href="#" class="red">
+                        <i class="ace-icon fa fa-times bigger-125"></i>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="profile-activity clearfix">
+                    <div>
+                      <i class="pull-left thumbicon fa fa-power-off btn-inverse no-hover"></i>
+                      <a class="user" href="#"> Alex Doe </a>
+
+                      logged out.
+                      <div class="time">
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        16 hours ago
+                      </div>
+                    </div>
+
+                    <div class="tools action-buttons">
+                      <a href="#" class="blue">
+                        <i class="ace-icon fa fa-pencil bigger-125"></i>
+                      </a>
+
+                      <a href="#" class="red">
+                        <i class="ace-icon fa fa-times bigger-125"></i>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="profile-activity clearfix">
+                    <div>
+                      <i class="pull-left thumbicon fa fa-key btn-info no-hover"></i>
+                      <a class="user" href="#"> Alex Doe </a>
+
+                      logged in.
+                      <div class="time">
+                        <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                        16 hours ago
+                      </div>
+                    </div>
+
+                    <div class="tools action-buttons">
+                      <a href="#" class="blue">
+                        <i class="ace-icon fa fa-pencil bigger-125"></i>
+                      </a>
+
+                      <a href="#" class="red">
+                        <i class="ace-icon fa fa-times bigger-125"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                -->
+                <!-- /section:pages/profile.feed -->
+              </div>
+            </div>
+          </div>
+          <div class="space-6"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE CONTENT ENDS -->
+  </div><!-- /.col -->
+</div><!-- /.row -->

@@ -1,0 +1,14 @@
+<div ui-view="header"  id="navbar" class="navbar navbar-default navbar-collapse navbar-fixed-top"></div>
+<div class="main-container" id="main-container">
+  <div ui-view="sidenav" id="sidebar" class="sidebar responsive sidebar-fixed sidebar-scroll"></div>
+  <div class="main-content">
+    <div class="main-content-inner">
+      <div ui-view="breadcrumbs"></div>
+      <div class="page-content">
+        <div ui-view="content">
+          <div ui-view></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

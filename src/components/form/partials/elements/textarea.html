@@ -1,0 +1,6 @@
+<textarea
+  class="form-control"
+  ng-model="formCtrl.viewModel[elem.fieldName]"
+  ng-blur="formCtrl.validateField(elem.fieldName)"
+  placeholder="{{ formCtrl.placeholder(elem.label, elem.placeholder) }}">
+</textarea>

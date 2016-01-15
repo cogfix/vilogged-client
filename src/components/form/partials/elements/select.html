@@ -1,0 +1,10 @@
+<select
+  class="form-control"
+  ng-model="formCtrl.viewModel[elem.fieldName]"
+  ng-change="formCtrl.validateField(elem.fieldName)">
+  <option value=""></option>
+  <option
+    ng-repeat="option in elem.choices"
+    ng-bind="option.text"
+    value="{{ option.value }}"></option>
+</select>

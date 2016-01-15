@@ -1,0 +1,135 @@
+<form name="userProfile" >
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="custom-form">
+        <label>Username</label>
+        <div class="form-input">
+          <input class="form-control" ng-model="formCtrl.profile.username" placeholder="Enter Username here">
+        </div>
+        <div class="text-danger error-div" ng-if="formCtrl.errorMsg['username']">
+          <i class="fa fa-exclamation-triangle"></i>
+          <span ng-repeat="error in formCtrl.errorMsg['username']" ng-bind="error"></span>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="custom-form">
+        <label>Email</label>
+        <div class="form-input">
+          <input class="form-control" ng-model="formCtrl.profile.email" placeholder="Enter Email here">
+        </div>
+        <div class="text-danger error-div" ng-if="formCtrl.errorMsg['email']">
+          <i class="fa fa-exclamation-triangle"></i>
+          <span ng-repeat="error in formCtrl.errorMsg['email']" ng-bind="error"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="custom-form">
+        <label>Password</label>
+        <div class="form-input">
+          <input class="form-control" ng-model="formCtrl.profile.password" type="password" placeholder="Enter password">
+        </div>
+        <div class="text-danger error-div" ng-if="formCtrl.errorMsg['password']">
+          <i class="fa fa-exclamation-triangle"></i>
+          <span ng-repeat="error in formCtrl.errorMsg['password']" ng-bind="error"></span>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="custom-form">
+        <label>Confirm Password</label>
+        <div class="form-input">
+          <input class="form-control" ng-model="formCtrl.profile.password2" type="password" placeholder="Enter password again">
+        </div>
+        <div class="text-danger error-div" ng-if="formCtrl.errorMsg['password2']">
+          <i class="fa fa-exclamation-triangle"></i>
+          <span ng-repeat="error in formCtrl.errorMsg['password2']" ng-bind="error"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="custom-form">
+        <label>First Name</label>
+        <div class="form-input">
+          <input class="form-control" ng-model="formCtrl.profile.first_name" placeholder="Enter First Name here">
+        </div>
+        <div class="text-danger error-div" ng-if="formCtrl.errorMsg['first_name']">
+          <i class="fa fa-exclamation-triangle"></i>
+          <span ng-repeat="error in formCtrl.errorMsg['first_name']" ng-bind="error"></span>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="custom-form">
+        <label>Last Name</label>
+        <div class="form-input">
+          <input class="form-control" ng-model="formCtrl.profile.last_name" placeholder="Enter Last Name here">
+        </div>
+        <div class="text-danger error-div" ng-if="formCtrl.errorMsg['last_name']">
+          <i class="fa fa-exclamation-triangle"></i>
+          <span ng-repeat="error in formCtrl.errorMsg['last_name']" ng-bind="error"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="custom-form">
+        <label>Phone</label>
+        <div class="form-input">
+          <input class="form-control" ng-model="formCtrl.profile.phone" placeholder="Enter Phone here">
+        </div>
+        <div class="text-danger error-div" ng-if="formCtrl.errorMsg['phone']">
+          <i class="fa fa-exclamation-triangle"></i>
+          <span ng-repeat="error in formCtrl.errorMsg['phone']" ng-bind="error"></span>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="custom-form">
+        <label>Work Phone</label>
+        <div class="form-input">
+          <input class="form-control" ng-model="formCtrl.profile.work_phone" placeholder="Enter Work phone here">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="custom-form">
+        <label>Home Phone</label>
+        <div class="form-input">
+          <input class="form-control" ng-model="formCtrl.profile.home_phone" placeholder="Enter Work Phone here">
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="custom-form">
+        <label>Department</label>
+        <div class="form-input">
+          <input class="form-control" ng-model="formCtrl.profile.department.name" placeholder="Enter Department here">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <hr>
+      <div class="custom-form-save clearfix">
+        <button ng-click="formCtrl.save()" class="btn btn-success btn-lg pull-right">
+          <i class="fa fa-save"></i> Save
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <div class="page-header">
+      <h1 class="clearfix">
+        Systems Settings
+        <div class="pull-right" ng-include="'components/form/partials/elements/submit-small.html'"></div>
+      </h1>
+    </div><!-- /.page-header -->
+
+    <form>
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-12">
+            <div id="recent-box" class="widget-box transparent">
+              <div class="widget-header">
+                <h4 class="widget-title lighter smaller">
+                  <i class="ace-icon fa fa-rss orange"></i>RECENT
+                </h4>
+
+                <div class="widget-toolbar no-border">
+                  <ul id="recent-tab" class="nav nav-tabs">
+                    <li class="active">
+                      <a href="#task-tab" data-toggle="tab">Tasks</a>
+                    </li>
+
+                    <li>
+                      <a href="#member-tab" data-toggle="tab">Members</a>
+                    </li>
+
+                    <li>
+                      <a href="#comment-tab" data-toggle="tab">Comments</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="widget-body"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12" ng-include="'components/form/partials/elements/submit.html'"></div>
+      </div>
+    </form>
+  </div>
+</div>

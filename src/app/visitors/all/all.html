@@ -1,0 +1,156 @@
+<div class="page-header">
+  <h1>
+    Visitors
+  </h1>
+</div><!-- /.page-header -->
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="custom-form-save clearfix">
+      <a class="btn btn-primary pull-right" ui-sref="visitors.add">
+        <i class="fa fa-plus-circle"></i>
+        Create
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <!-- PAGE CONTENT BEGINS -->
+    <div class="row">
+      <div class="col-xs-12">
+        <table id="simple-table" class="table table-striped table-bordered table-hover">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>
+              <span class="pointer block" ng-click="visitorAllCtrl.updateView('first_name')">First Name
+                <span ng-show="visitorAllCtrl.orderByColumn['first_name']"
+                      ng-class="{'fa fa-long-arrow-up': visitorAllCtrl.orderByColumn['first_name'].reverse, 'fa fa-long-arrow-down': !visitorAllCtrl.orderByColumn['first_name'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>
+              <span class="pointer block" ng-click="visitorAllCtrl.updateView('last_name')">Last Name
+                <span ng-show="visitorAllCtrl.orderByColumn['last_name']"
+                      ng-class="{'fa fa-long-arrow-up': visitorAllCtrl.orderByColumn['last_name'].reverse, 'fa fa-long-arrow-down': !visitorAllCtrl.orderByColumn['last_name'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>
+              <span class="pointer block" ng-click="visitorAllCtrl.updateView('email')">Email
+                <span ng-show="visitorAllCtrl.orderByColumn['email']"
+                      ng-class="{'fa fa-long-arrow-up': visitorAllCtrl.orderByColumn['email'].reverse, 'fa fa-long-arrow-down': !visitorAllCtrl.orderByColumn['email'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>
+              <span class="pointer block" ng-click="visitorAllCtrl.updateView('phone')">Phone
+                <span ng-show="visitorAllCtrl.orderByColumn['phone']"
+                      ng-class="{'fa fa-long-arrow-up': visitorAllCtrl.orderByColumn['phone'].reverse, 'fa fa-long-arrow-down': !visitorAllCtrl.orderByColumn['phone'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>Company</th>
+            <th>
+              <span class="pointer block" ng-click="visitorAllCtrl.updateView('created')">Date Created
+                <span ng-show="visitorAllCtrl.orderByColumn['created']"
+                      ng-class="{'fa fa-long-arrow-up': visitorAllCtrl.orderByColumn['created'].reverse, 'fa fa-long-arrow-down': !visitorAllCtrl.orderByColumn['created'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>Acions</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr ng-repeat="visitor in visitorAllCtrl.visitors">
+            <td ng-bind="$index + 1 + ((visitorAllCtrl.pagination.currentPage-1) * visitorAllCtrl.pagination.itemsPerPage)"></td>
+            <td ng-bind="::visitor.first_name"></td>
+            <td ng-bind="::visitor.last_name"></td>
+            <td ng-bind="::visitor.email"></td>
+            <td ng-bind="::visitor.phone"></td>
+            <td ng-bind="::visitor.company.name"></td>
+            <td ng-bind="::visitor.created | date:'yyyy-MM-dd'"></td>
+            <td>
+              <div class="hidden-sm hidden-xs action-buttons">
+                <a class="text-danger" title="Create Appointment" ui-sref="appointments.add({visitor: visitor._id})">
+                  <i class="ace-icon fa fa-calendar"></i>
+                </a>
+                <a ui-sref="visitors.detail({_id: visitor._id})" class="blue">
+                  <i class="ace-icon fa fa-eye bigger-130"></i>
+                </a>
+
+                <a ui-sref="visitors.edit({_id: visitor._id})" class="green">
+                  <i class="ace-icon fa fa-pencil bigger-130"></i>
+                </a>
+
+                <a ui-sref="visitors.remove({_id: visitor._id})" class="red">
+                  <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                </a>
+              </div>
+
+              <div class="hidden-md hidden-lg">
+                <div class="inline pos-rel">
+                  <button data-position="auto" data-toggle="dropdown" class="btn btn-minier btn-yellow dropdown-toggle" aria-expanded="false">
+                    <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close" style="">
+                    <li>
+                      <a title="" data-rel="tooltip" class="tooltip-info" ui-sref="visitors.detail({_id: visitor._id})" data-original-title="View">
+                        <span class="blue">
+												  <i class="ace-icon fa fa-search-plus bigger-120"></i>
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a title="" data-rel="tooltip" class="tooltip-success" ui-sref="visitors.edit({_id: visitor._id})" data-original-title="Edit">
+                        <span class="green">
+                          <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a title="" data-rel="tooltip" class="tooltip-error" ui-sref="visitors.remove({_id: visitor._id})" data-original-title="Delete">
+                        <span class="red">
+                          <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div><!-- /.span -->
+    </div><!-- /.row -->
+    <div class="row">
+      <div class="col-xs-11">
+        <pagination
+          total-items="visitorAllCtrl.pagination.totalItems"
+          ng-model="visitorAllCtrl.pagination.currentPage"
+          max-size="visitorAllCtrl.pagination.maxSize"
+          class="visitorAllCtrl.pagination-sm pull-right"
+          boundary-links="true"
+          rotate="false"
+          ng-change="visitorAllCtrl.updateView()"
+          items-per-page="visitorAllCtrl.pagination.itemsPerPage"
+          num-pages="visitorAllCtrl.pagination.numPages" >
+        </pagination>
+      </div>
+      <div class="col-xs-1">
+        <label class="pull-right">
+          <select ng-model="visitorAllCtrl.pagination.itemsPerPage" ng-change="visitorAllCtrl.updateView()" class="form-control input-sm">
+            <option ng-selected="visitorAllCtrl.pagination.itemsPerPage === 10" value="10">10</option>
+            <option ng-selected="visitorAllCtrl.pagination.itemsPerPage === 25" value="25">25</option>
+            <option ng-selected="visitorAllCtrl.pagination.itemsPerPage === 50" value="50">50</option>
+            <option ng-selected="visitorAllCtrl.pagination.itemsPerPage === 100" value="100">100</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </div><!-- /.col -->
+</div><!-- /.row -->

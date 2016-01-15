@@ -1,0 +1,135 @@
+<div class="page-header">
+  <h1>
+    Visitor Groups
+  </h1>
+</div><!-- /.page-header -->
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="custom-form-save clearfix">
+      <a class="btn btn-primary pull-right" ui-sref="visitorsGroup.add">
+        <i class="fa fa-plus-circle"></i>
+        Create User
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <!-- PAGE CONTENT BEGINS -->
+    <div class="row">
+      <div class="col-xs-12">
+        <table id="simple-table" class="table table-striped table-bordered table-hover">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>
+              <span class="pointer block" ng-click="allCtrl.updateView('name')">Group
+                <span ng-show="allCtrl.orderByColumn['first_name']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['name'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['name'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>
+              <span class="pointer block" ng-click="allCtrl.updateView('black_listed')">Black Listed
+                <span ng-show="allCtrl.orderByColumn['black_listed']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['black_listed'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['black_listed'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>
+              <span class="pointer block" ng-click="allCtrl.updateView('created')">Date Created
+                <span ng-show="allCtrl.orderByColumn['created']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['created'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['created'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>Acions</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr ng-repeat="item in allCtrl.items">
+            <td ng-bind="$index + 1 + ((allCtrl.pagination.currentPage-1) * allCtrl.pagination.itemsPerPage)"></td>
+            <td ng-bind="::item.name"></td>
+            <td ng-bind="::item.black_listed"></td>
+            <td ng-bind="::item.created | date:'yyyy-MM-dd'"></td>
+            <td>
+              <div class="hidden-sm hidden-xs action-buttons">
+                <a ui-sref="visitorsGroup.detail({_id: item._id})" class="blue">
+                  <i class="ace-icon fa fa-eye bigger-130"></i>
+                </a>
+
+                <a ui-sref="visitorsGroup.edit({_id: item._id})" class="green">
+                  <i class="ace-icon fa fa-pencil bigger-130"></i>
+                </a>
+
+                <a ui-sref="visitorsGroup.remove({_id: item._id})" class="red">
+                  <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                </a>
+              </div>
+
+              <div class="hidden-md hidden-lg">
+                <div class="inline pos-rel">
+                  <button data-position="auto" data-toggle="dropdown" class="btn btn-minier btn-yellow dropdown-toggle" aria-expanded="false">
+                    <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close" style="">
+                    <li>
+                      <a title="" data-rel="tooltip" class="tooltip-info" ui-sref="visitorsGroup.detail({_id: item._id})" data-original-title="View">
+                        <span class="blue">
+												  <i class="ace-icon fa fa-search-plus bigger-120"></i>
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a title="" data-rel="tooltip" class="tooltip-success" ui-sref="visitorsGroup.edit({_id: item._id})" data-original-title="Edit">
+                        <span class="green">
+                          <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a title="" data-rel="tooltip" class="tooltip-error" ui-sref="visitorsGroup.remove({_id: item._id})" data-original-title="Delete">
+                        <span class="red">
+                          <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div><!-- /.span -->
+    </div><!-- /.row -->
+    <div class="row">
+      <div class="col-xs-11">
+        <pagination
+          total-items="allCtrl.pagination.totalItems"
+          ng-model="allCtrl.pagination.currentPage"
+          max-size="allCtrl.pagination.maxSize"
+          class="allCtrl.pagination-sm pull-right"
+          boundary-links="true"
+          rotate="false"
+          ng-change="allCtrl.updateView()"
+          items-per-page="allCtrl.pagination.itemsPerPage"
+          num-pages="allCtrl.pagination.numPages" >
+        </pagination>
+      </div>
+      <div class="col-xs-1">
+        <label class="pull-right">
+          <select ng-model="allCtrl.pagination.itemsPerPage" ng-change="allCtrl.updateView()" class="form-control input-sm">
+            <option ng-selected="allCtrl.pagination.itemsPerPage === 10" value="10">10</option>
+            <option ng-selected="allCtrl.pagination.itemsPerPage === 25" value="25">25</option>
+            <option ng-selected="allCtrl.pagination.itemsPerPage === 50" value="50">50</option>
+            <option ng-selected="allCtrl.pagination.itemsPerPage === 100" value="100">100</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </div><!-- /.col -->
+</div><!-- /.row -->

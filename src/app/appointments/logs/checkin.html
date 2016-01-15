@@ -1,0 +1,212 @@
+<div class="space-6"></div>
+<div class="row text-bold center">
+  <div class="col-sm-3">
+    <i class="fa fa-calendar"></i> Arrival Date<br>
+    <span ng-bind="::logCtrl.item.start_date"></span>
+  </div>
+  <div class="col-sm-3">
+    <i class="fa fa-clock-o"></i> Arrival Time<br>
+    <span ng-bind="::logCtrl.item.start_time"></span>
+  </div>
+  <div class="col-sm-3">
+    <i class="fa fa-clock-o"></i> Departure Time<br>
+    <span ng-bind="::logCtrl.item.end_time"></span>
+  </div>
+  <div class="col-sm-3">
+    <div class="clearfix">
+      <button
+        class="btn btn-success pull-right"
+        ng-click="logCtrl.checkIn(item)">
+        <i class="fa fa-check-square-o"></i> Check In
+      </button>
+    </div>
+  </div>
+</div>
+<div class="hr hr12 dotted"></div>
+<div class="row">
+  <div class="col-sm-6">
+    <div class="row">
+      <div class="col-sm-12">
+        <h3 class="page-header">Host Detail</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+
+        <div>
+          <div id="user-profile-1" class="user-profile row">
+            <div class="col-sm-4 center">
+              <div>
+                <!-- #section:pages/profile.picture -->
+            <span class="profile-picture">
+              <img ng-if="!logCtrl.item.host.image" id="avatar" class="editable img-responsive" alt="" src="../assets/avatars/profile-pic.jpg" />
+              <img style="max-height: 250px" ng-if="logCtrl.item.host.image" id="avatar" class="editable img-responsive" alt="" ng-src="{{ logCtrl.item.host.image }}" />
+            </span>
+
+                <!-- /section:pages/profile.picture -->
+                <div class="space-4"></div>
+              </div>
+
+              <div class="space-6"></div>
+
+            </div>
+
+            <div class="col-sm-8">
+
+
+              <!-- #section:pages/profile.info -->
+              <div class="profile-user-info profile-user-info-striped">
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> First Name </div>
+
+                  <div class="profile-info-value">
+                    <span class="editable" id="first_name" ng-bind="logCtrl.item.host.first_name "></span>
+                  </div>
+                </div>
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Last Name </div>
+
+                  <div class="profile-info-value">
+                    <span class="editable" id="last_name" ng-bind="logCtrl.item.host.last_name"></span>
+                  </div>
+                </div>
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Username </div>
+
+                  <div class="profile-info-value">
+                    <span class="editable" id="username" ng-bind="logCtrl.item.host.username"></span>
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Email </div>
+
+                  <div class="profile-info-value" ng-bind="logCtrl.item.host.email">
+
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Gender </div>
+
+                  <div class="profile-info-value" ng-bind="logCtrl.item.host.gender">
+
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Joined </div>
+
+                  <div class="profile-info-value">
+                    <span class="editable" id="signup" ng-bind="logCtrl.item.host.date_joined | date:'yyyy/MM/dd'">2010/06/20</span>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- /section:pages/profile.info -->
+              <div class="space-20"></div>
+
+
+              <div class="space-6"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAGE CONTENT ENDS -->
+      </div><!-- /.col -->
+    </div><!-- /.row -->
+  </div>
+  <div class="col-sm-6">
+    <div class="row">
+      <div class="col-sm-12">
+        <h3 class="page-header">Guest Detail</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+
+        <div>
+          <div id="user-profile-1" class="user-profile row">
+            <div class="col-sm-4 center">
+              <div>
+                <!-- #section:pages/profile.picture -->
+            <span class="profile-picture">
+              <img ng-if="!logCtrl.item.visitor.image" id="avatar" class="editable img-responsive" alt="" src="../assets/avatars/profile-pic.jpg" />
+              <img style="max-height: 180px" ng-if="logCtrl.item.visitor.image" id="avatar" class="editable img-responsive" alt="" ng-src="{{ logCtrl.item.visitor.image }}" />
+            </span>
+
+                <!-- /section:pages/profile.picture -->
+                <div class="space-4"></div>
+              </div>
+
+              <div class="space-6"></div>
+            </div>
+
+            <div class="col-sm-8">
+
+
+              <!-- #section:pages/profile.info -->
+              <div class="profile-user-info profile-user-info-striped">
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> First Name </div>
+
+                  <div class="profile-info-value">
+                    <span class="editable" id="first_name" ng-bind="logCtrl.item.visitor.first_name "></span>
+                  </div>
+                </div>
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Last Name </div>
+
+                  <div class="profile-info-value">
+                    <span class="editable" id="last_name" ng-bind="logCtrl.item.visitor.last_name"></span>
+                  </div>
+                </div>
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Email </div>
+
+                  <div class="profile-info-value" ng-bind="logCtrl.item.visitor.email">
+
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Gender </div>
+
+                  <div class="profile-info-value" ng-bind="logCtrl.item.visitor.gender">
+
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Created </div>
+
+                  <div class="profile-info-value">
+                    <span class="editable" id="signup" ng-bind="logCtrl.item.visitor.created | date:'yyyy/MM/dd'">2010/06/20</span>
+                  </div>
+                </div>
+                <div class="profile-info-row">
+                  <div class="profile-info-name">  </div>
+
+                  <div class="profile-info-value">
+                    <span class="editable" id="signup" >&nbsp;</span>
+                  </div>
+                </div>
+
+
+              </div>
+
+              <!-- /section:pages/profile.info -->
+              <div class="space-20"></div>
+
+
+              <div class="space-6"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAGE CONTENT ENDS -->
+      </div><!-- /.col -->
+    </div><!-- /.row -->
+  </div>
+</div>

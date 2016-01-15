@@ -1,0 +1,13 @@
+{
+  "mailerAPI": "https://mandrillapp.com/api/1.0/messages/send.json",
+  "apiKey": "apiKey",
+  "senderEmail": "no-reply@test.org",
+  "senderName": "ViLogged VMS",
+  "driver": "api",
+  "api": {
+    "url": "",
+    "port": "7010",
+    "path": "/api/v1",
+    "auth": ""
+  }
+}
