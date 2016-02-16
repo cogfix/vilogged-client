@@ -1,5 +1,5 @@
 # Vilogged Client App
-
+[ ![Codeship Status for vilogged/vi-client](https://codeship.com/projects/0efed500-b726-0133-63dc-3e035d832c12/status?branch=master)](https://codeship.com/projects/134657)
 ## Usage
 
 0. Install [Node.js][], [Git][] and [CouchDB][]
