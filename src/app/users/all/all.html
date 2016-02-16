@@ -141,13 +141,16 @@
       <div class="col-xs-1">
         <label class="pull-right">
           <select ng-model="allCtrl.pagination.itemsPerPage" ng-change="allCtrl.updateView()" class="form-control input-sm">
-            <option ng-selected="allCtrl.pagination.itemsPerPage === '10'" value="10">10</option>
-            <option ng-selected="allCtrl.pagination.itemsPerPage === '25'" value="25">25</option>
-            <option ng-selected="allCtrl.pagination.itemsPerPage === '50'" value="50">50</option>
-            <option ng-selected="allCtrl.pagination.itemsPerPage === '100'" value="100">100</option>
+            <option ng-selected="allCtrl.pagination.itemsPerPage === 10" value="10">10</option>
+            <option ng-selected="allCtrl.pagination.itemsPerPage === 25" value="25">25</option>
+            <option ng-selected="allCtrl.pagination.itemsPerPage === 50" value="50">50</option>
+            <option ng-selected="allCtrl.pagination.itemsPerPage === 100" value="100">100</option>
           </select>
         </label>
       </div>
     </div>
   </div><!-- /.col -->
 </div><!-- /.row -->
+<pre>
+  {{allCtrl.pagination | json}}
+</pre>

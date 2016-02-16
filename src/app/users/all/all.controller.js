@@ -14,8 +14,10 @@ angular.module('users')
     function init () {
       var params = cache.get() || {};
       vm.pagination = params.pagination || {};
+      console.log(params.pagination);
       vm.pagination.maxSize = vm.pagination.maxSize || 100;
       vm.pagination.itemsPerPage = vm.pagination.itemsPerPage || 10;
+      vm.pagination.currentPage = vm.pagination.currentPage || 1;
       vm.orderByColumn = params.orderByColumn || {};
       if ((Object.keys(params.orderByColumn || {})).length === 0) {
         vm.orderByColumn.date_joined = vm.orderByColumn.date_joined || true;
@@ -57,7 +59,9 @@ angular.module('users')
         .then(function (response) {
           vm.users = response.results;
           vm.pagination.totalItems = response.count;
+          vm.pagination.itemsPerPage = parseInt(vm.pagination.itemsPerPage, 10);
           vm.pagination.numPages = Math.ceil(parseInt(vm.pagination.totalItems, 10) / parseInt(vm.pagination.itemsPerPage, 10));
+
           cache.set('pagination', vm.pagination);
           cache.set('orderByColumn', vm.orderByColumn);
           cache.set('lastCheckTime', new Date().getTime());
