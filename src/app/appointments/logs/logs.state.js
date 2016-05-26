@@ -7,7 +7,8 @@ angular.module('appointments')
         url: '/checkin?_id',
         templateUrl: 'app/appointments/logs/checkin.html',
         controller: 'CheckInCtrl',
-        controllerAs: 'logCtrl'
+        controllerAs: 'logCtrl',
+        data: data('Check Out Appointment', null, 'appointments.all')
       })
       .state('appointments.checkout', {
         url: '/checkout?_id',

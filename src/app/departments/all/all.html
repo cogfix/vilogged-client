@@ -109,7 +109,7 @@
     </div><!-- /.row -->
     <div class="row">
       <div class="col-xs-11">
-        <pagination
+        <uib-pagination
           total-items="allCtrl.pagination.totalItems"
           ng-model="allCtrl.pagination.currentPage"
           max-size="allCtrl.pagination.maxSize"
@@ -119,7 +119,7 @@
           ng-change="allCtrl.updateView()"
           items-per-page="allCtrl.pagination.itemsPerPage"
           num-pages="allCtrl.pagination.numPages" >
-        </pagination>
+        </uib-pagination>
       </div>
       <div class="col-xs-1">
         <label class="pull-right">

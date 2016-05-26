@@ -6,6 +6,14 @@ angular.module('users')
         parent: 'users',
         templateUrl: 'app/users/all/all.html',
         controller: 'UserAllCtrl',
-        controllerAs: 'allCtrl'
+        controllerAs: 'allCtrl',
+        resolve: {
+          currentState: function (userService) {
+            return userService.getState()
+              .catch(function () {
+                return {};
+              });
+          }
+        }
       });
   });

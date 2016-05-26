@@ -9,9 +9,8 @@ angular.module('db')
         Authorization: ''
       }
     };
-
-    this.put = function (table, data, options) {
-      options = options || {};
+  
+    this.put = function (table, data) {
       var deferred = $q.defer();
 
       var url = [BASE_URL, table, data['_id']].join('/');

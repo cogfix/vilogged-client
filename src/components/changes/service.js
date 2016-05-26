@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('changes')
-  .service('changesService', function (dbService, $rootScope, $interval) {
+  .service('changesService', function (dbService, $rootScope, $interval, config) {
     var TABLE = '_changes';
     var _this = this;
+    var INTERVAL = '3000000000';
 
     _this.get = function (id, option) {
       return dbService.get(TABLE, id, option);
@@ -31,27 +32,35 @@ angular.module('changes')
           return response.count > 0;
         });
     };
-
-    this.pollForChanges = function (vm, cacheInstance, model) {
+    
+    this.pollForChanges = function (vm, serviceInstance, model) {
       $rootScope.resetTimer = $interval(function () {
         if (!vm.inProgress) {
           vm.inProgress = true;
-          var params = cacheInstance.get() || {};
-          _this.hasChanged(model,  params.lastCheckTime)
+          var params = {};
+          serviceInstance.getState()
+            .then(function (response) {
+              params = response || params;
+              return _this.hasChanged(model, params.lastCheckTime);
+            })
             .then(function (response) {
               if (response) {
                 vm.updateView()
               } else {
                 vm.inProgress = false;
-                cacheInstance.set('lastCheckTime', new Date().getTime());
+                params.lastCheckTime = new Date().getTime();
+                console.log(params);
+                return serviceInstance.setState(params)
               }
             })
             .catch(function () {
               vm.inProgress = false;
-              cacheInstance.set('lastCheckTime', new Date().getTime());
+              params.lastCheckTime = new Date().getTime();
+              return serviceInstance.setState(params);
             })
+
         }
-      }, 3000);
+      }, config.refreshIntervals || 3000);
     };
 
   });

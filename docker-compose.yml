@@ -1,0 +1,7 @@
+viloggedclient:
+  build: .
+  volumes:
+    - ./dist:/var/www/
+  command: /usr/sbin/apache2ctl -D FOREGROUND
+  ports:
+    - "80:80"

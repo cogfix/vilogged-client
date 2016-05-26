@@ -15,6 +15,11 @@ angular.module('login')
             $state.go('home');
             log.success('authSuccess');
           })
+          .catch(function (reason) {
+            if (reason) {
+              log.error('authInvalid');
+            }
+          })
       }
     }
 

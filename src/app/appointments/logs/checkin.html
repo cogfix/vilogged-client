@@ -1,27 +1,58 @@
 <div class="space-6"></div>
-<div class="row text-bold center">
-  <div class="col-sm-3">
-    <i class="fa fa-calendar"></i> Arrival Date<br>
-    <span ng-bind="::logCtrl.item.start_date"></span>
-  </div>
-  <div class="col-sm-3">
-    <i class="fa fa-clock-o"></i> Arrival Time<br>
-    <span ng-bind="::logCtrl.item.start_time"></span>
-  </div>
-  <div class="col-sm-3">
-    <i class="fa fa-clock-o"></i> Departure Time<br>
-    <span ng-bind="::logCtrl.item.end_time"></span>
-  </div>
-  <div class="col-sm-3">
-    <div class="clearfix">
-      <button
-        class="btn btn-success pull-right"
-        ng-click="logCtrl.checkIn(item)">
-        <i class="fa fa-check-square-o"></i> Check In
-      </button>
+<div class="well well-sm clearfix">
+  <div class="infobox infobox-blue">
+    <div class="infobox-icon">
+      <i class="ace-icon fa fa-calendar"></i>
+    </div>
+
+    <div class="infobox-data">
+      <span class="infobox-data-content">Arrival Date</span>
+      <div class="infobox-content">
+        <span ng-bind="::logCtrl.item.start_date"></span>
+      </div>
     </div>
   </div>
+  <div class="infobox infobox-brown">
+    <div class="infobox-icon">
+      <i class="ace-icon fa fa-clock-o"></i>
+    </div>
+
+    <div class="infobox-data">
+      <span class="infobox-data-content">Arrival Time</span>
+      <div class="infobox-content">
+        <span ng-bind="::logCtrl.item.start_time"></span>
+      </div>
+    </div>
+  </div>
+  <div class="infobox infobox-brown">
+    <div class="infobox-icon">
+      <i class="ace-icon fa fa-clock-o"></i>
+    </div>
+
+    <div class="infobox-data">
+      <span class="infobox-data-content">Departure Time</span>
+      <div class="infobox-content">
+        <span ng-bind="::logCtrl.item.end_time"></span>
+      </div>
+    </div>
+  </div>
+  <div class="infobox infobox-brown">
+    <div class="infobox-icon">
+      <i class="ace-icon fa fa-clock-o"></i>
+    </div>
+
+    <div class="infobox-data">
+      <span class="infobox-data-content">Print </span>
+    </div>
+  </div>
+  <button
+    class="btn btn-success pull-right"
+    ng-click="logCtrl.checkIn(item)"
+    ng-disabled="logCtrl.item.status !== 1">
+    <i class="fa fa-check-square-o"></i> Check In
+  </button>
 </div>
+
 <div class="hr hr12 dotted"></div>
 <div class="row">
   <div class="col-sm-6">

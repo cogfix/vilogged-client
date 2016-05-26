@@ -4,9 +4,11 @@ angular.module('users')
     validationService,
     authService,
     $q,
-    cache
+    cache,
+    pouchdb
   ) {
     var TABLE = 'user';
+    var CACHEDB = [TABLE, '_cache'].join('');
     var _this = this;
 
     _this.model = {
@@ -210,5 +212,14 @@ angular.module('users')
     this.cache = function () {
       cache.VIEW_KEY = TABLE;
       return cache;
-    }
+    };
+
+    this.setState = function (doc) {
+      doc._id = CACHEDB;
+      return pouchdb.save(doc);
+    };
+
+    this.getState = function () {
+      return pouchdb.get(CACHEDB);
+    };
   });

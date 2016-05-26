@@ -5,16 +5,15 @@ angular.module('users')
     userService,
     dialog,
     log,
-    changesService
+    changesService,
+    currentState
   ) {
-    var cache = userService.cache();
     var vm = this;
+    var params = currentState || {};
     vm.users = [];
     vm.inProgress = false;
     function init () {
-      var params = cache.get() || {};
       vm.pagination = params.pagination || {};
-      console.log(params.pagination);
       vm.pagination.maxSize = vm.pagination.maxSize || 100;
       vm.pagination.itemsPerPage = vm.pagination.itemsPerPage || 10;
       vm.pagination.currentPage = vm.pagination.currentPage || 1;
@@ -61,15 +60,18 @@ angular.module('users')
           vm.pagination.totalItems = response.count;
           vm.pagination.itemsPerPage = parseInt(vm.pagination.itemsPerPage, 10);
           vm.pagination.numPages = Math.ceil(parseInt(vm.pagination.totalItems, 10) / parseInt(vm.pagination.itemsPerPage, 10));
-
-          cache.set('pagination', vm.pagination);
-          cache.set('orderByColumn', vm.orderByColumn);
-          cache.set('lastCheckTime', new Date().getTime());
+          params.pagination = vm.pagination;
+          params.orderByColumn = vm.orderByColumn;
+          params.lastCheckTime = new Date().getTime();
+          userService.setState(params)
+            .catch(function (err) {
+              console.log(err)
+            });
           vm.inProgress = false;
         })
         .catch(function (reason) {
           vm.inProgress = false;
-          console.log(reason);
+          log.error(reason);
         });
     };
 
@@ -88,5 +90,5 @@ angular.module('users')
     };
 
     vm.updateView();
-    changesService.pollForChanges(vm, cache, 'userprofile');
+    changesService.pollForChanges(vm, userService, 'userprofile');
   });
