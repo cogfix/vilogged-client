@@ -6,6 +6,14 @@ angular.module('appointments')
         parent: 'appointments',
         templateUrl: 'app/appointments/all/all.html',
         controller: 'AppointmentsAllCtrl',
-        controllerAs: 'allCtrl'
+        controllerAs: 'allCtrl',
+        resolve: {
+          currentState: function (appointmentService) {
+            return appointmentService.getState()
+              .catch(function () {
+                return {};
+              });
+          }
+        }
       });
   });

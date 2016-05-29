@@ -3,7 +3,7 @@ angular.module('db')
     // AngularJS will instantiate a singleton by calling "new" on this function
     var BASE_URL = configService.api.url;
     var TIMEOUT = 90000; //1.5 minutes
-    var _this = this, httpConfig = {
+    var self = this, httpConfig = {
       timeout: TIMEOUT,
       headers: {
         Authorization: ''
@@ -34,8 +34,8 @@ angular.module('db')
         });
       return deferred.promise;
     };
-
-    _this.post = function (table, data) {
+  
+    self.post = function (table, data) {
       var deferred = $q.defer();
       $http.post([BASE_URL, table].join('/'), data, updateHeader(table))
         .then(function (response) {
@@ -57,8 +57,8 @@ angular.module('db')
         });
       return deferred.promise;
     };
-
-    _this.all = function (table, options) {
+  
+    self.all = function (table, options) {
       options = options || {};
       var deferred = $q.defer();
       $http.get([[BASE_URL, table].join('/'), prepareUrlParams(options)].join(''), updateHeader())
@@ -82,8 +82,8 @@ angular.module('db')
 
       return deferred.promise;
     };
-
-    _this.get = function (table, id, options) {
+  
+    self.get = function (table, id, options) {
       options = options || {};
       var deferred = $q.defer();
       $http.get([[BASE_URL, table, id].join('/'), prepareUrlParams(options)].join(''), updateHeader())
@@ -107,8 +107,8 @@ angular.module('db')
 
       return deferred.promise;
     };
-
-    _this.remove = function (table, id, options) {
+  
+    self.remove = function (table, id, options) {
       //return apiFactory.remove({_table: table, _param: id}).$promise;
       var deferred = $q.defer();
       $http.delete([[BASE_URL, table, id].join('/'), prepareUrlParams(options)].join(''), updateHeader())

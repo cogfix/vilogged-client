@@ -3,18 +3,18 @@
 angular.module('changes')
   .service('changesService', function (dbService, $rootScope, $interval, config) {
     var TABLE = '_changes';
-    var _this = this;
+    var self = this;
     var INTERVAL = '3000000000';
-
-    _this.get = function (id, option) {
+  
+    self.get = function (id, option) {
       return dbService.get(TABLE, id, option);
     };
-
-    _this.all = function (option) {
+  
+    self.all = function (option) {
       return dbService.all(TABLE, option);
     };
-
-    _this.hasChanged = function (model, lastCheck) {
+  
+    self.hasChanged = function (model, lastCheck) {
       if (!model) {
         return false;
       }
@@ -27,7 +27,7 @@ angular.module('changes')
       if (lastCheck) {
         options['last-checked'] = lastCheck;
       }
-      return _this.all(options)
+      return self.all(options)
         .then(function (response) {
           return response.count > 0;
         });
@@ -41,7 +41,7 @@ angular.module('changes')
           serviceInstance.getState()
             .then(function (response) {
               params = response || params;
-              return _this.hasChanged(model, params.lastCheckTime);
+              return self.hasChanged(model, params.lastCheckTime);
             })
             .then(function (response) {
               if (response) {
@@ -49,7 +49,6 @@ angular.module('changes')
               } else {
                 vm.inProgress = false;
                 params.lastCheckTime = new Date().getTime();
-                console.log(params);
                 return serviceInstance.setState(params)
               }
             })

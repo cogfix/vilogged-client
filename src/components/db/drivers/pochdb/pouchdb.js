@@ -1,6 +1,6 @@
 angular.module('db')
   .service('pouchdb', function (config, pouchDB, $rootScope, $window) {
-    var _this = this;
+    var self = this;
     var DB = config.db || 'vmsClient';
     var options = {
         /*eslint-disable camelcase */
@@ -19,8 +19,8 @@ angular.module('db')
     function hasWebSQL() {
       return $window.openDatabase;
     }
-
-    _this.addTimeInfo = function (doc) {
+  
+    self.addTimeInfo = function (doc) {
       var now = new Date().toJSON();
       if (!doc.createdOn) {
         doc.createdOn = now;
@@ -38,11 +38,11 @@ angular.module('db')
      * @param {Object} doc - document to be saved.
      * @returns {$promise}
      */
-    _this.save = function (doc) {
-      doc = _this.addTimeInfo(doc);
+    self.save = function (doc) {
+      doc = self.addTimeInfo(doc);
       function saveDoc (doc) {
         if (doc._id) {
-          return _this.update(doc)
+          return self.update(doc)
             .catch(function () {
               return remoteDB.put(doc)
                 .then(function (res) {
@@ -52,18 +52,18 @@ angular.module('db')
                 })
             })
         } else {
-          return _this.insert(doc);
+          return self.insert(doc);
         }
       }
 
       return saveDoc(doc);
     };
-
-    _this.get = function (id) {
+  
+    self.get = function (id) {
       return remoteDB.get(id);
     };
-
-    _this.delete = function (doc) {
+  
+    self.delete = function (doc) {
       return remoteDB.get(doc._id)
         .then(function (doc) {
           return remoteDB.remove(doc);
@@ -78,8 +78,8 @@ angular.module('db')
      * @returns {$promise}
      * @see http://pouchdb.com/api.html#create_document
      */
-    _this.insert = function (doc) {
-      doc = _this.addTimeInfo(doc);
+    self.insert = function (doc) {
+      doc = self.addTimeInfo(doc);
       return remoteDB.post(doc)
         .then(function (res) {
           doc._id = res.id;
@@ -87,9 +87,9 @@ angular.module('db')
           return doc;
         });
     };
-
-    _this.insertWithId = function (doc, id) {
-      doc = _this.addTimeInfo(doc);
+  
+    self.insertWithId = function (doc, id) {
+      doc = self.addTimeInfo(doc);
       return remoteDB.put(doc, id);
     };
 
@@ -99,8 +99,8 @@ angular.module('db')
      * @param doc - existing document with _id property.
      * @returns {$promise}
      */
-    _this.update = function (doc) {
-      doc = _this.addTimeInfo(doc);
+    self.update = function (doc) {
+      doc = self.addTimeInfo(doc);
       return remoteDB.get(doc._id)
         .then(function (res) {
           // TODO: investigate this this wont cause an overwrite i.e assigning doc._rev to res._rev
@@ -113,12 +113,12 @@ angular.module('db')
             })
         });
     };
-
-    _this.getView = function (view, options) {
+  
+    self.getView = function (view, options) {
       return remoteDB.query(view, options);
     };
-
-    _this.saveDocs = function (docs, options) {
+  
+    self.saveDocs = function (docs, options) {
       var opt = {all_or_nothing: true};
       if (options) {
         opt = options;

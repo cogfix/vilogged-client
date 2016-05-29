@@ -9,11 +9,11 @@
 angular.module('validation')
   .service('validationService', function validationService($q) {
     // AngularJS will instantiate a singleton by calling "new" on this function
-    var _this = this;
+    var self = this;
     var emailPattern = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     var usernamePattern = /^[A-Za-z0-9_]{3,20}$/;
-    
-    _this.BASIC = function(options) {
+  
+    self.BASIC = function (options) {
       options = options || {};
       var params = {
         required: true,
@@ -34,8 +34,8 @@ angular.module('validation')
 
       return params;
     };
-    
-    _this.INT = function(options){
+  
+    self.INT = function (options) {
       var params = {
         required: false,
         pattern: '/^[0-9]/',
@@ -55,8 +55,8 @@ angular.module('validation')
 
       return params;
     };
-    
-    _this.EMAIL = function(options) {
+  
+    self.EMAIL = function (options) {
       var params = {
         required: false,
         pattern: emailPattern,
@@ -75,8 +75,8 @@ angular.module('validation')
       }
       return params;
     };
-    
-    _this.USERNAME = function(options) {
+  
+    self.USERNAME = function (options) {
 
       var params = {
         required: false,
@@ -95,14 +95,14 @@ angular.module('validation')
       }
       return params;
     };
-    
-    _this.validateRequired = function (fieldData, _params) {
-      var params = _params || _this.BASIC();
+  
+    self.validateRequired = function (fieldData, _params) {
+      var params = _params || self.BASIC();
       return (fieldData === '' || fieldData === undefined) && params.required ? ['This field is required'] : [];
     };
-    
-    _this.validateStringLength = function (fieldData, _params) {
-      var params = _params || _this.BASIC();
+  
+    self.validateStringLength = function (fieldData, _params) {
+      var params = _params || self.BASIC();
       var messages = [];
       if (params.checkLength && params.minLength > fieldData.length) {
         messages.push('character length is less than ' + params.minLength);
@@ -113,33 +113,33 @@ angular.module('validation')
       }
       return messages;
     };
-    
-    _this. validateInt = function (fieldData, _params) {
-      var params = _params || _this.BASIC();
+  
+    self.validateInt = function (fieldData, _params) {
+      var params = _params || self.BASIC();
       var messages = [];
       if (params.pattern !== '' && params.pattern.test(fieldData)) {
         messages.push('Only integers are allowed.');
       }
       return messages;
     };
-    
-    _this.validateEmail = function (fieldData, _params) {
-      var params = _params || _this.EMAIL();
+  
+    self.validateEmail = function (fieldData, _params) {
+      var params = _params || self.EMAIL();
       var messages = [];
-      if (!_this.isEmpty(fieldData) && !params.pattern.test(fieldData)) {
+      if (!self.isEmpty(fieldData) && !params.pattern.test(fieldData)) {
         messages.push('invalid email provided');
       }
 
       return messages;
     };
-
-    _this.validateUnique = function (fieldData, _params, id) {
+  
+    self.validateUnique = function (fieldData, _params, id) {
       var deferred = $q.defer();
       _params = _params || {};
-      if (_params.unique && _params.hasOwnProperty('serviceInstance') && !_this.isEmpty(fieldData)) {
+      if (_params.unique && _params.hasOwnProperty('serviceInstance') && !self.isEmpty(fieldData)) {
         var params = {};
         params[_params.fieldName] = fieldData;
-        if (!_this.isEmpty(id)) {
+        if (!self.isEmpty(id)) {
           params['_id-ne'] = id;
         }
         return _params.serviceInstance.all(params)
@@ -153,38 +153,38 @@ angular.module('validation')
       deferred.resolve([]);
       return deferred.promise;
     };
-    
-    _this.validateFields = function (params, formModelObject, id) {
+  
+    self.validateFields = function (params, formModelObject, id) {
       var errors = {};
       if (angular.isObject(params) && (Object.keys(params)).length > 0) {
         (Object.keys(params)).forEach(function(key) {
-          errors[key] = _this.validateField(params[key], formModelObject[key], id);
+          errors[key] = self.validateField(params[key], formModelObject[key], id);
         });
       }
       return $q.all(errors);
     };
-
-    _this.validateField = function (params, fieldData, id) {
+  
+    self.validateField = function (params, fieldData, id) {
 
       var messages = [];
-      var required = _this.validateRequired(fieldData, params);
-      var lengthValidation = angular.isDefined(fieldData) ? _this.validateStringLength(fieldData, params) : [];
-      var emailValidation = params.type === 'email' && angular.isDefined(fieldData) ? _this.validateEmail(fieldData, params) : [];
-      //var usernameValidation = params.type === 'username' && angular.isDefined(fieldData) ? _this.validateUsername(fieldData, params) : [];
-      var intValidation = params.type === 'int' && angular.isDefined(fieldData) ? _this.validateInt(fieldData, params) : [];
+      var required = self.validateRequired(fieldData, params);
+      var lengthValidation = angular.isDefined(fieldData) ? self.validateStringLength(fieldData, params) : [];
+      var emailValidation = params.type === 'email' && angular.isDefined(fieldData) ? self.validateEmail(fieldData, params) : [];
+      //var usernameValidation = params.type === 'username' && angular.isDefined(fieldData) ? self.validateUsername(fieldData, params) : [];
+      var intValidation = params.type === 'int' && angular.isDefined(fieldData) ? self.validateInt(fieldData, params) : [];
       var updatedMessages = messages.concat(required, lengthValidation, emailValidation, intValidation);
-
-      return _this.validateUnique(fieldData, params, id)
+    
+      return self.validateUnique(fieldData, params, id)
         .then(function (response) {
           return updatedMessages.concat(response);
         });
     };
-
-    _this.isEmpty = function (data) {
+  
+    self.isEmpty = function (data) {
       return data === undefined || data === '' || data === null;
     };
-
-    _this.eliminateEmpty = function (response) {
+  
+    self.eliminateEmpty = function (response) {
       var hash = {};
       for (var key in response) {
         if (response.hasOwnProperty(key) && response[key].length > 0) {
@@ -193,8 +193,8 @@ angular.module('validation')
       }
       return hash;
     };
-
-    _this.mergeErrorMsg = function (dest, src) {
+  
+    self.mergeErrorMsg = function (dest, src) {
       for (var key in src) {
         if (src.hasOwnProperty(key) && dest.hasOwnProperty(key)) {
           dest[key] = dest[key].concat(src[key]);

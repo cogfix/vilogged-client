@@ -9,14 +9,14 @@ angular.module('users')
   ) {
     var TABLE = 'user';
     var CACHEDB = [TABLE, '_cache'].join('');
-    var _this = this;
-
-    _this.model = {
+    var self = this;
+  
+    self.model = {
       username: validationService.USERNAME({
         required: true,
         unique: true,
         fieldName: 'username',
-        serviceInstance: _this,
+        serviceInstance: self,
         label: 'Username',
         formType: 'text'
       }),
@@ -24,23 +24,23 @@ angular.module('users')
         required: true,
         unique: true,
         fieldName: 'email',
-        serviceInstance: _this,
+        serviceInstance: self,
         label: 'Email',
         formType: 'text'
       }),
       password:  validationService.BASIC({
         required: true,
         fieldName: 'password',
-        serviceInstance: _this,
+        serviceInstance: self,
         label: 'Password',
-        formType: 'text'
+        formType: 'password'
       }),
       password2:  validationService.BASIC({
         required: true,
         fieldName: 'password2',
-        serviceInstance: _this,
+        serviceInstance: self,
         label: 'Confirm Password',
-        formType: 'text'
+        formType: 'password'
       }),
       first_name: validationService.BASIC({
         required: true,
@@ -60,7 +60,7 @@ angular.module('users')
         required: true,
         unique: true,
         fieldName: 'phone',
-        serviceInstance: _this,
+        serviceInstance: self,
         label: 'Phone',
         formType: 'text'
       }),
@@ -68,7 +68,7 @@ angular.module('users')
         required: false,
         unique: true,
         fieldName: 'work_phone',
-        serviceInstance: _this,
+        serviceInstance: self,
         label: 'Work Phone',
         formType: 'text'
       }),
@@ -76,7 +76,7 @@ angular.module('users')
         required: false,
         unique: true,
         fieldName: 'home_phone',
-        serviceInstance: _this,
+        serviceInstance: self,
         label: 'Home Phone',
         formType: 'text'
       }),
@@ -122,41 +122,41 @@ angular.module('users')
         fieldName: 'is_active'
       })
     };
-
-    _this.get = function (id, option) {
+  
+    self.get = function (id, option) {
       return dbService.get(TABLE, id, option);
     };
-
-    _this.all = function (option) {
+  
+    self.all = function (option) {
       return dbService.all(TABLE, option);
     };
-
-    _this.remove = function (id, option) {
+  
+    self.remove = function (id, option) {
       return validateDelete(id)
         .then(function () {
           return dbService.remove(TABLE, id, option);
         });
     };
-
-    _this.save = function (id, option) {
+  
+    self.save = function (id, option) {
       return dbService.save(TABLE, id, option);
     };
-
-    _this.currentUser = function () {
+  
+    self.currentUser = function () {
       return authService.currentUser();
     };
-
-    _this.updateCurrentUser = function (user) {
+  
+    self.updateCurrentUser = function (user) {
       return authService.updateCurrentUser(user);
     };
-
-    _this.validateField = function (fieldData, fieldName, id) {
-      return validationService.validateField(_this.model[fieldName], fieldData, id);
+  
+    self.validateField = function (fieldData, fieldName, id) {
+      return validationService.validateField(self.model[fieldName], fieldData, id);
     };
-
-    _this.validate = function (object) {
+  
+    self.validate = function (object) {
       var passw = {};
-
+      console.log('here')
       if (object.hasOwnProperty('password')) {
         if (object.password === '') {
           passw.password = ['This field is required'];
@@ -165,24 +165,23 @@ angular.module('users')
           passw.password2 = ['Passwords does not match'];
         }
       }
-      return validationService.validateFields(_this.model, object, object._id)
+      return validationService.validateFields(self.model, object, object._id)
         .then(function (response) {
           return validationService.eliminateEmpty(angular.merge({}, response, passw));
         });
     };
-
-    _this.validatePassword = function (password, password2, type) {
+  
+    self.validatePasswordMatch = function (password, password2) {
+      var deferred = $q.defer();
       var passVal = {};
-      if (password === '' || password === undefined && type === 'password') {
-        passVal.password = ['This field is required'];
-      } else if (angular.isDefined(password) && (password2 === '' || password2 === undefined && type === 'password2')) {
-        passVal.password2 = ['Kindly confirm password'];
-      } else if (angular.isDefined(password) && (password2 !== '' && password2 === undefined && type === 'password2') && password !== password2) {
+    
+      if ((!validationService.isEmpty(password) && !validationService.isEmpty(password2)) && password !== password2) {
         passVal.password = ['Passwords does not match'];
         passVal.password2 = ['Passwords does not match'];
       }
-
-      return passVal;
+    
+      deferred.resolve(passVal);
+      return deferred.promise;
     };
 
     function validateDelete (id) {

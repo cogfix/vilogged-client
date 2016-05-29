@@ -2,12 +2,15 @@ angular.module('appointments')
   .service('appointmentService', function (
     dbService,
     validationService,
-    cache
+    cache,
+    pouchdb,
+    $filter
   ) {
     var TABLE = dbService.tables.APPOINTMENT;
-    var _this = this;
-
-    _this.model = {
+    var CACHEDB = [TABLE, '_cache'].join('');
+    var self = this;
+  
+    self.model = {
       visitor: validationService.BASIC({
         required: true,
         fieldName: 'visitor',
@@ -43,14 +46,14 @@ angular.module('appointments')
       end_time: validationService.BASIC({
         required: true,
         fieldName: 'end_time',
-        serviceInstance: _this,
+        serviceInstance: self,
         label: 'Appointment End Time',
         formType: 'time'
       }),
       representing: validationService.BASIC({
         required: false,
         fieldName: 'representing',
-        serviceInstance: _this,
+        serviceInstance: self,
         label: 'You are Representing who?',
         formType: 'text'
       }),
@@ -98,47 +101,47 @@ angular.module('appointments')
         formType: 'checkbox'
       })
     };
-
-    _this.get = function (id, option) {
+  
+    self.get = function (id, option) {
       return dbService.get(TABLE, id, option);
     };
-
-    _this.all = function (option) {
+  
+    self.all = function (option) {
       return dbService.all(TABLE, option);
     };
-
-    _this.remove = function (id, option) {
+  
+    self.remove = function (id, option) {
       return dbService.remove(TABLE, id, option);
     };
-
-    _this.save = function (id, option) {
+  
+    self.save = function (id, option) {
       return dbService.save(TABLE, id, option);
     };
-
-    _this.getLog = function (id, option) {
+  
+    self.getLog = function (id, option) {
       return dbService.get(dbService.tables.APPOINTMENT_LOGS, id, option);
     };
-
-    _this.allLogs = function (options) {
+  
+    self.allLogs = function (options) {
       return dbService.all(dbService.tables.APPOINTMENT_LOGS, options);
     };
-
-    _this.saveLog = function (id, options) {
+  
+    self.saveLog = function (id, options) {
       return dbService.save(dbService.tables.APPOINTMENT_LOGS, id, options);
     };
-
-    _this.validateField = function (fieldData, fieldName, id) {
-      return validationService.validateField(_this.model[fieldName], fieldData, id);
+  
+    self.validateField = function (fieldData, fieldName, id) {
+      return validationService.validateField(self.model[fieldName], fieldData, id);
     };
-
-    _this.validate = function (object) {
-      return validationService.validateFields(_this.model, object, object._id)
+  
+    self.validate = function (object) {
+      return validationService.validateFields(self.model, object, object._id)
         .then(function (response) {
           return validationService.eliminateEmpty(angular.merge({}, response));
         });
     };
-
-    _this.dateTimeValidation = function (startTime, endTime, type) {
+  
+    self.dateTimeValidation = function (startTime, endTime, type) {
       var errorMsg = {};
       var msg = [];
       if (!validationService.isEmpty(startTime) && !validationService.isEmpty(endTime)) {
@@ -157,53 +160,74 @@ angular.module('appointments')
       }
       return errorMsg;
     };
-
-    _this.inProgress = function (options) {
+  
+    self.inProgress = function (options) {
       options = options || {};
       var params = angular.merge({}, {
         load: 'in-progress'
       }, options);
-
-      return _this.all(params);
+    
+      return self.all(params);
     };
-
-    _this.upcoming = function (options) {
+  
+    self.upcoming = function (options) {
       options = options || {};
       var params = angular.merge({},
         {
           load: 'upcoming'
         }, options);
-      return _this.all(params);
+      return self.all(params);
     };
-
-    _this.awaitingApproval = function (options) {
+  
+    self.awaitingApproval = function (options) {
       options = options || {};
       var params = angular.merge({},
         {
           load: 'pending'
         }, options);
-      return _this.all(params);
+      return self.all(params);
     };
-
-    _this.rejected = function (options) {
+  
+    self.rejected = function (options) {
       options = options || {};
       var params = angular.merge({},
         {
           load: 'rejected'
         }, options);
-      return _this.all(params);
+      return self.all(params);
     };
-
-    _this.status = {
+  
+    self.status = {
       REJECTED: 0,
       UPCOMING: 1,
       PENDING: 2,
       EXPIRED: 3,
       IN_PROGRESS: 4
     };
+  
+    self.getStatus = function (item) {
+      if (item.hasOwnProperty('status') && self.status.hasOwnProperty(item.status)) {
+        return self.status[item.status];
+      } else if (item.hasOwnProperty('status') && item.status === null) {
+        var appointmentTime = new Date(item.start_date).getTime();
+        var now = new Date().getTime();
+        if (new Date(item.end_date).getTime() > now) {
+        
+        }
+      }
+    };
 
     this.cache = function () {
       cache.VIEW_KEY = TABLE;
       return cache;
+    };
+  
+    this.setState = function (doc) {
+      doc._id = CACHEDB;
+      return pouchdb.save(doc);
+    };
+  
+    this.getState = function () {
+      return pouchdb.get(CACHEDB);
     };
   });

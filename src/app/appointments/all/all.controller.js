@@ -3,10 +3,12 @@
 angular.module('appointments')
   .controller('AppointmentsAllCtrl', function (
     appointmentService,
-    changesService
+    changesService,
+    currentState
   ) {
     var vm = this;
     var cache = appointmentService.cache();
+    var params = currentState || {};
     vm.inProgress = false;
     vm.items = [];
     function init () {
@@ -29,7 +31,11 @@ angular.module('appointments')
         vm.orderByColumn = {};
         vm.orderByColumn[column]= {reverse: true};
       }
-      cache.set('orderByColumn', vm.orderByColumn);
+      params.orderByColumn = vm.orderByColumn;
+      appointmentService.setState(params)
+        .catch(function (err) {
+          console.log(err)
+        });
       return vm.orderByColumn;
     }
 
@@ -57,9 +63,13 @@ angular.module('appointments')
           vm.items = response.results;
           vm.pagination.totalItems = response.count;
           vm.pagination.numPages = Math.ceil(vm.pagination.totalItems / vm.pagination.itemsPerPage);
-          cache.set('pagination', vm.pagination);
-          cache.set('orderByColumn', vm.orderByColumn);
-          cache.set('lastCheckTime', new Date().getTime());
+          params.pagination = vm.pagination;
+          params.orderByColumn = vm.orderByColumn;
+          params.lastCheckTime = new Date().getTime();
+          appointmentService.setState(params)
+            .catch(function (err) {
+              console.log(err)
+            });
         })
         .catch(function (reason) {
           console.log(reason);
@@ -67,5 +77,5 @@ angular.module('appointments')
     };
     vm.status = appointmentService.status;
     vm.updateView();
-    changesService.pollForChanges(vm, cache, 'appointments');
+    changesService.pollForChanges(vm, appointmentService, 'appointments');
   });

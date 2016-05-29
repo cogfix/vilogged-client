@@ -1,6 +1,6 @@
 {
   "name": "vi-logged",
-  "description": "Dashboard for the direct delivery management system",
+  "description": "Dashboard Visitor management system",
   "version": "1.0.0",
   "dependencies": {},
   "devDependencies": {
@@ -61,12 +61,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/eHealthAfrica/direct-delivery-dashboard.git"
+    "url": "https://github.com/cogfix/vilogged-client.git"
   },
   "keywords": [
-    "delivery",
+    "visitors",
     "logistics",
-    "ehealth"
+    "cogfix"
   ],
   "author": "Musa Musa",
   "license": "All rights reserved",

@@ -2,14 +2,14 @@
 
 angular.module('form')
   .service('formService', function (utility) {
-    var _this = this;
-
-    _this.chunk = function (array, size) {
+    var self = this;
+  
+    self.chunk = function (array, size) {
       size = size || 2;
       return utility.chunk(array, size);
     };
-
-    _this.modelToForm = function (model, column, options) {
+  
+    self.modelToForm = function (model, column, options) {
       options = options || {};
       var forms = [];
       for (var key in model) {
@@ -21,19 +21,19 @@ angular.module('form')
           forms.push(model[key]);
         }
       }
-      return _this.chunk(forms, column);
+      return self.chunk(forms, column);
     };
-
-    _this.placeholder = function (label, placeholder) {
+  
+    self.placeholder = function (label, placeholder) {
       var defaultHolder = ['Enter', label, 'Here'].join(' ');
       return placeholder || defaultHolder;
     };
-
-    _this.isEmpty = function (data) {
+  
+    self.isEmpty = function (data) {
       return data === undefined || data === '' || data === null;
     };
-
-    _this.phonePrefixes = function () {
+  
+    self.phonePrefixes = function () {
       return [
         "0701",
         "0703",
@@ -65,8 +65,8 @@ angular.module('form')
         "Others"
       ]
     };
-
-    _this.eliminateEmpty = function (response) {
+  
+    self.eliminateEmpty = function (response) {
       var hash = {};
       for (var key in response) {
         if (response.hasOwnProperty(key) && response[key].length > 0) {
@@ -75,8 +75,8 @@ angular.module('form')
       }
       return hash;
     };
-
-    _this.mergeErrorMsg = function (dest, src) {
+  
+    self.mergeErrorMsg = function (dest, src) {
       for (var key in src) {
         if (src.hasOwnProperty(key) && dest.hasOwnProperty(key)) {
           dest[key] = dest[key].concat(src[key]);

@@ -2,7 +2,7 @@
 
 angular.module('breadcrumbs')
   .service('breadcrumbsService', function($state, utility) {
-    var _this = this;
+    var self = this;
     var states = $state.get();
     var allStates = listToObject();
 
@@ -16,16 +16,16 @@ angular.module('breadcrumbs')
 
       return stateMap;
     }
-
-    _this.get = function (name) {
+  
+    self.get = function (name) {
       return allStates[name] || {};
     };
-
-    _this.all = function () {
+  
+    self.all = function () {
       return allStates;
     };
-
-    _this.getBreadCrumbs = function (current) {
+  
+    self.getBreadCrumbs = function (current) {
       var breadcrumbs = [];
       var data = current.data || {};
       if (current.name !== 'home') {
@@ -37,12 +37,12 @@ angular.module('breadcrumbs')
           });
         }
       }
-      _this.getParent(breadcrumbs, data.parent);
+      self.getParent(breadcrumbs, data.parent);
       return breadcrumbs;
     };
-
-    _this.getParent = function (breadcrumbs, parentName) {
-      var parent = _this.get(parentName);
+  
+    self.getParent = function (breadcrumbs, parentName) {
+      var parent = self.get(parentName);
       var data = parent.data || {};
       if (!utility.isEmptyObject(parent)) {
         if (parent.hasOwnProperty('data')) {
@@ -51,7 +51,7 @@ angular.module('breadcrumbs')
             url: parent.data.link
           });
         }
-        _this.getParent(breadcrumbs, data.parent);
+        self.getParent(breadcrumbs, data.parent);
       }
     };
   });

@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('dialog')
-  .service('dialog', function (dialogs, $q) {
-    var _this = this;
-
-    _this.confirm = function (message, title, options) {
+  .service('dialog', function (dialogs,
+                               $q) {
+    var self = this;
+    
+    self.confirm = function (message, title, options) {
       var deferred = $q.defer();
       title = title || 'Confirmation Dialog';
       message = message || '';

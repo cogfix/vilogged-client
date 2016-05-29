@@ -27,7 +27,8 @@ angular
 		'utility',
 		'ui.calendar',
     'settings',
-    'cache'
+    'cache',
+    'ngVPrint'
 	])
 	.run(function ($rootScope, $state, log, authService, $window, $interval) {
 		log.persist.load();

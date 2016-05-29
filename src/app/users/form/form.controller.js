@@ -77,7 +77,20 @@ angular.module('users')
       if (vm.model.hasOwnProperty(fieldName)) {
         userService.validateField(vm.viewModel[fieldName], fieldName, vm.viewModel['_id'])
           .then(function (response) {
-            vm.errorMsg[fieldName] = response;
+            response = response || [];
+            if (response.length === 0 && ['password', 'password2'].indexOf(fieldName) !== -1) {
+              return userService.validatePasswordMatch(vm.viewModel['password'], vm.viewModel['password2'])
+            }
+            return response;
+          })
+          .then(function (response) {
+            if (toString.call(response) === '[object Object]') {
+              vm.errorMsg['password'] = response.password || [];
+              vm.errorMsg['password2'] = response.password2 || [];
+            } else {
+              vm.errorMsg[fieldName] = response;
+            }
+    
           })
           .catch(function (reason) {
             console.log(reason);

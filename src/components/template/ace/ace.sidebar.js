@@ -1,6 +1,7 @@
 /**
  <b>Sidebar functions</b>. Collapsing/expanding, toggling mobile view menu and other sidebar functions.
 */
+/*global ace */
 
 (function($ , undefined) {
 	var sidebar_count = 0;
@@ -11,7 +12,7 @@
 		this.$sidebar.attr('data-sidebar', 'true');
 		if( !this.$sidebar.attr('id') ) this.$sidebar.attr( 'id' , 'id-sidebar-'+(++sidebar_count) )
 
-		
+
 		//get a list of 'data-*' attributes that override 'defaults' and 'settings'
 		var attrib_values = ace.helper.getAttrSettings(sidebar, $.fn.ace_sidebar.defaults, 'sidebar-');
 		this.settings = $.extend({}, $.fn.ace_sidebar.defaults, settings, attrib_values);
@@ -33,7 +34,7 @@
 		this.set = function(name, value) {
 			if(this.hasOwnProperty(name)) this[name] = value;
 		}
-		
+
 
 		this.ref = function() {
 			//return a reference to self
@@ -54,24 +55,24 @@
 					icon.toggleClass(icon1).toggleClass(icon2);
 				}
 			}
-		}		
-		
+    }
+
 		var findToggleBtn = function() {
 			var toggle_btn = self.$sidebar.find('.sidebar-collapse');
 			if(toggle_btn.length == 0) toggle_btn = $('.sidebar-collapse[data-target="#'+(self.$sidebar.attr('id')||'')+'"]');
 			if(toggle_btn.length != 0) toggle_btn = toggle_btn[0];
 			else toggle_btn = null;
-			
+
 			return toggle_btn;
 		}
-		
+
 		//collapse/expand button
 		this.toggleMenu = function(toggle_btn, save) {
 			if(this.collapsible) return;
 
 			//var minimized = this.$sidebar.hasClass('menu-min');
 			this.minimized = !this.minimized;
-			
+
 			try {
 				//toggle_btn can also be a param to indicate saving to cookie or not?! if toggle_btn === false, it won't be saved
 				ace.settings.sidebar_collapsed(sidebar, this.minimized, !(toggle_btn === false || save === false));//@ ace-extra.js
@@ -80,7 +81,7 @@
 					this.$sidebar.addClass('menu-min');
 				else this.$sidebar.removeClass('menu-min');
 			}
-	
+
 			if( !toggle_btn ) {
 				toggle_btn = findToggleBtn();
 			}
@@ -94,23 +95,22 @@
 		this.collapse = function(toggle_btn, save) {
 			if(this.collapsible) return;
 			this.minimized = false;
-			
+
 			this.toggleMenu(toggle_btn, save);
 		}
 		this.expand = function(toggle_btn, save) {
 			if(this.collapsible) return;
 			this.minimized = true;
-			
+
 			this.toggleMenu(toggle_btn, save);
 		}
-		
-
-		
-		//collapse/expand in 2nd mobile style
+    
+    
+    //collapse/expand in 2nd mobile style
 		this.toggleResponsive = function(toggle_btn) {
 			if(!this.mobile_view || this.mobile_style != 3) return;
-		
-			if( this.$sidebar.hasClass('menu-min') ) {
+      
+      if( this.$sidebar.hasClass('menu-min') ) {
 				//remove menu-min because it interferes with responsive-max
 				this.$sidebar.removeClass('menu-min');
 				var btn = findToggleBtn();
@@ -128,8 +128,8 @@
 				if(toggle_btn.length != 0) toggle_btn = toggle_btn[0];
 				else toggle_btn = null;
 			}
-			
-			if(toggle_btn) {
+      
+      if(toggle_btn) {
 				var icon = $(toggle_btn).find(ace.vars['.icon']), icon1, icon2;
 				if(icon.length > 0) {
 					icon1 = icon.attr('data-icon1');//the icon for expanded state
@@ -141,8 +141,8 @@
 
 			$(document).triggerHandler('settings.ace', ['sidebar_collapsed' , this.minimized]);
 		}
-		
-		//some helper functions
+    
+    //some helper functions
 		this.is_collapsible = function() {
 			var toggle
 			return (this.$sidebar.hasClass('navbar-collapse'))
@@ -168,8 +168,8 @@
 
 			var minimized  = self.minimized && !self.collapsible;
 			//if .sidebar is .navbar-collapse and in small device mode, then let minimized be uneffective
-	
-			if( !link_element.hasClass('dropdown-toggle') ) {//it doesn't have a submenu return
+      
+      if( !link_element.hasClass('dropdown-toggle') ) {//it doesn't have a submenu return
 				//just one thing before we return
 				//if sidebar is collapsed(minimized) and we click on a first level menu item
 				//and the click is on the icon, not on the menu text then let's cancel event and cancel navigation
@@ -202,13 +202,11 @@
 
 				return;
 			}
-			
-			ev.preventDefault();
-			
-			
-
-
-			var sub = link_element.siblings('.submenu').get(0);
+      
+      ev.preventDefault();
+      
+      
+      var sub = link_element.siblings('.submenu').get(0);
 			if(!sub) return false;
 			var $sub = $(sub);
 
@@ -218,15 +216,15 @@
 			if
 			(
 				( minimized && parent_ul == nav_list )
-				 || 
+        ||
 				( ( $sub.parent().hasClass('hover') && $sub.css('position') == 'absolute' ) && !self.collapsible )
 			)
 			{
 				return false;
 			}
-
-			
-			var sub_hidden = (sub.scrollHeight == 0)
+      
+      
+      var sub_hidden = (sub.scrollHeight == 0)
 
 			//if not open and visible, let's open it and make it visible
 			if( sub_hidden ) {//being shown now
@@ -254,7 +252,7 @@
 			//do this almost before submenu hiding begins
 			//but when minimized submenu's toggle should have no effect
 			if (height_change != 0) {
-				if(self.$sidebar.attr('data-sidebar-scroll') == 'true' && !self.minimized) 
+        if (self.$sidebar.attr('data-sidebar-scroll') == 'true' && !self.minimized)
 					self.$sidebar.ace_sidebar_scroll('prehide', height_change)
 			}
 
@@ -266,28 +264,28 @@
 			//'shouldWait' indicates whether to wait for previous transition (submenu toggle) to be complete or not?
 			shouldWait = (shouldWait !== false);
 			if(shouldWait && submenu_working) return false;
-					
-			var $sub = $(sub);
+      
+      var $sub = $(sub);
 			var event;
 			$sub.trigger(event = $.Event('show.ace.submenu'))
 			if (event.isDefaultPrevented()) {
 				return false;
 			}
-			
-			if(shouldWait) submenu_working = true;
+      
+      if(shouldWait) submenu_working = true;
 
 
 			$duration = $duration || this.settings.duration;
-			
-			$sub.css({
+      
+      $sub.css({
 				height: 0,
 				overflow: 'hidden',
 				display: 'block'
 			})
 			.removeClass('nav-hide').addClass('nav-show')//only for window < @grid-float-breakpoint and .navbar-collapse.menu-min
 			.parent().addClass('open');
-			
-			sub.scrollTop = 0;//this is for submenu_hover when sidebar is minimized and a submenu is scrollTop'ed using scrollbars ...
+      
+      sub.scrollTop = 0;//this is for submenu_hover when sidebar is minimized and a submenu is scrollTop'ed using scrollbars ...
 
 			if( $duration > 0 ) {
 			  $sub.css({height: sub.scrollHeight,
@@ -302,16 +300,16 @@
 				//if(ace.vars['webkit']) ace.helper.redraw(sub);//little Chrome issue, force redraw ;)
 
 				if(trigger !== false) $sub.trigger($.Event('shown.ace.submenu'))
-				
-				if(shouldWait) submenu_working = false;
+        
+        if(shouldWait) submenu_working = false;
 			}
-			
-			if( $duration > 0 && !!$.support.transition.end ) {
+      
+      if( $duration > 0 && !!$.support.transition.end ) {
 			  $sub.one($.support.transition.end, complete);
 			}
 			else complete();
-			
-			//there is sometimes a glitch, so maybe retry
+      
+      //there is sometimes a glitch, so maybe retry
 			if(ace.vars['android']) {
 				setTimeout(function() {
 					complete(null, false);
@@ -321,27 +319,27 @@
 
 			return true;
 		 }
-		 
-		 
-		 this.hide = function(sub, $duration, shouldWait) {
+    
+    
+    this.hide = function(sub, $duration, shouldWait) {
 			//'shouldWait' indicates whether to wait for previous transition (submenu toggle) to be complete or not?
 			shouldWait = (shouldWait !== false);
 			if(shouldWait && submenu_working) return false;
-		 
-			
-			var $sub = $(sub);
+      
+      
+      var $sub = $(sub);
 			var event;
 			$sub.trigger(event = $.Event('hide.ace.submenu'))
 			if (event.isDefaultPrevented()) {
 				return false;
 			}
-			
-			if(shouldWait) submenu_working = true;
-			
-
-			$duration = $duration || this.settings.duration;
-			
-			$sub.css({
+      
+      if(shouldWait) submenu_working = true;
+      
+      
+      $duration = $duration || this.settings.duration;
+      
+      $sub.css({
 				height: sub.scrollHeight,
 				overflow: 'hidden',
 				display: 'block'
@@ -365,8 +363,8 @@
 				.removeClass('nav-show').addClass('nav-hide')//only for window < @grid-float-breakpoint and .navbar-collapse.menu-min
 
 				if(trigger !== false) $sub.trigger($.Event('hidden.ace.submenu'))
-				
-				if(shouldWait) submenu_working = false;
+        
+        if(shouldWait) submenu_working = false;
 			}
 
 			if( $duration > 0 && !!$.support.transition.end ) {
@@ -388,8 +386,8 @@
 
 		 this.toggle = function(sub, $duration) {
 			$duration = $duration || self.settings.duration;
-		 
-			if( sub.scrollHeight == 0 ) {//if an element is hidden scrollHeight becomes 0
+      
+       if( sub.scrollHeight == 0 ) {//if an element is hidden scrollHeight becomes 0
 				if( this.show(sub, $duration) ) return 1;
 			} else {
 				if( this.hide(sub, $duration) ) return -1;
@@ -411,12 +409,12 @@
 			  else if(this.$sidebar.hasClass('navbar-collapse')) this.mobile_style = 4;//collapsible (bootstrap style)
 		}
 		sidebar_mobile_style.call(self);
-		  
-		function update_vars() {
+    
+    function update_vars() {
 			this.mobile_view = this.mobile_style < 4 && this.is_mobile_view();
 			this.collapsible = !this.mobile_view && this.is_collapsible();
-
-			this.minimized = 
+      
+      this.minimized =
 			(!this.collapsible && this.$sidebar.hasClass(minimized_menu_class))
 			 ||
 			(this.mobile_style == 3 && this.mobile_view && this.$sidebar.hasClass(responsive_min_class))
@@ -430,23 +428,23 @@
 		}).triggerHandler('resize.sidebar.vars')
 
 	}//end of Sidebar
-	
-
-	//sidebar events
-	
-	//menu-toggler
+  
+  
+  //sidebar events
+  
+  //menu-toggler
 	$(document)
 	.on(ace.click_event+'.ace.menu', '.menu-toggler', function(e){
 		var btn = $(this);
 		var sidebar = $(btn.attr('data-target'));
 		if(sidebar.length == 0) return;
-		
-		e.preventDefault();
-				
-		sidebar.toggleClass('display');
+    
+    e.preventDefault();
+    
+    sidebar.toggleClass('display');
 		btn.toggleClass('display');
-		
-		var click_event = ace.click_event+'.ace.autohide';
+    
+    var click_event = ace.click_event+'.ace.autohide';
 		var auto_hide = sidebar.attr('data-auto-hide') === 'true';
 
 		if( btn.hasClass('display') ) {
@@ -474,8 +472,8 @@
 	})
 	//sidebar collapse/expand button
 	.on(ace.click_event+'.ace.menu', '.sidebar-collapse', function(e){
-		
-		var target = $(this).attr('data-target'), $sidebar = null;
+    
+    var target = $(this).attr('data-target'), $sidebar = null;
 		if(target) $sidebar = $(target);
 		if($sidebar == null || $sidebar.length == 0) $sidebar = $(this).closest('.sidebar');
 		if($sidebar.length == 0) return;
@@ -488,13 +486,13 @@
 		var target = $(this).attr('data-target'), $sidebar = null;
 		if(target) $sidebar = $(target);
 		if($sidebar == null || $sidebar.length == 0) $sidebar = $(this).closest('.sidebar');
-		if($sidebar.length == 0) return;	
-	
+    if ($sidebar.length == 0) return;
+
 		var btn = this;
 		e.preventDefault();
 		$sidebar.ace_sidebar('toggleResponsive', this);
-		
-		var click_event = ace.click_event+'.ace.autohide';
+    
+    var click_event = ace.click_event+'.ace.autohide';
 		if($sidebar.attr('data-auto-hide') === 'true') {
 			if( $sidebar.hasClass('responsive-max') ) {
 				$(document).on(click_event, function(ev) {
@@ -512,9 +510,9 @@
 			}
 		}
 	})
-
-	
-	$.fn.ace_sidebar = function (option, value) {
+  
+  
+  $.fn.ace_sidebar = function (option, value) {
 		var method_call;
 
 		var $set = this.each(function () {
@@ -531,9 +529,9 @@
 
 		return (method_call === undefined) ? $set : method_call;
 	};
-	
-	
-	$.fn.ace_sidebar.defaults = {
+  
+  
+  $.fn.ace_sidebar.defaults = {
 		'duration': 300
     }
 

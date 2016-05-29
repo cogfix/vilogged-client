@@ -1,8 +1,8 @@
 angular.module('auth')
   .service('authService', function ($q, $cookies, log, dbService) {
-    var _this = this;
-
-    _this.login = function (username, password) {
+    var self = this;
+  
+    self.login = function (username, password) {
       return dbService.db.post('login', {username: username, password: password})
         .then(function (response) {
           var data = response;
@@ -11,22 +11,22 @@ angular.module('auth')
           return response;
         });
     };
-
-    _this.logout = function () {
+  
+    self.logout = function () {
       $cookies.remove('vi-token');
       $cookies.remove('vi-user');
     };
-
-    _this.loggedIn = function () {
+  
+    self.loggedIn = function () {
       return angular.isDefined($cookies.getObject('vi-token'));
     };
-
-    _this.currentUser = function () {
+  
+    self.currentUser = function () {
       return $cookies.getObject('vi-user')
     };
-
-    _this.updateCurrentUser = function (user) {
-      var currentUser = _this.currentUser();
+  
+    self.updateCurrentUser = function (user) {
+      var currentUser = self.currentUser();
       for (var key in user) {
         if (user.hasOwnProperty(key)) {
           currentUser[key] = user[key];

@@ -2,7 +2,7 @@
 
 angular.module('log')
   .service('log', function ($log, toastr, ERROR_MESSAGES, WARNING_MESSAGES, INFO_MESSAGES, SUCCESS_MESSAGES, $cookies) {
-    var _this = this;
+    var self = this;
     function log(key, type, collection, customMessage) {
 
       if (!angular.isObject(type)) {
@@ -46,41 +46,41 @@ angular.module('log')
       var i = stored.length;
       while (i--) {
         var value = stored[i];
-        if (_this.hasOwnProperty(value.type)) {
-          _this[value.type](value.key, value.type, value.message);
+        if (self.hasOwnProperty(value.type)) {
+          self[value.type](value.key, value.type, value.message);
         }
       }
       $cookies.remove('vi-persistent');
     }
-
-    _this.error = function (key, message) {
+  
+    self.error = function (key, message) {
       if (arguments.length === 1 && angular.isDefined(arguments[0]) && !ERROR_MESSAGES.hasOwnProperty(key)) {
         return toastr.error(arguments[0], 'Error');
       }
       return log(key, 'error', ERROR_MESSAGES, message);
     };
-
-    _this.warning = function (key, message) {
+  
+    self.warning = function (key, message) {
       var methods = {
         log: 'warn',
         toastr: 'warning'
       };
       return log(key, methods, WARNING_MESSAGES, message);
     };
-
-    _this.info = function (key, message) {
+  
+    self.info = function (key, message) {
       return log(key, 'info', INFO_MESSAGES, message);
     };
-
-    _this.success = function (key, message) {
+  
+    self.success = function (key, message) {
       var methods = {
         log: 'log',
         toastr: 'success'
       };
       return log(key, methods, SUCCESS_MESSAGES, message);
     };
-    
-    _this.persist = {
+  
+    self.persist = {
       error: function (key, message) {
         return persistentMsg(key, message, 'error');
       },

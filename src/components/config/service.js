@@ -2,8 +2,8 @@
 
 angular.module('m.config')
   .service('configService', function (config, $window) {
-    var _this = this;
-    _this.apiUrl = function () {
+    var self = this;
+    self.apiUrl = function () {
       var protocol = config.api.protocol || $window.location.protocol;
       if (!isEmpty(config.api.url)) {
         return config.api.url;
@@ -19,7 +19,7 @@ angular.module('m.config')
     };
 
     this.api = {
-      url: _this.apiUrl()
+      url: self.apiUrl()
     };
 
     function isEmpty (value) {

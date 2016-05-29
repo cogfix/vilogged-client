@@ -1,22 +1,22 @@
 angular.module('db')
   .service('driverService', function (config, apiService, couchDBService, pouchDBbService) {
-    var _this = this;
-
-    _this.getService = function () {
+    var self = this;
+  
+    self.getService = function () {
       return {
         api: apiService,
         couchDB: couchDBService,
         pouchDB: pouchDBbService
       }
     };
-
-    _this.getDriver = function () {
+  
+    self.getDriver = function () {
       return config.driver || 'api';
     };
-
-    _this.get = function () {
-      var services = _this.getService();
-      var driver = _this.getDriver();
+  
+    self.get = function () {
+      var services = self.getService();
+      var driver = self.getDriver();
       if (!services.hasOwnProperty(driver)) {
         return services['pouchDB']
       }

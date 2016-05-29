@@ -1,9 +1,9 @@
 angular.module('visitors')
   .service('visitorService', function (dbService, validationService, authService) {
     var TABLE = 'visitor';
-    var _this = this;
-
-    _this.model = {
+    var self = this;
+  
+    self.model = {
       first_name: validationService.BASIC({
         required: true,
         fieldName: 'first_name',
@@ -22,7 +22,7 @@ angular.module('visitors')
         required: true,
         unique: true,
         fieldName: 'phone',
-        serviceInstance: _this,
+        serviceInstance: self,
         label: 'Phone',
         formType: 'text',
         custom: true,
@@ -32,7 +32,7 @@ angular.module('visitors')
         required: false,
         unique: true,
         fieldName: 'email',
-        serviceInstance: _this,
+        serviceInstance: self,
         label: 'Email',
         formType: 'text'
       }),
@@ -98,57 +98,57 @@ angular.module('visitors')
         hidden: true
       })
     };
-
-    _this.get = function (id, option) {
+  
+    self.get = function (id, option) {
       return dbService.get(TABLE, id, option);
     };
-
-    _this.all = function (option) {
+  
+    self.all = function (option) {
       return dbService.all(TABLE, option);
     };
-
-    _this.remove = function (id, option) {
+  
+    self.remove = function (id, option) {
       return dbService.remove(TABLE, id, option);
     };
-
-    _this.save = function (id, option) {
+  
+    self.save = function (id, option) {
       return dbService.save(TABLE, id, option);
     };
-
-
-    _this.validateField = function (params, fieldData, id) {
+  
+  
+    self.validateField = function (params, fieldData, id) {
       return validationService.validateField(params, fieldData, id);
     };
-
-    _this.validate = function (object) {
-      return validationService.validateFields(_this.model, object, object._id)
+  
+    self.validate = function (object) {
+      return validationService.validateFields(self.model, object, object._id)
         .then(function (response) {
           return eliminateEmpty(angular.merge({}, response));
         });
     };
-
-    _this.getPassCode = function () {
+  
+    self.getPassCode = function () {
 
     };
-
-    _this.updateForPhone = function (response) {
+  
+    self.updateForPhone = function (response) {
       if (response.hasOwnProperty('phone.prefix') || response.hasOwnProperty('phone.suffix')) {
         response['phone'] = [];
       }
 
       return response;
     };
-
-    _this.updateForPrefix = function (response, prefix) {
+  
+    self.updateForPrefix = function (response, prefix) {
       if (response.hasOwnProperty('phone.prefix') && prefix === 'Others') {
         response['phone.prefix'] = [];
       }
       return response;
     };
-
-    _this.getPhone = function (prefix, suffix) {
+  
+    self.getPhone = function (prefix, suffix) {
       var phoneList = [];
-      if (!_this.isEmpty(prefix) && !_this.isEmpty(suffix)) {
+      if (!self.isEmpty(prefix) && !self.isEmpty(suffix)) {
         if (prefix !== 'Others') {
           phoneList.push(prefix);
         }
@@ -156,8 +156,8 @@ angular.module('visitors')
       }
       return phoneList.join('');
     };
-
-    _this.recoverPhone = function (phone) {
+  
+    self.recoverPhone = function (phone) {
       var rePhone = {};
       if (phone.length > 7) {
         rePhone['phone.prefix'] = phone.slice(0, 4);
@@ -168,8 +168,8 @@ angular.module('visitors')
       }
       return rePhone;
     };
-
-    _this.isEmpty = validationService.isEmpty;
+  
+    self.isEmpty = validationService.isEmpty;
 
     function eliminateEmpty (response) {
       var hash = {};
@@ -180,5 +180,14 @@ angular.module('visitors')
       }
       return hash;
     }
+  
+    this.setState = function (doc) {
+      doc._id = CACHEDB;
+      return pouchdb.save(doc);
+    };
+  
+    this.getState = function () {
+      return pouchdb.get(CACHEDB);
+    };
 
   });

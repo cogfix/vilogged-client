@@ -1,6 +1,6 @@
 {
   "name": "vi-logged",
-  "description": "Dashboard for the direct delivery management system",
+  "description": "Dashboard for the visitor management system",
   "version": "1.0.0",
   "dependencies": {
     "angular-ui-router": "~0.2.13",
@@ -25,7 +25,8 @@
     "jquery-ui": "jqueri-ui#~1.11.4",
     "angular-cookies": "~1.4.7",
     "angular-dialog-service": "~5.2.8",
-    "angular-ui-calendar": "~1.0.1"
+    "angular-ui-calendar": "~1.0.1",
+    "JsBarcode": "jsbarcode#^3.3.7"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.3",
