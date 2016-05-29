@@ -5,7 +5,6 @@
   font-weight: 300;
   src: local('Open Sans Light'), local('OpenSans-Light'), url(../fonts/OpenSans-300.woff) format('woff');
 }
-
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
