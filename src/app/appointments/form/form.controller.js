@@ -9,7 +9,8 @@ angular.module('appointments')
     formService,
     userService,
     visitorService,
-    $filter
+    $filter,
+    $scope
   ) {
     var COLUMN = 2;
     var vm = this;
@@ -61,7 +62,9 @@ angular.module('appointments')
             vm.viewModel.end_date = $filter('date')(vm.viewModel.end_date, 'yyyy-MM-dd');
             vm.viewModel.start_time = $filter('date')(vm.viewModel.start_time, 'HH:mm:ss');
             vm.viewModel.end_time = $filter('date')(vm.viewModel.end_time, 'HH:mm:ss');
-            console.log(vm.viewModel.end_time = $filter('date')(vm.viewModel.end_time, 'HH:mm:ss'))
+            if ($scope.currentUser._id === vm.selected.host._id) {
+              vm.viewModel.is_approved = true;
+            }
             appointmentService.save(vm.viewModel)
               .then(function () {
                 $state.go('appointments.all');

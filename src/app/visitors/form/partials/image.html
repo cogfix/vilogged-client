@@ -1,38 +1,9 @@
-
-<label for="image">Image</label>
-<div>
-  <span ng-if="formCtrl.upload.status">Activate Camera</span>
-  <span ng-if="!formCtrl.upload.status">Activate Image Upload</span>
-  <label class="switch">
-    <input
-      ng-model="formCtrl.upload.status"
-      type="checkbox">
-    <i></i>
-  </label>
-</div>
 <div class="row">
-  <div class="col-sm-12">
-    <div class="clearfix">
-      <div class="pull-left">
-        <div ng-if="formCtrl.upload.status">
-          <input id="image" type="file" ng-model-instant
-                 onchange="angular.element(this).scope().setFiles(this, 'image')">
-        </div>
-
-        <div ng-if="!formCtrl.upload.status">
-          <div vi-camera>
-            <div camera-control-snapshot></div>
-          </div>
-        </div>
-      </div>
-      <div class="pull-right">
-        <div ng-if="formCtrl.upload.status">
-          <img ng-if="formCtrl.viewModel.image" ng-src="{{ formCtrl.viewModel.image }}">
-        </div>
-        <div ng-if="!formCtrl.upload.status">
-          <canvas></canvas>
-        </div>
-      </div>
-    </div>
+  <div class="col-sm-3 col-sm-offset-9">
+    <span class="margin-10-b">Click image to edit </span>
+     <span class="profile-picture pointer" ng-click="formCtrl.openImageDialog()">
+       <img ng-if="!formCtrl.viewModel.image" class="editable img-responsive" alt="" src="../assets/avatars/place_holder.jpg"/>
+       <img ng-if="formCtrl.viewModel.image" id="avatar" class="editable img-responsive" alt="" ng-src="{{ formCtrl.viewModel.image }}"/>
+     </span>
   </div>
 </div>

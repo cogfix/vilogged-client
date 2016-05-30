@@ -48,6 +48,9 @@
     },
     "lodash": {
       "main": "dist/lodash.js"
+    },
+    "JsBarcode": {
+      "main": "dist/JsBarcode.all.js"
     }
   },
   "authors": [

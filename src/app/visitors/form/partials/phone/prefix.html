@@ -5,5 +5,5 @@
   placeholder="0803"
   typeahead-editable="false"
   ng-blur="formCtrl.validateField('phone.prefix')"
-  typeahead="prefix for prefix in formCtrl.phone.prefixes | filter:$viewValue | limitTo:8"
+  uib-typeahead="prefix for prefix in formCtrl.phone.prefixes | filter:$viewValue | limitTo:8"
   class="form-control">

@@ -72,10 +72,10 @@ angular.module('visitors')
         formType: 'text',
         fieldName: 'occupation'
       }),
-      group: validationService.BASIC({
+      black_listed: validationService.BASIC({
         required: false,
-        label: 'Visitor Group',
-        formType: 'select',
+        label: 'Black Listed?',
+        formType: 'checkbox',
         fieldName: 'group'
       }),
       'phone.prefix':  validationService.BASIC({

@@ -107,6 +107,11 @@ gulp.task('extra-tasks', function () {
     .pipe(gulp.dest('dist/assets/'));
 });
 
+gulp.task('extra-fonts', function () {
+  return gulp.src('bower_components/bootstrap/fonts/*')
+    .pipe(gulp.dest('dist/fonts/'));
+});
+
 gulp.task('fonts', function () {
   return gulp.src($.mainBowerFiles())
     .pipe($.filter('**/*.{eot,svg,ttf,woff,woff2}'))
@@ -159,4 +164,4 @@ gulp.task('config', function() {
   return {}
 });
 
-gulp.task('build', ['html', 'images', 'fonts', 'extra-tasks', 'add-config']);
+gulp.task('build', ['html', 'images', 'fonts', 'extra-tasks', 'extra-fonts', 'add-config']);

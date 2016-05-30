@@ -11,7 +11,8 @@ angular.module('visitors')
     formService,
     $scope,
     $window,
-    $timeout
+    $timeout,
+    dialogs
   ) {
     var COLUMN = 2;
     var vm = this;
@@ -34,7 +35,6 @@ angular.module('visitors')
           vm.viewModel = response;
           vm.viewModel['company.name'] = vm.viewModel.company.name;
           vm.viewModel['company.address'] = vm.viewModel.company.address;
-          vm.viewModel.group = vm.viewModel.group._id || '';
           var phone = visitorService.recoverPhone(vm.viewModel.phone);
           vm.viewModel = angular.merge({}, vm.viewModel, phone);
         })
@@ -42,14 +42,6 @@ angular.module('visitors')
           console.log(reason);
         });
     }
-
-    visitorsGroupService.choices()
-      .then(function (response) {
-        vm.model.group.choices = response;
-      })
-      .catch(function (reason) {
-
-      });
 
     vm.save = function () {
       vm.viewModel.phone = visitorService.getPhone(vm.viewModel['phone.prefix'], vm.viewModel['phone.suffix']);
@@ -146,51 +138,57 @@ angular.module('visitors')
     };
     vm.placeholder = formService.placeholder;
 
-    $scope.closeCameraNow = function () {
-      vm.upload.status = !vm.upload.status;
-    };
-
-    $scope.$on('picTaken', function(event, data){
-      vm.viewModel.image = data.image;
-    });
-
-    $scope.setFiles = function (element, field) {
-      var fileToUpload = element.files[0];
-      if (fileToUpload.type.match('image*')) {
-        var reader = new $window.FileReader();
-        reader.onload = function (theFile) {
-          $timeout(function () {
-            var img = document.createElement("img");
-            img.src = theFile.target.result;
-            var canvas = document.createElement('canvas');
-            var ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0);
-
-            var MAX_WIDTH = 280;
-            var MAX_HEIGHT = 300;
-            var width = img.width;
-            var height = img.height;
-
-            if (width > height) {
-              if (width > MAX_WIDTH) {
-                height *= MAX_WIDTH / width;
-                width = MAX_WIDTH;
-              }
-            } else {
-              if (height > MAX_HEIGHT) {
-                width *= MAX_HEIGHT / height;
-                height = MAX_HEIGHT;
-              }
-            }
-            canvas.width = width;
-            canvas.height = height;
-            var ctx2 = canvas.getContext("2d");
-            ctx2.drawImage(img, 0, 0, width, height);
-
-            vm.viewModel[field] = canvas.toDataURL("image/png");
-          }, 1000)
+    vm.openImageDialog = function () {
+      var dlg = dialogs.create('app/visitors/form/partials/camera/camera.html', function ($scope, $modalInstance) {
+        $scope.closeCameraNow = function () {
+          vm.upload.status = !vm.upload.status;
         };
-        reader.readAsDataURL(fileToUpload);
-      }
+
+        $scope.$on('picTaken', function(event, data){
+          vm.viewModel.image = data.image;
+        });
+
+        $scope.setFiles = function (element, field) {
+          var fileToUpload = element.files[0];
+          if (fileToUpload.type.match('image*')) {
+            var reader = new $window.FileReader();
+            reader.onload = function (theFile) {
+              $timeout(function () {
+                var img = document.createElement("img");
+                img.src = theFile.target.result;
+                var canvas = document.createElement('canvas');
+                var ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0);
+
+                var MAX_WIDTH = 280;
+                var MAX_HEIGHT = 300;
+                var width = img.width;
+                var height = img.height;
+
+                if (width > height) {
+                  if (width > MAX_WIDTH) {
+                    height *= MAX_WIDTH / width;
+                    width = MAX_WIDTH;
+                  }
+                } else {
+                  if (height > MAX_HEIGHT) {
+                    width *= MAX_HEIGHT / height;
+                    height = MAX_HEIGHT;
+                  }
+                }
+                canvas.width = width;
+                canvas.height = height;
+                var ctx2 = canvas.getContext("2d");
+                ctx2.drawImage(img, 0, 0, width, height);
+
+                vm.viewModel[field] = canvas.toDataURL("image/png");
+              }, 1000)
+            };
+            reader.readAsDataURL(fileToUpload);
+          }
+        };
+
+      }, {vm: vm}, {size: 'md'});
     };
+
   });

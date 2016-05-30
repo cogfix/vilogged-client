@@ -43,14 +43,14 @@
 
     <div class="infobox-data">
       <span class="infobox-data-content">
-        <h3>Print</h3>
+        <h3>Print Badge</h3>
       </span>
     </div>
   </div>
   <button
     class="btn btn-success pull-right"
     ng-click="logCtrl.checkIn(item)"
-    ng-disabled="logCtrl.item.status !== 1">
+    ng-if="logCtrl.item.status === 1">
     <i class="fa fa-check-square-o"></i> Check In
   </button>
 </div>

@@ -9,3 +9,4 @@ npm-debug.log
 .DS_Store
 vi-client.out.log
 vilogged.tar.gz
+*.zip
