@@ -1,6 +1,6 @@
 angular.module('visitorsGroup')
   .service('visitorsGroupService', function (dbService, validationService, authService) {
-    var TABLE = dbService.tables.VISITORS_GROUP;
+    var TABLE = dbService.tables.VISITORS_TYPES;
     var self = this;
   
     self.model = {

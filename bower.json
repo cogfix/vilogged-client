@@ -51,6 +51,13 @@
     },
     "JsBarcode": {
       "main": "dist/JsBarcode.all.js"
+    },
+    "angular-dialog-service": {
+      "main": [
+        "dist/dialogs.min.css",
+        "dist/dialogs.js",
+        "dist/dialogs-default-translations.js"
+      ]
     }
   },
   "authors": [

@@ -67,6 +67,11 @@ angular.module('appointments')
             }
             appointmentService.save(vm.viewModel)
               .then(function () {
+                if (!id) {
+                  appointmentService.sms(vm.viewModel, 'created');
+                  appointmentService.email(vm.viewModel, 'created');
+                }
+                
                 $state.go('appointments.all');
               })
               .catch(function (reason) {

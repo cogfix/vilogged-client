@@ -49,10 +49,11 @@ angular.module('db')
       COMPANIES: 'company',
       DEPARTMENT: 'department',
       ENTRANCE: 'entrance',
+      MESSENGER: 'messenger',
       RESTRICTED_ITEMS: 'restricted-items',
       USER: 'user',
       VEHICLES: 'vehicle',
       VISITOR: 'visitor',
-      VISITORS_GROUP: 'visitor-group'
+      VISITORS_TYPES: 'visitor-types'
     };
   });

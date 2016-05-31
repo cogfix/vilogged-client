@@ -66,6 +66,10 @@ angular.module('users')
       appointment.visitor = appointment.visitor._id;
       appointmentService.save(appointment)
         .then(function () {
+          if (appointment.status === appointmentService.status.PENDING) {
+            appointmentService.sms(vm.viewModel, 'approval');
+            appointmentService.email(vm.viewModel, 'approval');
+          }
           loadAll();
         })
         .catch(function (reason) {
@@ -87,7 +91,7 @@ angular.module('users')
     var id = $stateParams._id;
     if (id && authService.currentUser()._id !== id) {
       userService.remove(id)
-        .then(function (response) {
+        .then(function () {
           $state.go('users.all');
         })
         .catch(function (reason) {
