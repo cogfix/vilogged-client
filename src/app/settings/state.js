@@ -11,7 +11,7 @@ angular.module('settings')
         controllerAs: 'settingsCtrl',
         data: {
           label: 'System Settings',
-          menu: true,
+          menu: false,
           link: 'settings',
           icon: 'fa fa-cogs',
           order: 8
