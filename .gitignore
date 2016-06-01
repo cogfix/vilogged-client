@@ -2,7 +2,9 @@ node_modules/
 bower_components/
 .sass-cache/
 .tmp/
-src/config.js
+src/config/config.js
+dist/config/config.js
+
 coverage
 npm-debug.log
 .idea
