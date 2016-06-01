@@ -299,32 +299,32 @@ angular.module('appointments')
       var msg;
       var phone;
       if (type === 'approval') {
-        msg = untility.complietemplate(fields, messenger.messageTemplates.appointments.APPROVAL_SMS);
+        msg = utility.compileTemplate(fields, messenger.messageTemplates.appointments.APPROVAL_SMS);
         phone = appointment.visitor.phone;
       } else if (type === 'created') {
         phone = appointment.host.phone;
-        msg = untility.complietemplate(fields, messenger.messageTemplates.appointments.CREATED_SMS);
+        msg = utility.compileTemplate(fields, messenger.messageTemplates.appointments.CREATED_SMS);
       }
-      
+
       return messenger.send.sms({
         to: phone,
         subject: 'Appointment Created.',
         message: msg
       });
     }
-  
+
     this.email = function (appointment, type) {
       var fields = self.msgFields(type, appointment);
       var msg;
       var email;
       if (type === 'approval') {
-        msg = untility.complietemplate(fields, messenger.messageTemplates.appointments.APPROVAL_EMAIL);
+        msg = utility.compileTemplate(fields, messenger.messageTemplates.appointments.APPROVAL_EMAIL);
         email = appointment.visitor.email;
       } else if (type === 'created') {
         email = appointment.host.email;
-        msg = untility.complietemplate(fields, messenger.messageTemplates.appointments.CREATED_EMAIL);
+        msg = utility.compileTemplate(fields, messenger.messageTemplates.appointments.CREATED_EMAIL);
       }
-    
+
       return messenger.send.sms({
         to: email,
         subject: 'Appointment Created.',

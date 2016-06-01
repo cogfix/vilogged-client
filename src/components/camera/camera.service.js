@@ -9,6 +9,7 @@
  */
 angular.module('vi.camera')
   .service('cameraService', function ($window) {
+    var singleton = {};
     var hasUserMedia = function() {
       return !!getUserMedia();
     };
@@ -23,6 +24,7 @@ angular.module('vi.camera')
 
     return {
       hasUserMedia: hasUserMedia(),
-      getUserMedia: getUserMedia
+      getUserMedia: getUserMedia,
+      instance: singleton
     }
   });

@@ -170,12 +170,15 @@ angular.module('visitors')
     $modalInstance,
     data,
     $window,
-    $timeout
+    $timeout,
+    cameraService
   ) {
     var vm = data.vm;
     // var $timeout = data.$timeout;
     $scope.takeImage = vm.viewModel.image;
+
     $scope.closeCameraNow = function () {
+      offCammera();
       vm.upload.status = $modalInstance.close($scope.takeImage);
     };
 
@@ -183,9 +186,19 @@ angular.module('visitors')
       $scope.takeImage = data.image;
     });
 
+    $scope.$on('camSuccess', function () {
+      $scope.videoStream = cameraService.instance.stream.getVideoTracks()[0];
+    });
+
     $scope.closeWindow = function () {
+      offCammera();
       $modalInstance.dismiss('closed');
     };
+
+    function offCammera () {
+      $scope.videoStream.stop();
+      cameraService.instance = {};
+    }
 
     $scope.setFiles = function (element, field) {
       var fileToUpload = element.files[0];

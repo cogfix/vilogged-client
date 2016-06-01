@@ -7,7 +7,7 @@
  * # viCamera
  */
 angular.module('vi.camera')
-  .directive('viCamera', function(cameraService) {
+  .directive('viCamera', function(cameraService, $rootScope) {
     return {
       restrict: 'EA',
       replace: true,
@@ -44,6 +44,8 @@ angular.module('vi.camera')
         // We'll be placing our interaction inside of here
 
         var onSuccess = function(stream) {
+          cameraService.instance.stream = stream;
+          $rootScope.$broadcast('camSuccess', {stream: stream})
           if (navigator.mozGetUserMedia) {
             videoElement.mozSrcObject = stream;
           } else {
@@ -81,9 +83,9 @@ angular.module('vi.camera')
       require: '^viCamera',
       scope: true,
       template: '<a class="btn btn-info" ng-model="formCtrl.viewModel.image" ng-change="takenSnapshot()" ng-click="takeSnapshot()"><i class="fa fa-eye">' +
-      '</i> Take snapshot</a>' +
-      '<span style="margin-left: 10px" class="btn btn-danger" ng-click="closeCameraNow()">' +
-      '<i class="fa fa-times-circle-o"></i> Close Camera</span>',
+      '</i> Take Snapshot</a>' +
+      '<button type="button" ng-disabled="!takenImg" style="margin-left: 10px" class="btn btn-danger" ng-click="closeCameraNow()">' +
+      '<i class="fa fa-times-circle-o"></i> Save Picture</button>',
       link: function(scope, ele, attrs, cameraCtrl) {
         scope.takeSnapshot = function() {
           cameraCtrl.takeSnapshot()

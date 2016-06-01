@@ -5,9 +5,9 @@
   placeholder="{{ formCtrl.placeholder(elem.label, elem.placeholder) }}"
   ng-blur="formCtrl.validateField(elem.fieldName)"
   uib-typeahead="data.name for data in formCtrl.typeahead[elem.fieldName].get($viewValue)"
-  uib-typeahead-loading="loadingRemoteData"
-  uib-typeahead-on-select="formCtrl.typeahead[elem.fieldName].onSelect($item, $model, $label)"
-  uib-typeahead-editable="formCtrl.typeahead[elem.fieldName].editable"
+  typeahead-loading="loadingRemoteData"
+  typeahead-on-select="formCtrl.typeahead[elem.fieldName].onSelect($item, $model, $label)"
+  typeahead-editable="formCtrl.typeahead[elem.fieldName].editable"
   class="form-control">
 
 <i ng-show="loadingRemoteData" class="fa fa-refresh"></i>
