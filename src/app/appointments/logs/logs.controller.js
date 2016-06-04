@@ -8,6 +8,7 @@ angular.module('appointments')
     dialogs
   ) {
     var vm = this;
+    vm.status = appointmentService.status;
     appointmentService.get($stateParams._id)
       .then(function (response) {
         vm.item = response;
@@ -15,7 +16,7 @@ angular.module('appointments')
       .catch(function (reason) {
 
       });
-  
+
     vm.checkIn = function () {
       appointmentService.saveLog({
         checked_in: new Date().toJSON(),
@@ -29,19 +30,19 @@ angular.module('appointments')
 
         });
     }
-  
+
     vm.printLabel = function () {
       var dlg = dialogs.create('app/appointments/logs/partials/pass-template.html', 'PrintLabelCtrl', vm.item, 'lg');
-    
+
       dlg.result.then(function (name) {
-      
+
       }, function () {
-      
+
       });
     }
   })
   .controller('PrintLabelCtrl', function ($scope, $modalInstance, data, $timeout) {
-    
+
     $scope.appointment = data;
     var appointment = $scope.appointment.logs[0] || {};
     var labelCode = appointment.label_code.toString();
@@ -58,9 +59,9 @@ angular.module('appointments')
           height: 20
         })
         .render();
-      
+
     }, 2000)
-    
+
   })
   .controller('CheckOutCtrl', function (appointmentService) {
 

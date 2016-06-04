@@ -13,14 +13,16 @@ angular.module('viLogged')
     vm.eventSources = [];
     vm.uiConfig = {
       calendar:{
-        height: 450,
+        height: 390,
         editable: true,
         header:{
           left: 'month',
           center: 'title',
           right: 'today prev,next'
         },
-        dayClick: function () {},
+        dayClick: function (day) {
+
+        },
         eventDrop: function () {},
         eventResize: function () {}
       }
@@ -29,9 +31,8 @@ angular.module('viLogged')
 		vm.getInProgress = function () {
 			appointmentService.inProgress()
         .then(function (response) {
-
           vm.inProgress = response.results;
-        })
+        });
 		};
 
     vm.getUpcoming = function () {
