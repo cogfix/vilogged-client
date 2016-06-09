@@ -60,7 +60,7 @@ angular.module('settings')
         label: 'Username',
         fieldName: 'username',
         formType: 'text'
-      }),
+      })
     };
 
     self.templateName = 'system.html';
