@@ -52,7 +52,20 @@
                 </span>
               </span>
             </th>
-            <th>Company</th>
+            <th>
+              <span class="pointer block" ng-click="visitorAllCtrl.updateView('type.name')">Type
+                <span ng-show="visitorAllCtrl.orderByColumn['type.name']"
+                      ng-class="{'fa fa-long-arrow-up': visitorAllCtrl.orderByColumn['type.name'].reverse, 'fa fa-long-arrow-down': !visitorAllCtrl.orderByColumn['type.name'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>
+              <span class="pointer block" ng-click="visitorAllCtrl.updateView('company.name')">Company
+                <span ng-show="visitorAllCtrl.orderByColumn['company.name']"
+                      ng-class="{'fa fa-long-arrow-up': visitorAllCtrl.orderByColumn['company.name'].reverse, 'fa fa-long-arrow-down': !visitorAllCtrl.orderByColumn['company.name'].reverse}">
+                </span>
+              </span>
+            </th>
             <th>
               <span class="pointer block" ng-click="visitorAllCtrl.updateView('created')">Date Created
                 <span ng-show="visitorAllCtrl.orderByColumn['created']"
@@ -67,12 +80,13 @@
           <tbody>
           <tr ng-repeat="visitor in visitorAllCtrl.visitors">
             <td ng-bind="$index + 1 + ((visitorAllCtrl.pagination.currentPage-1) * visitorAllCtrl.pagination.itemsPerPage)"></td>
-            <td ng-bind="::visitor.first_name"></td>
-            <td ng-bind="::visitor.last_name"></td>
-            <td ng-bind="::visitor.email"></td>
-            <td ng-bind="::visitor.phone"></td>
-            <td ng-bind="::visitor.company.name"></td>
-            <td ng-bind="::visitor.created | date:'yyyy-MM-dd'"></td>
+            <td ng-bind="visitor.first_name"></td>
+            <td ng-bind="visitor.last_name"></td>
+            <td ng-bind="visitor.email"></td>
+            <td ng-bind="visitor.phone"></td>
+            <td ng-bind="visitor.type.name"></td>
+            <td ng-bind="visitor.company.name"></td>
+            <td ng-bind="visitor.created | date:'yyyy-MM-dd'"></td>
             <td>
               <div class="hidden-sm hidden-xs action-buttons">
                 <a class="text-danger" title="Create Appointment" ui-sref="appointments.add({visitor: visitor._id})">

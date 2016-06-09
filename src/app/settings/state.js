@@ -8,10 +8,10 @@ angular.module('settings')
         url: '/settings',
         templateUrl: 'app/settings/settings.html',
         controller: 'SettingsCtrl',
-        controllerAs: 'settingsCtrl',
+        controllerAs: 'formCtrl',
         data: {
           label: 'System Settings',
-          menu: false,
+          menu: true,
           link: 'settings',
           icon: 'fa fa-cogs',
           order: 8

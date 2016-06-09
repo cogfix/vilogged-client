@@ -14,27 +14,35 @@
             <div id="recent-box" class="widget-box transparent">
               <div class="widget-header">
                 <h4 class="widget-title lighter smaller">
-                  <i class="ace-icon fa fa-rss orange"></i>RECENT
+
                 </h4>
 
                 <div class="widget-toolbar no-border">
                   <ul id="recent-tab" class="nav nav-tabs">
-                    <li class="active">
-                      <a href="#task-tab" data-toggle="tab">Database</a>
+                    <li class="pointer" ng-class="{'active': formCtrl.active === 'database'}" ng-click="formCtrl.open('database')">
+                      <a  data-toggle="tab">Database</a>
                     </li>
 
-                    <li>
-                      <a href="#member-tab" data-toggle="tab">LDAP</a>
+                    <li class="pointer" ng-class="{'active': formCtrl.active === 'ldap'}" ng-click="formCtrl.open('ldap')">
+                      <a data-toggle="tab">LDAP</a>
                     </li>
 
-                    <li>
-                      <a href="#comment-tab" data-toggle="tab">Settings</a>
+                    <li class="pointer" ng-class="{'active': formCtrl.active === 'sms'}" ng-click="formCtrl.open('sms')">
+                      <a data-toggle="tab">SMS</a>
+                    </li>
+                    <li class="pointer" ng-class="{'active': formCtrl.active === 'email'}" ng-click="formCtrl.open('email')">
+                      <a data-toggle="tab">Email</a>
+                    </li>
+                    <li class="pointer" ng-class="{'active': formCtrl.active === 'system'}" ng-click="formCtrl.open('system')">
+                      <a data-toggle="tab">System</a>
                     </li>
                   </ul>
                 </div>
               </div>
 
-              <div class="widget-body"></div>
+              <div class="widget-body" ng-include="formCtrl.template">
+
+              </div>
             </div>
           </div>
         </div>
