@@ -46,20 +46,21 @@ angular.module('settings')
     self.model = {
       dbSettingSource: validationService.BASIC({
         pattern: '/^[a-zA-Z]/',
-        fieldName: 'host',
+        fieldName: 'db_source',
         serviceInstance: self,
         label: 'Database Settings Source',
         formType: 'select',
         choices: [
-          {value: 'enviroment', text: 'Environment Variables'},
+          {value: 'environment', text: 'Environment Variables'},
           {value: 'system', text: 'System Form'}
         ]
       }),
-      username: validationService.BASIC({
+      refreshRate: validationService.BASIC({
         pattern: '/^[a-zA-Z]/',
-        label: 'Username',
-        fieldName: 'username',
-        formType: 'text'
+        label: 'Page Refresh Rate',
+        fieldName: 'refreshRate',
+        formType: 'number',
+        placeholder: 'enter number in seconds'
       })
     };
 
