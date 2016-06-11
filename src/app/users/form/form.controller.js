@@ -41,6 +41,8 @@ angular.module('users')
           vm.viewModel.department = vm.viewModel.department._id || '';
           vm.model.password.required = false;
           vm.model.password2.required = false;
+          vm.model.is_superuser.hidden = !currentUser.is_superuser;
+          vm.model.is_staff.hidden = !currentUser.is_staff;
           vm.form = formService.modelToForm(vm.model, COLUMN, {
             instance: this
           });
@@ -90,7 +92,7 @@ angular.module('users')
             } else {
               vm.errorMsg[fieldName] = response;
             }
-    
+
           })
           .catch(function (reason) {
             console.log(reason);

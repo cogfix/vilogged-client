@@ -13,7 +13,7 @@
       <div class="form-group" ng-repeat="form in formCtrl.form">
         <div class="row">
           <div ng-repeat="elem in form" class="col-sm-{{formCtrl.column}}" >
-            <div class="custom-form" ng-include="'components/form/partials/form-field.html'"ng-if="!elem.custom"></div>
+            <div class="custom-form" ng-include="'components/form/partials/form-field.html'" ng-if="!elem.custom"></div>
             <div class="custom-form" ng-if="elem.custom" ng-include="elem.template"></div>
           </div>
         </div>

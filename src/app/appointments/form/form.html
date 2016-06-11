@@ -11,7 +11,19 @@
       <div class="form-group" ng-repeat="form in formCtrl.form">
         <div class="row">
           <div ng-repeat="elem in form" class="col-sm-{{formCtrl.column}}">
-            <div class="custom-form" ng-include="'components/form/partials/form-field.html'"></div>
+            <div class="custom-form" ng-include="'components/form/partials/form-field.html'" ng-if="!elem.custom"></div>
+            <div class="custom-form" ng-if="elem.custom" ng-include="elem.template"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-12">
+            <h3 class="page-header">
+              Team Members (Visitor Group)
+            </h3>
+            <div ng-include="'app/appointments/form/partials/groups.html'"></div>
           </div>
         </div>
       </div>

@@ -19,7 +19,7 @@ angular.module('settings')
       ldap: ldapSettings,
       system: systemSettings
     };
-
+    vm.placeholder = formService.placeholder;
     vm.open = function (type) {
       vm.active = type || 'system';
       loadSettings();

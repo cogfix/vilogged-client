@@ -50,4 +50,18 @@ angular
 			$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
 			// Angular before v1.2 uses $compileProvider.urlSanitizationWhitelist(...)
 		}
-	]);
+	])
+  .config(['$httpProvider', function ($httpProvider) {
+    $httpProvider.interceptors.push(function($rootScope) {
+      return {
+        'response': function (response) {
+          $rootScope.$broadcast('serverResponse', response);
+          return response;
+        },
+        'responseError': function(responseError) {
+          $rootScope.$broadcast('serverResponse', responseError);
+          return responseError;
+        }
+      };
+    });
+  }]);

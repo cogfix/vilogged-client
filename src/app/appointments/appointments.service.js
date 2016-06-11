@@ -86,12 +86,6 @@ angular.module('appointments')
         fieldName: 'is_expired',
         hidden: true
       }),
-      teams:  validationService.BASIC({
-        required: false,
-        label: 'Team Members',
-        formType: 'multi-select',
-        fieldName: 'teams'
-      }),
       entrance:  validationService.BASIC({
         required: false,
         label: 'Entrance',

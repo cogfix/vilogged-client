@@ -7,7 +7,7 @@ angular.module('visitorsGroup')
         abstract: true,
         templateUrl: 'app/visitors-group/visitors-group.html',
         data: {
-          label: 'Visitors Types',
+          label: 'Visitor Categories',
           menu: true,
           icon: 'fa fa-sitemap',
           link: 'visitorsGroup.all',

@@ -8,24 +8,28 @@ angular.module('settings')
     var self = this;
     var TABLE = 'settings';
     self.ID = null;
+    self.option = {extra: false};
 
     this.model = {};
 
     self.get = function (option) {
-      return dbService.get(TABLE, self.ID, option);
+      self.option = option || self.option;
+      return dbService.get(TABLE, self.ID, self.option);
     };
 
     self.all = function (option) {
-      return dbService.all(TABLE, option);
+      self.option = option || self.option;
+      return dbService.all(TABLE, self.option);
     };
 
     self.remove = function (option) {
-      return dbService.remove(TABLE, self.ID, option);
+      return dbService.remove(TABLE, self.ID, self.option);
     };
 
     self.save = function (doc, option) {
       doc._id = self.ID;
-      return dbService.save(TABLE, doc, option);
+      self.option = option || self.option;
+      return dbService.save(TABLE, doc, self.option);
     };
 
     self.validateField = function (fieldData, fieldName) {
@@ -46,13 +50,25 @@ angular.module('settings')
     self.model = {
       dbSettingSource: validationService.BASIC({
         pattern: '/^[a-zA-Z]/',
-        fieldName: 'db_source',
+        fieldName: 'dbSource',
         serviceInstance: self,
         label: 'Database Settings Source',
         formType: 'select',
         choices: [
           {value: 'environment', text: 'Environment Variables'},
           {value: 'system', text: 'System Form'}
+        ]
+      }),
+      authSource: validationService.BASIC({
+        pattern: '/^[a-zA-Z]/',
+        fieldName: 'authSource',
+        serviceInstance: self,
+        label: 'Where to Authenticate Users',
+        formType: 'select',
+        choices: [
+          {value: 'api', text: 'System Database'},
+          {value: 'ldap', text: 'LDAP Database'},
+          {value: 'any', text: 'Any Available Source'}
         ]
       }),
       refreshRate: validationService.BASIC({
@@ -203,12 +219,13 @@ angular.module('settings')
         fieldName: 'host',
         serviceInstance: self,
         label: 'Host',
-        formType: 'text'
+        formType: 'text',
+        placeholder: 'IP or domain without ldap://'
       }),
       user: validationService.BASIC({
         pattern: '/^[a-zA-Z]/',
         label: 'Username',
-        fieldName: 'username',
+        fieldName: 'user',
         formType: 'text'
       }),
       password: validationService.BASIC({
@@ -221,13 +238,15 @@ angular.module('settings')
         pattern: '/^[a-zA-Z]/',
         label: 'Port',
         fieldName: 'port',
-        formType: 'text'
+        formType: 'text',
+        placeholder: '389'
       }),
       baseDN: validationService.BASIC({
         pattern: '/^[a-zA-Z]/',
         label: 'Base Domain Name',
-        fieldName: 'username',
-        formType: 'text'
+        fieldName: 'baseDN',
+        formType: 'text',
+        placeholder: 'example.com'
       })
     };
 

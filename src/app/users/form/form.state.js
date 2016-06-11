@@ -18,5 +18,13 @@ angular.module('users')
         controller: 'FormCtrl',
         controllerAs: 'formCtrl',
         data: data('Edit User', 'fa fa-edit-square', 'users.all')
+      })
+      .state('users.changePassword', {
+        parent: 'users',
+        url: '/edit?_id',
+        templateUrl: 'app/users/form/form.html',
+        controller: 'FormCtrl',
+        controllerAs: 'formCtrl',
+        data: data('Edit User', 'fa fa-edit-square', 'users.all')
       });
   });

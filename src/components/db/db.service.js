@@ -20,14 +20,20 @@ angular.module('db')
     };
   
     self.save = function (table, doc, option) {
+      option = option || {};
+      option.extra = option.hasOwnProperty('extra') ? option.extra : true;
       if (!doc.hasOwnProperty('_id')) {
         doc['_id'] = utility.getUUID();
-        doc['created'] = new Date().toJSON();
-        doc['created_by'] = self.currentUser()._id;
+        if (option.extra) {
+          doc['created'] = new Date().toJSON();
+          doc['created_by'] = self.currentUser()._id;
+        }
       } else {
-        doc['modified'] = new Date().toJSON();
-        doc['modified_by'] = self.currentUser()._id;
-        doc['created_by'] = doc['created_by'] || self.currentUser()._id;
+        if (option.extra) {
+          doc['modified'] = new Date().toJSON();
+          doc['modified_by'] = self.currentUser()._id;
+          doc['created_by'] = doc['created_by'] || self.currentUser()._id;
+        }
       }
 
       return db.put(table, doc, option);
