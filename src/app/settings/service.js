@@ -100,10 +100,10 @@ angular.module('settings')
         label: 'Port',
         formType: 'number'
       }),
-      username: validationService.BASIC({
+      user: validationService.BASIC({
         pattern: '/^[a-zA-Z]/',
         label: 'Username',
-        fieldName: 'username',
+        fieldName: 'user',
         formType: 'text'
       }),
       password: validationService.BASIC({
@@ -140,10 +140,10 @@ angular.module('settings')
         label: 'Host',
         formType: 'text'
       }),
-      username: validationService.BASIC({
+      user: validationService.BASIC({
         pattern: '/^[a-zA-Z]/',
         label: 'Username',
-        fieldName: 'username',
+        fieldName: 'user',
         formType: 'text'
       }),
       password: validationService.BASIC({
@@ -190,7 +190,7 @@ angular.module('settings')
       user: validationService.BASIC({
         pattern: '/^[a-zA-Z]/',
         label: 'Username',
-        fieldName: 'username',
+        fieldName: 'user',
         formType: 'text'
       }),
       password: validationService.BASIC({
