@@ -10,7 +10,8 @@ angular.module('appointments')
     userService,
     visitorService,
     $filter,
-    $scope
+    $scope,
+    dialogs
   ) {
     var COLUMN = 2;
     var vm = this;
@@ -71,7 +72,7 @@ angular.module('appointments')
                   appointmentService.sms(vm.viewModel, 'created');
                   appointmentService.email(vm.viewModel, 'created');
                 }
-                
+
                 $state.go('appointments.all');
               })
               .catch(function (reason) {
@@ -231,5 +232,125 @@ angular.module('appointments')
 
     vm.cancel = function () {
       $state.go('appointments.all');
+    };
+
+    vm.addMember = function () {
+      var dlg = dialogs.create(
+        'app/appointments/form/partials/visitor.html',
+        'TeamMembersCtrl',
+        {vm: vm},
+        {size: 'sm'},
+        'formCtrl'
+      ).result;
+
+      dlg
+        .then(function (res) {
+          vm.viewModel.image = res;
+        })
+        .catch(function (err) {
+          console.log(err)
+        })
+    };
+  })
+  .controller('TeamMembersCtrl', function (
+    $scope,
+    $modalInstance,
+    data,
+    visitorService,
+    formService,
+    visitorGroupsService
+  ) {
+    var vm = this;
+    var COLUMN = 1;
+    vm.model = angular.copy(visitorService.model);
+    vm.errorMsg = {};
+    vm.viewModel = {};
+    vm.column = (12/COLUMN);
+    for (var key in vm.model) {
+      if (vm.model.hasOwnProperty(key) && ['last_name', 'first_name', 'phone'].indexOf(key) === -1) {
+        vm.model[key].hidden = true;
+      }
+    }
+    vm.phone = {
+      prefixes: formService.phonePrefixes()
+    };
+    vm.form = formService.modelToForm(vm.model, COLUMN);
+
+    vm.save = function () {
+      vm.viewModel.phone = visitorService.getPhone(vm.viewModel['phone.prefix'], vm.viewModel['phone.suffix']);
+      visitorService.validate(vm.viewModel)
+        .then(function (response) {
+          response = visitorService.updateForPhone(response);
+          response = visitorService.updateForPrefix(response, vm.viewModel['phone.prefix']);
+          if (utility.isEmptyObject(response)) {
+            if (!visitorService.isEmpty(vm.viewModel['company.name'])) {
+              vm.viewModel.company = {
+                name: vm.viewModel['company.name']
+              }
+            }
+
+            if (!visitorService.isEmpty(vm.viewModel['company.address']) && !visitorService.isEmpty(vm.viewModel['company.name'])) {
+              vm.viewModel.company.address = vm.viewModel['company.address'];
+            }
+            visitorService.save(vm.viewModel)
+              .then(function (visitorProfile) {
+
+              })
+              .catch(function (reason) {
+                angular.merge(vm.errorMsg, reason);
+              });
+          } else {
+            vm.errorMsg = response;
+          }
+        })
+        .catch(function (reason) {
+          console.log(reason);
+        });
+    };
+
+    vm.cancel = function () {
+      $state.go('visitors.all');
+    };
+    vm.validateField = function (fieldName) {
+      vm.errorMsg[fieldName] = '';
+      if (vm.model.hasOwnProperty(fieldName)) {
+        if (fieldName === 'phone.suffix') {
+          if (vm.viewModel['phone.prefix'] === 'Others') {
+            vm.model['phone.suffix'].minLength = 6;
+            vm.model['phone.suffix'].maxLength = 15;
+          } else {
+            vm.model['phone.suffix'].maxLength = 7;
+            vm.model['phone.suffix'].minLength = 7;
+          }
+        } else if (fieldName === 'phone.prefix' && vm.viewModel['phone.prefix'] === 'Others') {
+          return [];
+        }
+        visitorService.validateField(vm.model[fieldName], vm.viewModel[fieldName], vm.viewModel['_id'])
+          .then(function (response) {
+            vm.errorMsg[fieldName] = fieldName === 'phone.prefix' && response.length > 0 ? ['Please select from list'] : response;
+          })
+          .catch(function (reason) {
+            console.log(reason);
+          })
+      }
+
+      if (
+        (fieldName === 'phone.prefix' || fieldName === 'phone.suffix') &&
+        (!visitorService.isEmpty(vm.viewModel['phone.prefix']) &&
+        !visitorService.isEmpty(vm.viewModel['phone.suffix']))
+      ) {
+        visitorService.validateField(vm.viewModel[fieldName], fieldName, vm.viewModel['_id'])
+          .then(function (response) {
+            if (response.length) {
+              vm.errorMsg['phone'] = response;
+            } else {
+              vm.errorMsg['phone'] = '';
+            }
+          })
+          .catch(function (reason) {
+            console.log(reason);
+          })
+      }
+
     };
   });

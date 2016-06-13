@@ -52,15 +52,18 @@ angular
 		}
 	])
   .config(['$httpProvider', function ($httpProvider) {
-    $httpProvider.interceptors.push(function($rootScope) {
+    $httpProvider.interceptors.push(function($rootScope, $q) {
       return {
         'response': function (response) {
           $rootScope.$broadcast('serverResponse', response);
+          if (response.status >= 400) {
+            return $q.reject(response);
+          }
           return response;
         },
         'responseError': function(responseError) {
           $rootScope.$broadcast('serverResponse', responseError);
-          return responseError;
+          return $q.reject(responseError);
         }
       };
     });
