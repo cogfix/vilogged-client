@@ -160,8 +160,8 @@ angular.module('settings')
       }),
       type: validationService.BASIC({
         pattern: '/^[a-zA-Z]/',
-        label: 'Port',
-        fieldName: 'port',
+        label: 'DB Server Type',
+        fieldName: 'type',
         formType: 'select',
         choices: [
           {value: 'mssql', text: 'SQL Server'},
