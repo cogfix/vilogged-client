@@ -61,14 +61,15 @@ angular.module('users')
     };
 
     vm.updateApp = function (appointment, type) {
+      var currentAppointment = angular.copy(appointment);
       appointment.is_approved = type === 'true';
-      appointment.host = appointment.host._id;
-      appointment.visitor = appointment.visitor._id;
+      appointment.host = currentAppointment.host._id;
+      appointment.visitor = currentAppointment.visitor._id;
       appointmentService.save(appointment)
         .then(function () {
           if (appointment.status === appointmentService.status.PENDING) {
-            appointmentService.sms(vm.viewModel, 'approval');
-            appointmentService.email(vm.viewModel, 'approval');
+            appointmentService.sms(currentAppointment, 'approval');
+            appointmentService.email(currentAppointment, 'approval');
           }
           loadAll();
         })

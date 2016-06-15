@@ -21,7 +21,7 @@ angular.module('appointments')
       appointmentService.saveLog({
         checked_in: new Date().toJSON(),
         appointment: vm.item._id,
-        label_code: (new Date().getTime()).toString().splice(0, -1)
+        label_code: (new Date().getTime()).toString().slice(0, -1)
       })
         .then(function () {
           $state.go('appointments.all')

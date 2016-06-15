@@ -66,11 +66,14 @@ angular.module('appointments')
             if ($scope.currentUser._id === vm.selected.host._id) {
               vm.viewModel.is_approved = true;
             }
+            var currentAppointment = angular.copy(vm.viewModel);
+            currentAppointment.visitor = vm.selected.visitor;
+            currentAppointment.host = vm.selected.host;
             appointmentService.save(vm.viewModel)
               .then(function () {
                 if (!id) {
-                  appointmentService.sms(vm.viewModel, 'created');
-                  appointmentService.email(vm.viewModel, 'created');
+                  appointmentService.sms(currentAppointment, 'created');
+                  appointmentService.email(currentAppointment, 'created');
                 }
 
                 $state.go('appointments.all');
