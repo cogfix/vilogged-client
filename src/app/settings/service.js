@@ -123,6 +123,13 @@ angular.module('settings')
         label: 'Reply To Email',
         fieldName: 'replyTo',
         formType: 'text'
+      }),
+      use_tls: validationService.BASIC({
+        pattern: '/^[a-zA-Z]/',
+        label: 'Use TLS to send email',
+        fieldName: 'use_tls',
+        formType: 'checkbox',
+        default: true
       })
     };
 

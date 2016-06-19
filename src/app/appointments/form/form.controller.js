@@ -21,6 +21,7 @@ angular.module('appointments')
     vm.viewModel.end_date = new Date();
     vm.viewModel.start_time = new Date();
     vm.viewModel.end_time = moment().add(30, 'm').toDate();
+    vm.teamMembers = [];
     vm.column = (12/COLUMN);
     vm.selected = {}; // hold selected user/visitor profile from typeahead
 
@@ -65,6 +66,11 @@ angular.module('appointments')
             vm.viewModel.end_time = $filter('date')(vm.viewModel.end_time, 'HH:mm:ss');
             if ($scope.currentUser._id === vm.selected.host._id) {
               vm.viewModel.is_approved = true;
+            }
+            if (vm.teamMembers.length > 0) {
+              vm.viewModel.teams = vm.teamMembers.map(function (row) {
+                return row._id;
+              })
             }
             var currentAppointment = angular.copy(vm.viewModel);
             currentAppointment.visitor = vm.selected.visitor;
@@ -231,6 +237,7 @@ angular.module('appointments')
       vm.viewModel.visitor = [vm.selected.visitor.last_name, vm.selected.visitor.first_name].join(' ');
       vm.viewModel.start_time = moment([startDate, startTime].join(' '), 'YYYY-MM-DD HH:mm:ss').toDate();
       vm.viewModel.end_time = moment([endDate, endTime].join(' '), 'YYYY-MM-DD HH:mm:ss').toDate();
+      vm.teamMembers = vm.viewModel.teams;
     }
 
     vm.cancel = function () {
@@ -248,7 +255,12 @@ angular.module('appointments')
 
       dlg
         .then(function (res) {
-          vm.viewModel.image = res;
+          var exist = vm.teamMembers.filter(function (row) {
+            return res._id === row._id;
+          });
+          if (exist.length === 0) {
+            vm.teamMembers.push(res);
+          }
         })
         .catch(function (err) {
           console.log(err)
@@ -260,8 +272,7 @@ angular.module('appointments')
     $modalInstance,
     data,
     visitorService,
-    formService,
-    visitorGroupsService
+    formService
   ) {
     var vm = this;
     var COLUMN = 1;
@@ -273,6 +284,13 @@ angular.module('appointments')
       if (vm.model.hasOwnProperty(key) && ['last_name', 'first_name', 'phone'].indexOf(key) === -1) {
         vm.model[key].hidden = true;
       }
+      if (vm.model.hasOwnProperty(key) && ['last_name', 'first_name', 'phone'].indexOf(key) !== -1) {
+        vm.model[key].formType = 'typeahead-remote';
+      }
+
+      if (key === 'phone') {
+        vm.model[key].template = 'app/appointments/form/partials/phone.html'
+      }
     }
     vm.phone = {
       prefixes: formService.phonePrefixes()
@@ -280,39 +298,43 @@ angular.module('appointments')
     vm.form = formService.modelToForm(vm.model, COLUMN);
 
     vm.save = function () {
-      vm.viewModel.phone = visitorService.getPhone(vm.viewModel['phone.prefix'], vm.viewModel['phone.suffix']);
-      visitorService.validate(vm.viewModel)
-        .then(function (response) {
-          response = visitorService.updateForPhone(response);
-          response = visitorService.updateForPrefix(response, vm.viewModel['phone.prefix']);
-          if (utility.isEmptyObject(response)) {
-            if (!visitorService.isEmpty(vm.viewModel['company.name'])) {
-              vm.viewModel.company = {
-                name: vm.viewModel['company.name']
+      if (!vm.viewModel._id) {
+        vm.viewModel.phone = visitorService.getPhone(vm.viewModel['phone.prefix'], vm.viewModel['phone.suffix']);
+        visitorService.validate(vm.viewModel)
+          .then(function (response) {
+            response = visitorService.updateForPhone(response);
+            response = visitorService.updateForPrefix(response, vm.viewModel['phone.prefix']);
+            if (utility.isEmptyObject(response)) {
+              if (!visitorService.isEmpty(vm.viewModel['company.name'])) {
+                vm.viewModel.company = {
+                  name: vm.viewModel['company.name']
+                }
               }
-            }
 
-            if (!visitorService.isEmpty(vm.viewModel['company.address']) && !visitorService.isEmpty(vm.viewModel['company.name'])) {
-              vm.viewModel.company.address = vm.viewModel['company.address'];
+              if (!visitorService.isEmpty(vm.viewModel['company.address']) && !visitorService.isEmpty(vm.viewModel['company.name'])) {
+                vm.viewModel.company.address = vm.viewModel['company.address'];
+              }
+              visitorService.save(vm.viewModel)
+                .then(function (visitorProfile) {
+                  $modalInstance.close(visitorProfile);
+                })
+                .catch(function (reason) {
+                  angular.merge(vm.errorMsg, reason);
+                });
+            } else {
+              vm.errorMsg = response;
             }
-            visitorService.save(vm.viewModel)
-              .then(function (visitorProfile) {
-
-              })
-              .catch(function (reason) {
-                angular.merge(vm.errorMsg, reason);
-              });
-          } else {
-            vm.errorMsg = response;
-          }
-        })
-        .catch(function (reason) {
-          console.log(reason);
-        });
+          })
+          .catch(function (reason) {
+            console.log(reason);
+          });
+      } else {
+        $modalInstance.close(vm.viewModel);
+      }
     };
 
     vm.cancel = function () {
-      $state.go('visitors.all');
+      $modalInstance.dismiss('closed');
     };
     vm.validateField = function (fieldName) {
       vm.errorMsg[fieldName] = '';
@@ -356,4 +378,76 @@ angular.module('appointments')
       }
 
     };
+
+    vm.foundInList = {};
+
+    vm.typeahead = {
+      last_name: {
+        get: function (query) {
+          return visitorService.all({q: query, 'only-fields': 'first_name,last_name,phone'})
+            .then(function (response) {
+              return response.results.map(function (row) {
+                vm.foundInList[row._id] = row;
+                return {name: [row.last_name, row.first_name].join(' '), _id: row._id};
+              });
+            })
+            .catch(function (reason) {
+              console.log(reason);
+            });
+        },
+        onSelect: function ($item) {
+          console.log($item);
+        },
+        editable: true,
+        disabled: false
+      },
+      'phone.suffix': {
+        get: function (entry) {
+          var prefix = vm.viewModel['phone.prefix'] || '';
+          console.log(vm.viewModel)
+          var query = [prefix, entry].join('')
+          return visitorService.all({q: query, 'only-fields': 'first_name,last_name,phone'})
+            .then(function (response) {
+              return response.results.map(function (row) {
+                vm.foundInList[row._id] = row;
+                return {name: [[row.last_name, row.first_name].join(' '), row.phone].join('<br>'), _id: row._id};
+              });
+            })
+            .catch(function (reason) {
+              console.log(reason);
+            });
+        },
+        onSelect: function ($item) {
+          vm.viewModel = vm.foundInList[$item._id];
+          vm.viewModel['company.name'] = vm.viewModel.company.name;
+          vm.viewModel['company.address'] = vm.viewModel.company.address;
+          var phone = visitorService.recoverPhone(vm.viewModel.phone);
+          vm.viewModel = angular.merge({}, vm.viewModel, phone);
+        },
+        editable: true
+      },
+      first_name: {
+        get: function (query) {
+          return visitorService.all({q: query, 'only-fields': 'first_name,last_name,phone'})
+            .then(function (response) {
+              return response.results.map(function (row) {
+                vm.foundInList[row._id] = row;
+                return {name: [[row.last_name, row.first_name].join(' '), row.phone].join('<br>'), _id: row._id};
+              });
+            })
+            .catch(function (reason) {
+              console.log(reason);
+            });
+        },
+        onSelect: function ($item) {
+          vm.viewModel = vm.foundInList[$item._id];
+          vm.viewModel['company.name'] = vm.viewModel.company.name;
+          vm.viewModel['company.address'] = vm.viewModel.company.address;
+          var phone = visitorService.recoverPhone(vm.viewModel.phone);
+          vm.viewModel = angular.merge({}, vm.viewModel, phone);
+        },
+        editable: true
+      }
+    };
+
   });

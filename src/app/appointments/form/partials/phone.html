@@ -1,0 +1,32 @@
+<label ng-bind="elem.label"></label> <strong class="text-danger" ng-if="elem.required">*</strong>
+<div class="form-input">
+
+  <div class="row">
+    <div class="col-sm-3">
+      <div ng-include="'app/appointments/form/partials/phone/prefix.html'">
+
+      </div>
+      <div class="text-danger error-div" ng-if="formCtrl.errorMsg['phone.prefix'].length">
+        <span ng-repeat="error in formCtrl.errorMsg['phone.prefix']">
+          <i class="fa fa-exclamation-triangle"></i> {{ error }}
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-9">
+      <div ng-include="'app/appointments/form/partials/phone/suffix.html'">
+
+      </div>
+      <div class="text-danger error-div" ng-if="formCtrl.errorMsg['phone.suffix'].length">
+        <span ng-repeat="error in formCtrl.errorMsg['phone.suffix']">
+          <i class="fa fa-exclamation-triangle"></i> {{ error }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<input type="hidden" ng-model="formCtrl.viewModel.phone" ng-bind="formCtrl.phone.prefix + formCtrl.phone.suffix">
+<div class="text-danger error-div" ng-if="formCtrl.errorMsg['phone'].length">
+  <span ng-repeat="error in formCtrl.errorMsg['phone']">
+    <i class="fa fa-exclamation-triangle"></i> {{ error }}
+  </span>
+</div>

@@ -270,7 +270,6 @@ angular.module('appointments')
     };
 
     self.msgFields = function (type, appointment) {
-      console.log(appointment)
       var fields = {
         approval: {
           last_name: appointment.visitor.last_name,

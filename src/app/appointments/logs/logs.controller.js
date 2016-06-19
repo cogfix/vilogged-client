@@ -8,10 +8,12 @@ angular.module('appointments')
     dialogs
   ) {
     var vm = this;
+    vm.teamMembers = [];
     vm.status = appointmentService.status;
     appointmentService.get($stateParams._id)
       .then(function (response) {
         vm.item = response;
+        vm.teamMembers = response.teams;
       })
       .catch(function (reason) {
 

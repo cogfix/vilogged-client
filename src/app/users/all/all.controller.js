@@ -31,7 +31,11 @@ angular.module('users')
         vm.orderByColumn = {};
         vm.orderByColumn[column]= {reverse: true};
       }
-      cache.set('orderByColumn', vm.orderByColumn);
+      params.orderByColumn = vm.orderByColumn;
+      userService.setState(params)
+        .catch(function (err) {
+          console.log(err)
+        });
       return vm.orderByColumn;
     }
 

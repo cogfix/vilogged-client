@@ -246,3 +246,29 @@
     </div><!-- /.row -->
   </div>
 </div>
+
+<div class="row" ng-if="logCtrl.teamMembers.length > 0">
+  <div class="col-sm-12">
+    <h3 class="page-header">
+      Team Members (Visitor Group)
+    </h3>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Last Name</th>
+        <th>First Name</th>
+        <th>Phone</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="item in logCtrl.teamMembers">
+        <td ng-bind="$index + 1"></td>
+        <td ng-bind="item.last_name"></td>
+        <td ng-bind="item.first_name"></td>
+        <td ng-bind="item.phone"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

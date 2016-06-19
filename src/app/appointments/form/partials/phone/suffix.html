@@ -1,0 +1,14 @@
+<input
+  type="text"
+  class="form-control"
+  style="border: 1px #EEEEEE solid"
+  placeholder="7886565"
+  ng-blur="formCtrl.validateField('phone.suffix')"
+  ng-model="formCtrl.viewModel['phone.suffix']"
+  typeahead-editable="true"
+  ng-blur="formCtrl.validateField('phone.suffix')"
+  typeahead-loading="loadingRemoteData"
+  typeahead-on-select="formCtrl.typeahead['phone.suffix'].onSelect($item, $model, $label)"
+  uib-typeahead="data.name for data in formCtrl.typeahead['phone.suffix'].get($viewValue)">
+
+<i ng-show="loadingRemoteData" class="fa fa-refresh"></i>

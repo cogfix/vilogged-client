@@ -23,7 +23,31 @@
             <h3 class="page-header">
               Team Members (Visitor Group)
             </h3>
-            <div ng-include="'app/appointments/form/partials/groups.html'"></div>
+            <div style="margin-bottom: 10px;" ng-include="'app/appointments/form/partials/groups.html'"></div>
+            <table class="table table-striped" ng-if="formCtrl.teamMembers.length > 0">
+              <thead>
+              <tr>
+                <th>#</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Phone</th>
+                <th>Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="item in formCtrl.teamMembers">
+                <td ng-bind="$index + 1"></td>
+                <td ng-bind="item.last_name"></td>
+                <td ng-bind="item.first_name"></td>
+                <td ng-bind="item.phone"></td>
+                <td ng-click="formCtrl.removeMember(item)">
+                  <span>
+                    <i class="ace-icon fa fa-trash bigger-130"></i>
+                  </span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

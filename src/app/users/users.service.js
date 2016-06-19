@@ -10,7 +10,7 @@ angular.module('users')
     var TABLE = 'user';
     var CACHEDB = [TABLE, '_cache'].join('');
     var self = this;
-  
+
     self.model = {
       username: validationService.USERNAME({
         required: true,
@@ -122,41 +122,40 @@ angular.module('users')
         fieldName: 'is_active'
       })
     };
-  
+
     self.get = function (id, option) {
       return dbService.get(TABLE, id, option);
     };
-  
+
     self.all = function (option) {
       return dbService.all(TABLE, option);
     };
-  
+
     self.remove = function (id, option) {
       return validateDelete(id)
         .then(function () {
           return dbService.remove(TABLE, id, option);
         });
     };
-  
+
     self.save = function (id, option) {
       return dbService.save(TABLE, id, option);
     };
-  
+
     self.currentUser = function () {
       return authService.currentUser();
     };
-  
+
     self.updateCurrentUser = function (user) {
       return authService.updateCurrentUser(user);
     };
-  
+
     self.validateField = function (fieldData, fieldName, id) {
       return validationService.validateField(self.model[fieldName], fieldData, id);
     };
-  
+
     self.validate = function (object) {
       var passw = {};
-      console.log('here')
       if (object.hasOwnProperty('password')) {
         if (object.password === '') {
           passw.password = ['This field is required'];
@@ -170,16 +169,16 @@ angular.module('users')
           return validationService.eliminateEmpty(angular.merge({}, response, passw));
         });
     };
-  
+
     self.validatePasswordMatch = function (password, password2) {
       var deferred = $q.defer();
       var passVal = {};
-    
+
       if ((!validationService.isEmpty(password) && !validationService.isEmpty(password2)) && password !== password2) {
         passVal.password = ['Passwords does not match'];
         passVal.password2 = ['Passwords does not match'];
       }
-    
+
       deferred.resolve(passVal);
       return deferred.promise;
     };
