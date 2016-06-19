@@ -54,13 +54,6 @@
               </span>
             </th>
             <th>
-              <span class="pointer block" ng-click="allCtrl.updateView('start_time')">Start Time
-                <span ng-show="allCtrl.orderByColumn['start_time']"
-                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['start_time'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['start_time'].reverse}">
-                </span>
-              </span>
-            </th>
-            <th>
               <span class="pointer block" ng-click="allCtrl.updateView('end_date')">End Date
                 <span ng-show="allCtrl.orderByColumn['end_date']"
                       ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['end_date'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['end_date'].reverse}">
@@ -68,7 +61,14 @@
               </span>
             </th>
             <th>
-              <span class="pointer block" ng-click="allCtrl.updateView('end_time')">End Date
+              <span class="pointer block" ng-click="allCtrl.updateView('start_time')">Start Time
+                <span ng-show="allCtrl.orderByColumn['start_time']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['start_time'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['start_time'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>
+              <span class="pointer block" ng-click="allCtrl.updateView('end_time')">End Time
                 <span ng-show="allCtrl.orderByColumn['end_time']"
                       ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['end_time'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['end_time'].reverse}">
                 </span>
@@ -97,8 +97,8 @@
             </td>
             <td ng-bind="item.visitor.last_name+' '+item.visitor.first_name"></td>
             <td ng-bind="item.start_date"></td>
-            <td ng-bind="item.start_time"></td>
             <td ng-bind="item.end_date"></td>
+            <td ng-bind="item.start_time"></td>
             <td ng-bind="item.end_time"></td>
             <td>
               <span class="label" ng-class="{
@@ -129,9 +129,9 @@
                   <i class="ace-icon fa fa-pencil bigger-130"></i>
                 </a>
 
-                <a ui-sref="appointments.remove({_id: item._id})" class="red">
+                <span ng-click="allCtrl.remove(item._id)" class="red pointer">
                   <i class="ace-icon fa fa-trash-o bigger-130"></i>
-                </a>
+                </span>
               </div>
 
               <div class="hidden-md hidden-lg">

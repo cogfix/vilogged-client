@@ -18,6 +18,6 @@ angular.module('config', [])
           "path":"/api/v1",
           "auth":""
         },
-      refreshIntervals: 3000 //seconds
+      refreshIntervals: 30000 //seconds
     });
 

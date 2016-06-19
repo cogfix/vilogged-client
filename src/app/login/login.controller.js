@@ -3,8 +3,15 @@
 angular.module('login')
   .controller('LoginCtrl', function($state, config, loginService, $rootScope, log, $scope) {
     var vm = this;
+    $scope.data = undefined;
     $rootScope.loginMode = true;
     vm.credentials = {};
+
+    function loggedInMode () {
+      $rootScope.loginMode = false;
+      $state.go('home');
+      log.success('authSuccess');
+    }
 
     vm.login = function () {
       if (angular.isUndefined(vm.credentials.username) && angular.isUndefined(vm.credentials.password)) {
@@ -15,14 +22,13 @@ angular.module('login')
             $scope.$on('serverResponse', function (scopeInstance, data) {
               $scope.data = data
             });
-
             if ($scope.data && $scope.data.status !== 401) {
-              $rootScope.loginMode = false;
-              $state.go('home');
-              log.success('authSuccess');
+              loggedInMode();
             } else {
               if (response && response.detail) {
                 log.error(response.detail);
+              } else if (response && response.token) {
+                loggedInMode();
               } else {
                 log.error('authInvalid');
               }

@@ -56,9 +56,6 @@ angular
       return {
         'response': function (response) {
           $rootScope.$broadcast('serverResponse', response);
-          if (response.status >= 400) {
-            return $q.reject(response);
-          }
           return response;
         },
         'responseError': function(responseError) {

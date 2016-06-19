@@ -4,7 +4,9 @@ angular.module('appointments')
   .controller('AppointmentsAllCtrl', function (
     appointmentService,
     changesService,
-    currentState
+    currentState,
+    dialog,
+    log
   ) {
     var vm = this;
     var cache = appointmentService.cache();
@@ -78,4 +80,18 @@ angular.module('appointments')
     vm.status = appointmentService.status;
     vm.updateView();
     changesService.pollForChanges(vm, appointmentService, 'appointments');
+
+    vm.remove = function (id) {
+      dialog.confirm('Do you want to remove this record permanently?')
+        .then(function () {
+          appointmentService.remove(id)
+            .then(function () {
+              vm.updateView();
+              log.success('recordRemovedSuccessfully');
+            })
+            .catch(function (reason) {
+              log.error(reason.detail || reason);
+            })
+        })
+    };
   });
