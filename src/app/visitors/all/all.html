@@ -100,9 +100,9 @@
                   <i class="ace-icon fa fa-pencil bigger-130"></i>
                 </a>
 
-                <a ui-sref="visitors.remove({_id: visitor._id})" class="red">
+                <span ng-click="visitorAllCtrl.remove(visitor._id)" class="red pointer">
                   <i class="ace-icon fa fa-trash-o bigger-130"></i>
-                </a>
+                </span>
               </div>
 
               <div class="hidden-md hidden-lg">

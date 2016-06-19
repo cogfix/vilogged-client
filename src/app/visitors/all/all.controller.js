@@ -1,7 +1,11 @@
 'use strict';
 
 angular.module('visitors')
-  .controller('VisitorAllCtrl', function (visitorService) {
+  .controller('VisitorAllCtrl', function (
+    visitorService,
+    dialog,
+    log
+  ) {
     var vm = this;
     vm.users = [];
     vm.pagination = {
@@ -54,4 +58,18 @@ angular.module('visitors')
     };
 
     vm.updateView();
+
+    vm.remove = function (id) {
+      dialog.confirm('Do you want to remove this record permanently?')
+        .then(function () {
+          visitorService.remove(id)
+            .then(function () {
+              vm.updateView();
+              log.success('recordRemovedSuccessfully');
+            })
+            .catch(function (reason) {
+              log.error(reason.detail || reason);
+            })
+        })
+    };
   });
