@@ -10,7 +10,8 @@ angular.module('users')
     departmentService,
     $scope,
     $window,
-    $timeout
+    $timeout,
+    dialogs
   ) {
     var currentUser = userService.currentUser();
     var COLUMN = 2;
@@ -100,13 +101,62 @@ angular.module('users')
 
     vm.placeholder = formService.placeholder;
 
+    vm.cancel = function () {
+      $state.go('users.all');
+    };
+
+    vm.openImageDialog = function () {
+      var dlg = dialogs.create(
+        'app/users/form/partials/camera/camera.html',
+        'UModalImage',
+        {vm: vm, $timeout: $timeout},
+        {size: 'lg'},
+        'formCtrl'
+      ).result;
+
+      dlg
+        .then(function (res) {
+          vm.viewModel.image = res;
+        })
+        .catch(function (err) {
+          console.log(err)
+        })
+    };
+  })
+  .controller('UModalImage', function (
+    $scope,
+    $modalInstance,
+    data,
+    $window,
+    $timeout,
+    cameraService
+  ) {
+    var vm = data.vm;
+    // var $timeout = data.$timeout;
+    $scope.takeImage = vm.viewModel.image;
+
     $scope.closeCameraNow = function () {
-      vm.upload.status = !vm.upload.status;
+      offCammera();
+      $modalInstance.close($scope.takeImage);
     };
 
     $scope.$on('picTaken', function(event, data){
-      vm.viewModel.image = data.image;
+      $scope.takeImage = data.image;
     });
+
+    $scope.$on('camSuccess', function () {
+      $scope.videoStream = cameraService.instance.stream.getVideoTracks()[0];
+    });
+
+    $scope.closeWindow = function () {
+      offCammera();
+      $modalInstance.dismiss('closed');
+    };
+
+    function offCammera () {
+      $scope.videoStream.stop();
+      cameraService.instance = {};
+    }
 
     $scope.setFiles = function (element, field) {
       var fileToUpload = element.files[0];
@@ -140,14 +190,12 @@ angular.module('users')
             canvas.height = height;
             var ctx2 = canvas.getContext("2d");
             ctx2.drawImage(img, 0, 0, width, height);
-
-            vm.viewModel[field] = canvas.toDataURL("image/png");
+            vm.viewModel.image = canvas.toDataURL("image/png");
+            $scope.takeImage =  canvas.toDataURL("image/png");
           }, 1000)
         };
         reader.readAsDataURL(fileToUpload);
       }
     };
-    vm.cancel = function () {
-      $state.go('users.all');
-    };
   });
+

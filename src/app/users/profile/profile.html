@@ -14,7 +14,7 @@
             <!-- #section:pages/profile.picture -->
             <span class="profile-picture">
               <img style="max-height: 200px; max-width: 180px;" ng-if="!profileCtrl.profile.image" id="avatar" class="editable img-responsive" alt="" src="../assets/avatars/profile-pic.jpg" />
-              <img ng-if="profileCtrl.profile.image" id="avatar" class="editable img-responsive" alt="" ng-src="profileCtrl.profile.image" />
+              <img ng-if="profileCtrl.profile.image" id="avatar" class="editable img-responsive" alt="" ng-src="{{ profileCtrl.profile.image }}" />
             </span>
 
             <!-- /section:pages/profile.picture -->
