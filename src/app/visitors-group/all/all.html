@@ -1,6 +1,6 @@
 <div class="page-header">
   <h1>
-    Visitor Groups
+    Visitor Categories
   </h1>
 </div><!-- /.page-header -->
 
@@ -25,7 +25,7 @@
           <tr>
             <th>#</th>
             <th>
-              <span class="pointer block" ng-click="allCtrl.updateView('name')">Group
+              <span class="pointer block" ng-click="allCtrl.updateView('name')">Category
                 <span ng-show="allCtrl.orderByColumn['first_name']"
                       ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['name'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['name'].reverse}">
                 </span>
@@ -57,10 +57,6 @@
             <td ng-bind="::item.created | date:'yyyy-MM-dd'"></td>
             <td>
               <div class="hidden-sm hidden-xs action-buttons">
-                <a ui-sref="visitorsGroup.detail({_id: item._id})" class="blue">
-                  <i class="ace-icon fa fa-eye bigger-130"></i>
-                </a>
-
                 <a ui-sref="visitorsGroup.edit({_id: item._id})" class="green">
                   <i class="ace-icon fa fa-pencil bigger-130"></i>
                 </a>
