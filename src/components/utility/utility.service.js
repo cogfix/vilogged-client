@@ -143,5 +143,12 @@ angular.module('utility')
         });
       return template;
     };
+  
+    this.getFileName = function(prefix, ext) {
+      prefix = (prefix || '').toLowerCase().replace(/ /g, '-');
+      ext = ext || '.csv';
+      var now = $filter('date')(new Date(), 'yyyy-MM-dd-HH-mm-ss');
+      return prefix + '-' + now + ext;
+    };
 
   });

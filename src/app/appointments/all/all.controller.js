@@ -6,7 +6,8 @@ angular.module('appointments')
     changesService,
     currentState,
     dialog,
-    log
+    log,
+    utility
   ) {
     var vm = this;
     var cache = appointmentService.cache();
@@ -20,14 +21,14 @@ angular.module('appointments')
       vm.pagination.itemsPerPage = vm.pagination.itemsPerPage || 10;
       vm.orderByColumn = params.orderByColumn || {};
       if ((Object.keys(params.orderByColumn || {})).length === 0) {
-        vm.orderByColumn.created = vm.orderByColumn.created || true;
+        vm.orderByColumn.created = vm.orderByColumn.created || {reverse: true};
       }
 
     }
     init();
 
     function sort (column) {
-      if (vm.orderByColumn[column]) {
+      if (vm.orderByColumn.hasOwnProperty(column) && Object.prototype.toString.call(vm.orderByColumn[column]) === '[object Object]') {
         vm.orderByColumn[column].reverse = !vm.orderByColumn[column].reverse;
       } else {
         vm.orderByColumn = {};
@@ -43,23 +44,7 @@ angular.module('appointments')
 
 
     vm.updateView = function (column) {
-      var option = {};
-      if (angular.isDefined(vm.pagination.currentPage)) {
-        option.page = vm.pagination.currentPage;
-      } else {
-        vm.pagination.currentPage = 1;
-      }
-      if (angular.isDefined(vm.pagination.itemsPerPage)) {
-        option.limit = vm.pagination.itemsPerPage;
-      } else {
-        vm.pagination.itemsPerPage = 10;
-      }
-
-      if (column) {
-        var col = sort(column);
-        option.order_by = col[column].reverse ? column : ['-', column].join('');
-       }
-
+      var option = getOptions(column);
       appointmentService.all(option)
         .then(function (response) {
           vm.items = response.results;
@@ -94,4 +79,59 @@ angular.module('appointments')
             })
         })
     };
+
+    vm.updateView();
+    changesService.pollForChanges(vm, appointmentService, 'appointments');
+
+    function getOptions (column, page) {
+      var option = {};
+      if (angular.isDefined(vm.pagination.currentPage)) {
+        option.page = vm.pagination.currentPage;
+      } else {
+        option.page = 1;
+      }
+      if (angular.isDefined(vm.pagination.itemsPerPage)) {
+        option.limit = vm.pagination.itemsPerPage;
+      } else {
+        option.limit = 10;
+      }
+
+      if (page) {
+        option.page = page;
+      }
+
+      if (column) {
+        var col = sort(column);
+        option.order_by = col[column].reverse ? column : ['-', column].join('');
+      }
+      return option;
+    }
+
+    vm.header = [
+      'Host Name',
+      'Visitors Name',
+      'Date',
+      'Start Time',
+      'End Time',
+      'Host Department',
+      'Floor'
+    ];
+    vm.getList = function () {
+      var options = getOptions('created', 'all');
+      return appointmentService.all(options)
+        .then(function (response) {
+          return response.results.map(function (row) {
+            return {
+              host: [row.host.first_name, row.host.last_name].join(' '),
+              visitor: [row.visitor.first_name, row.visitor.last_name].join(' '),
+              date: row.start_date,
+              start_time: row.start_time,
+              end_time: row.end_time,
+              department: row.host.department.name,
+              floor: row.host.department.floor
+            };
+          });
+        });
+    };
+    vm.filename = utility.getFileName('appointments');
   });

@@ -28,7 +28,8 @@ angular
 		'ui.calendar',
     'settings',
     'cache',
-    'ngVPrint'
+    'ngVPrint',
+    'ngCsv'
 	])
 	.run(function ($rootScope, $state, log, authService, $window, $interval) {
 		log.persist.load();

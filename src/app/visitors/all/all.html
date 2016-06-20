@@ -11,6 +11,17 @@
         <i class="fa fa-plus-circle"></i>
         Create
       </a>
+
+      <a
+        class="btn btn-primary pull-right margin-10-r pointer"
+        ng-csv="visitorAllCtrl.getList()"
+        csv-header="visitorAllCtrl.header"
+        lazy-load="true"
+        filename="{{ visitorAllCtrl.filename }}"
+      >
+        <i class="fa fa-file-excel-o"></i>
+        Export
+      </a>
     </div>
   </div>
 </div>

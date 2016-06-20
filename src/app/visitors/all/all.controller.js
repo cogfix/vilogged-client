@@ -4,7 +4,8 @@ angular.module('visitors')
   .controller('VisitorAllCtrl', function (
     visitorService,
     dialog,
-    log
+    log,
+    utility
   ) {
     var vm = this;
     vm.users = [];
@@ -13,7 +14,7 @@ angular.module('visitors')
     };
 
     function sort (column) {
-      if (vm.orderByColumn[column]) {
+      if (vm.orderByColumn.hasOwnProperty(column) && Object.prototype.toString.call(vm.orderByColumn[column]) === '[object Object]') {
         vm.orderByColumn[column].reverse = !vm.orderByColumn[column].reverse;
       } else {
         vm.orderByColumn = {};
@@ -72,4 +73,54 @@ angular.module('visitors')
             })
         })
     };
+
+    function getOptions (column, page) {
+      var option = {};
+      if (angular.isDefined(vm.pagination.currentPage)) {
+        option.page = vm.pagination.currentPage;
+      } else {
+        option.page = 1;
+      }
+      if (angular.isDefined(vm.pagination.itemsPerPage)) {
+        option.limit = vm.pagination.itemsPerPage;
+      } else {
+        option.limit = 10;
+      }
+
+      if (page) {
+        option.page = page;
+      }
+
+      if (column) {
+        var col = sort(column);
+        option.order_by = col[column].reverse ? column : ['-', column].join('');
+      }
+      return option;
+    }
+
+    vm.header = [
+      'First Name',
+      'Last Name',
+      'Email',
+      'Phone',
+      'Company',
+      'Address'
+    ];
+    vm.getList = function () {
+      var options = getOptions('created', 'all');
+      return visitorService.all(options)
+        .then(function (response) {
+          return response.results.map(function (row) {
+            return {
+              first_name: row.first_name,
+              last_name: row.last_name,
+              email: row.email,
+              phone: row.phone,
+              company: row.company.name,
+              address: row.company.address
+            };
+          });
+        });
+    };
+    vm.filename = utility.getFileName('visitors');
   });
