@@ -1,8 +1,18 @@
 <div class="page-header">
-  <h1>
-    Appointments
-  </h1>
-</div><!-- /.page-header -->
+  <div class="row">
+    <div class="col-sm-7">
+      <h1>
+        Appointments
+      </h1>
+    </div>
+    <div class="col-sm-5">
+      <div class="input-group">
+        <input class="form-control" ng-model="allCtrl.q" ng-change="allCtrl.searchPage()">
+        <span ng-click="allCtrl.searchPage()" class="input-group-addon">Search</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="row">
   <div class="col-sm-12">
@@ -26,7 +36,7 @@
   </div>
 </div>
 
-<div class="row" ng-if="allCtrl.items.length === 0">
+<div class="row" ng-if="allCtrl.items.length === 0 && !allCtrl.is_active_search">
   <div class="col-sm-12">
     <div class="alert alert-info">
       <i class="fa fa-exclamation-circle"></i> No Data Found
@@ -34,7 +44,7 @@
   </div>
 </div>
 
-<div class="row" ng-if="allCtrl.items.length > 0">
+<div class="row" ng-if="allCtrl.items.length > 0 || allCtrl.is_active_search">
   <div class="col-xs-12">
     <!-- PAGE CONTENT BEGINS -->
     <div class="row">
@@ -93,6 +103,34 @@
               </span>
             </th>
             <th>Acions</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th ng-repeat="filterField in allCtrl.filterFields">
+              <input
+                ng-if="filterField.filter && (!filterField.type || filterField.type === 'text')"
+                class="form-control"
+                ng-model="allCtrl.search[filterField.field]"
+                ng-change="allCtrl.startSearch(filterField.field)">
+
+              <span
+                ng-if="filterField.filter && filterField.type === 'date'"
+                class="form-control"
+                uib-datepicker-popup
+                ng-model="allCtrl.search[filterField.field]"
+                ng-change="allCtrl.startSearch(filterField.field)"
+                is-open="allCtrl.date[filterField.field].opened"
+                ng-click="allCtrl.date[filterField.field].open($event)"
+                close-text="Close">
+                <i class="fa fa-calendar"></i>
+              </span>
+
+            </th>
+            <th>
+              <button class="btn btn-primary btn-xs pointer" ng-click="allCtrl.clear()">
+                Clear Search
+              </button>
+            </th>
           </tr>
           </thead>
 

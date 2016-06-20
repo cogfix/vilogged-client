@@ -2,5 +2,6 @@ angular.module('visitors', [
   'core',
   'db',
   'utility',
-  'form'
+  'form',
+  'viLoggedTable'
 ]);

@@ -2,5 +2,6 @@ angular.module('appointments', [
   'core',
   'db',
   'utility',
-  'form'
+  'form',
+  'viLoggedTable'
 ]);

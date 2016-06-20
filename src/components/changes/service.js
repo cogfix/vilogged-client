@@ -5,15 +5,15 @@ angular.module('changes')
     var TABLE = '_changes';
     var self = this;
     var INTERVAL = '3000000000';
-  
+
     self.get = function (id, option) {
       return dbService.get(TABLE, id, option);
     };
-  
+
     self.all = function (option) {
       return dbService.all(TABLE, option);
     };
-  
+
     self.hasChanged = function (model, lastCheck) {
       if (!model) {
         return false;
@@ -32,7 +32,7 @@ angular.module('changes')
           return response.count > 0;
         });
     };
-    
+
     this.pollForChanges = function (vm, serviceInstance, model) {
       $rootScope.resetTimer = $interval(function () {
         if (!vm.inProgress) {
@@ -45,7 +45,11 @@ angular.module('changes')
             })
             .then(function (response) {
               if (response) {
-                vm.updateView()
+                if (vm.hasOwnProperty('search') && Object.keys(vm.search) > 0) {
+                  vm.startSearch();
+                } else {
+                  vm.updateView();
+                }
               } else {
                 vm.inProgress = false;
                 params.lastCheckTime = new Date().getTime();

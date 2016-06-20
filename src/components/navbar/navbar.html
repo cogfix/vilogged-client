@@ -24,8 +24,8 @@
     <ul class="nav vi-nav">
 
       <li class="light-blue">
-        <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-          <img style="width: 32px; height: 32px;" ng-if="currentUser.image" class="nav-user-photo" ng-src="{{ currentUser.image }}"  />
+        <a data-toggle="dropdown" class="dropdown-toggle pointer">
+          <img ng-if="currentUser.image" class="nav-user-photo" ng-src="currentUser.image"  />
           <img ng-show="!currentUser.image" class="nav-user-photo" src="../../assets/avatars/avatar2.png"  />
 								<span class="user-info" ng-bind="currentUser.first_name || currentUser.last_name || currentUser.username">
 

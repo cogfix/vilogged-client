@@ -8,10 +8,9 @@
     is-open="formCtrl.date[elem.fieldName].opened"
     min-date="minDate"
     max-date="maxDate"
+    ng-click="formCtrl.date[elem.fieldName].open($event)"
     close-text="Close" />
-  <span class="input-group-btn">
-    <button type="button" class="btn btn-default" ng-click="formCtrl.date[elem.fieldName].open($event)">
-      <i class="fa fa-calendar"></i>
-    </button>
+  <span class="input-group-addon" ng-click="formCtrl.date[elem.fieldName].open($event)">
+    <i class="fa fa-calendar"></i>
   </span>
 </div>

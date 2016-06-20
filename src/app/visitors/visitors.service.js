@@ -1,6 +1,11 @@
 angular.module('visitors')
-  .service('visitorService', function (dbService, validationService) {
-    var TABLE = 'visitor';
+  .service('visitorService', function (
+    dbService,
+    validationService,
+    pouchdb
+  ) {
+    var TABLE = 'visitor'
+    var CACHEDB = [TABLE, '_cache'].join('');
     var self = this;
 
     self.model = {
@@ -200,20 +205,29 @@ angular.module('visitors')
   .service('visitorGroupsService', function (dbService) {
     var self = this;
     var TABLE = 'visitor-group';
-  
+
     self.get = function (id, option) {
       return dbService.get(TABLE, id, option);
     };
-  
+
     self.all = function (option) {
       return dbService.all(TABLE, option);
     };
-  
+
     self.remove = function (id, option) {
       return dbService.remove(TABLE, id, option);
     };
-  
+
     self.save = function (id, option) {
       return dbService.save(TABLE, id, option);
+    };
+
+    this.setState = function (doc) {
+      doc._id = CACHEDB;
+      return pouchdb.save(doc);
+    };
+
+    this.getState = function () {
+      return pouchdb.get(CACHEDB);
     };
   });

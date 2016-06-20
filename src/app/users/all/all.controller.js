@@ -7,12 +7,15 @@ angular.module('users')
     log,
     changesService,
     currentState,
-    utility
+    utility,
+    table
   ) {
     var vm = this;
     var params = currentState || {};
-    vm.users = [];
+    vm.items = [];
+    vm.search = {};
     vm.inProgress = false;
+    vm.filterFields = table.users;
     function init () {
       vm.pagination = params.pagination || {};
       vm.pagination.maxSize = vm.pagination.maxSize || 100;
@@ -40,12 +43,16 @@ angular.module('users')
       return vm.orderByColumn;
     }
 
-    vm.updateView = function (column) {
+    vm.updateView = function (input) {
+      var urlParams = input || {};
+      if (Object.prototype.toString.call(input) === '[object String]') {
+        urlParams = {column: input};
+      }
       vm.inProgress = true;
-      var option = getOptions(column);
+      var option = getOptions(urlParams);
       userService.all(option)
         .then(function (response) {
-          vm.users = response.results;
+          vm.items = response.results;
           vm.pagination.totalItems = response.count;
           vm.pagination.itemsPerPage = parseInt(vm.pagination.itemsPerPage, 10);
           vm.pagination.numPages = Math.ceil(parseInt(vm.pagination.totalItems, 10) / parseInt(vm.pagination.itemsPerPage, 10));
@@ -77,8 +84,15 @@ angular.module('users')
             })
         })
     };
-  
-    function getOptions (column, page) {
+
+    vm.updateView();
+    changesService.pollForChanges(vm, userService, 'userprofile');
+
+    function getOptions (param) {
+      param = param || {};
+      var column = param.column;
+      var page = param.page;
+      var filterParams = param.filterParams;
       var option = {};
       if (angular.isDefined(vm.pagination.currentPage)) {
         option.page = vm.pagination.currentPage;
@@ -90,20 +104,25 @@ angular.module('users')
       } else {
         option.limit = 10;
       }
-    
+
       if (page) {
         option.page = page;
       }
-    
+
       if (column) {
         var col = sort(column);
         option.order_by = col[column].reverse ? column : ['-', column].join('');
       }
+      if (filterParams && Object.prototype.toString.call(filterParams) === '[object Object]') {
+        for (var key in filterParams) {
+          if (filterParams.hasOwnProperty(key)) {
+            option[key] = filterParams[key];
+          }
+        }
+      }
       return option;
     }
 
-    vm.updateView();
-    changesService.pollForChanges(vm, userService, 'userprofile');
     vm.header = [
       'Username',
       'First Name',
@@ -131,4 +150,36 @@ angular.module('users')
         });
     };
     vm.filename = utility.getFileName('users');
+
+    vm.startSearch = function () {
+      var option = {filterParams: {}};
+      var search = Object.keys(vm.search);
+      if (search.length > 0) {
+        for (var key in vm.search) {
+          if (vm.search.hasOwnProperty(key) && vm.search[key] !== undefined && vm.search[key].length > 2) {
+            option.filterParams[key] = vm.search[key];
+          }
+        }
+      }
+
+      if ((Object.keys(option.filterParams)).length > 0) {
+        option.filterParams.search = true;
+        vm.updateView(option);
+      } else {
+        vm.updateView();
+      }
+    };
+
+    vm.clear = function () {
+      vm.search = {};
+      vm.updateView();
+    };
+
+    vm.searchPage = function () {
+      var option = {filterParams: {}};
+      if (vm.q !== undefined && vm.q !== '') {
+        option.filterParams.q = vm.q;
+        vm.updateView(option);
+      }
+    };
   });

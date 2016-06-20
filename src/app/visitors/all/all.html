@@ -1,8 +1,19 @@
 <div class="page-header">
-  <h1>
-    Visitors
-  </h1>
-</div><!-- /.page-header -->
+  <div class="row">
+    <div class="col-sm-7">
+      <h1>
+        Visitors
+      </h1>
+    </div>
+    <div class="col-sm-5">
+      <div class="input-group">
+        <input class="form-control" ng-model="allCtrl.q" ng-change="allCtrl.searchPage()">
+        <span ng-click="allCtrl.searchPage()" class="input-group-addon">Search</span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /.page-header -->
 
 <div class="row">
   <div class="col-sm-12">
@@ -14,10 +25,10 @@
 
       <a
         class="btn btn-primary pull-right margin-10-r pointer"
-        ng-csv="visitorAllCtrl.getList()"
-        csv-header="visitorAllCtrl.header"
+        ng-csv="allCtrl.getList()"
+        csv-header="allCtrl.header"
         lazy-load="true"
-        filename="{{ visitorAllCtrl.filename }}"
+        filename="{{ allCtrl.filename }}"
       >
         <i class="fa fa-file-excel-o"></i>
         Export
@@ -36,61 +47,89 @@
           <tr>
             <th>#</th>
             <th>
-              <span class="pointer block" ng-click="visitorAllCtrl.updateView('first_name')">First Name
-                <span ng-show="visitorAllCtrl.orderByColumn['first_name']"
-                      ng-class="{'fa fa-long-arrow-up': visitorAllCtrl.orderByColumn['first_name'].reverse, 'fa fa-long-arrow-down': !visitorAllCtrl.orderByColumn['first_name'].reverse}">
+              <span class="pointer block" ng-click="allCtrl.updateView('first_name')">First Name
+                <span ng-show="allCtrl.orderByColumn['first_name']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['first_name'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['first_name'].reverse}">
                 </span>
               </span>
             </th>
             <th>
-              <span class="pointer block" ng-click="visitorAllCtrl.updateView('last_name')">Last Name
-                <span ng-show="visitorAllCtrl.orderByColumn['last_name']"
-                      ng-class="{'fa fa-long-arrow-up': visitorAllCtrl.orderByColumn['last_name'].reverse, 'fa fa-long-arrow-down': !visitorAllCtrl.orderByColumn['last_name'].reverse}">
+              <span class="pointer block" ng-click="allCtrl.updateView('last_name')">Last Name
+                <span ng-show="allCtrl.orderByColumn['last_name']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['last_name'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['last_name'].reverse}">
                 </span>
               </span>
             </th>
             <th>
-              <span class="pointer block" ng-click="visitorAllCtrl.updateView('email')">Email
-                <span ng-show="visitorAllCtrl.orderByColumn['email']"
-                      ng-class="{'fa fa-long-arrow-up': visitorAllCtrl.orderByColumn['email'].reverse, 'fa fa-long-arrow-down': !visitorAllCtrl.orderByColumn['email'].reverse}">
+              <span class="pointer block" ng-click="allCtrl.updateView('email')">Email
+                <span ng-show="allCtrl.orderByColumn['email']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['email'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['email'].reverse}">
                 </span>
               </span>
             </th>
             <th>
-              <span class="pointer block" ng-click="visitorAllCtrl.updateView('phone')">Phone
-                <span ng-show="visitorAllCtrl.orderByColumn['phone']"
-                      ng-class="{'fa fa-long-arrow-up': visitorAllCtrl.orderByColumn['phone'].reverse, 'fa fa-long-arrow-down': !visitorAllCtrl.orderByColumn['phone'].reverse}">
+              <span class="pointer block" ng-click="allCtrl.updateView('phone')">Phone
+                <span ng-show="allCtrl.orderByColumn['phone']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['phone'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['phone'].reverse}">
                 </span>
               </span>
             </th>
             <th>
-              <span class="pointer block" ng-click="visitorAllCtrl.updateView('type.name')">Type
-                <span ng-show="visitorAllCtrl.orderByColumn['type.name']"
-                      ng-class="{'fa fa-long-arrow-up': visitorAllCtrl.orderByColumn['type.name'].reverse, 'fa fa-long-arrow-down': !visitorAllCtrl.orderByColumn['type.name'].reverse}">
+              <span class="pointer block" ng-click="allCtrl.updateView('type.name')">Type
+                <span ng-show="allCtrl.orderByColumn['type.name']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['type.name'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['type.name'].reverse}">
                 </span>
               </span>
             </th>
             <th>
-              <span class="pointer block" ng-click="visitorAllCtrl.updateView('company.name')">Company
-                <span ng-show="visitorAllCtrl.orderByColumn['company.name']"
-                      ng-class="{'fa fa-long-arrow-up': visitorAllCtrl.orderByColumn['company.name'].reverse, 'fa fa-long-arrow-down': !visitorAllCtrl.orderByColumn['company.name'].reverse}">
+              <span class="pointer block" ng-click="allCtrl.updateView('company.name')">Company
+                <span ng-show="allCtrl.orderByColumn['company.name']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['company.name'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['company.name'].reverse}">
                 </span>
               </span>
             </th>
             <th>
-              <span class="pointer block" ng-click="visitorAllCtrl.updateView('created')">Date Created
-                <span ng-show="visitorAllCtrl.orderByColumn['created']"
-                      ng-class="{'fa fa-long-arrow-up': visitorAllCtrl.orderByColumn['created'].reverse, 'fa fa-long-arrow-down': !visitorAllCtrl.orderByColumn['created'].reverse}">
+              <span class="pointer block" ng-click="allCtrl.updateView('created')">Date Created
+                <span ng-show="allCtrl.orderByColumn['created']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['created'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['created'].reverse}">
                 </span>
               </span>
             </th>
             <th>Acions</th>
           </tr>
+          <tr>
+            <th></th>
+            <th ng-repeat="filterField in allCtrl.filterFields">
+              <input
+                ng-if="filterField.filter && (!filterField.type || filterField.type === 'text')"
+                class="form-control"
+                ng-model="allCtrl.search[filterField.field]"
+                ng-change="allCtrl.startSearch(filterField.field)">
+
+              <span
+                ng-if="filterField.filter && filterField.type === 'date'"
+                class="form-control"
+                uib-datepicker-popup
+                ng-model="allCtrl.search[filterField.field]"
+                ng-change="allCtrl.startSearch(filterField.field)"
+                is-open="allCtrl.date[filterField.field].opened"
+                ng-click="allCtrl.date[filterField.field].open($event)"
+                close-text="Close">
+                <i class="fa fa-calendar"></i>
+              </span>
+
+            </th>
+            <th>
+              <button class="btn btn-primary btn-xs pointer" ng-click="allCtrl.clear()">
+                Clear Search
+              </button>
+            </th>
+          </tr>
           </thead>
 
           <tbody>
-          <tr ng-repeat="visitor in visitorAllCtrl.visitors">
-            <td ng-bind="$index + 1 + ((visitorAllCtrl.pagination.currentPage-1) * visitorAllCtrl.pagination.itemsPerPage)"></td>
+          <tr ng-repeat="visitor in allCtrl.items">
+            <td ng-bind="$index + 1 + ((allCtrl.pagination.currentPage-1) * allCtrl.pagination.itemsPerPage)"></td>
             <td ng-bind="visitor.first_name"></td>
             <td ng-bind="visitor.last_name"></td>
             <td ng-bind="visitor.email"></td>
@@ -111,7 +150,7 @@
                   <i class="ace-icon fa fa-pencil bigger-130"></i>
                 </a>
 
-                <span ng-click="visitorAllCtrl.remove(visitor._id)" class="red pointer">
+                <span ng-click="allCtrl.remove(visitor._id)" class="red pointer">
                   <i class="ace-icon fa fa-trash-o bigger-130"></i>
                 </span>
               </div>
@@ -155,24 +194,24 @@
     <div class="row">
       <div class="col-xs-11">
         <uib-pagination
-          total-items="visitorAllCtrl.pagination.totalItems"
-          ng-model="visitorAllCtrl.pagination.currentPage"
-          max-size="visitorAllCtrl.pagination.maxSize"
-          class="visitorAllCtrl.pagination-sm pull-right"
+          total-items="allCtrl.pagination.totalItems"
+          ng-model="allCtrl.pagination.currentPage"
+          max-size="allCtrl.pagination.maxSize"
+          class="allCtrl.pagination-sm pull-right"
           boundary-links="true"
           rotate="false"
-          ng-change="visitorAllCtrl.updateView()"
-          items-per-page="visitorAllCtrl.pagination.itemsPerPage"
-          num-pages="visitorAllCtrl.pagination.numPages" >
+          ng-change="allCtrl.updateView()"
+          items-per-page="allCtrl.pagination.itemsPerPage"
+          num-pages="allCtrl.pagination.numPages" >
         </uib-pagination>
       </div>
       <div class="col-xs-1">
         <label class="pull-right">
-          <select ng-model="visitorAllCtrl.pagination.itemsPerPage" ng-change="visitorAllCtrl.updateView()" class="form-control input-sm">
-            <option ng-selected="visitorAllCtrl.pagination.itemsPerPage === 10" value="10">10</option>
-            <option ng-selected="visitorAllCtrl.pagination.itemsPerPage === 25" value="25">25</option>
-            <option ng-selected="visitorAllCtrl.pagination.itemsPerPage === 50" value="50">50</option>
-            <option ng-selected="visitorAllCtrl.pagination.itemsPerPage === 100" value="100">100</option>
+          <select ng-model="allCtrl.pagination.itemsPerPage" ng-change="allCtrl.updateView()" class="form-control input-sm">
+            <option ng-selected="allCtrl.pagination.itemsPerPage === 10" value="10">10</option>
+            <option ng-selected="allCtrl.pagination.itemsPerPage === 25" value="25">25</option>
+            <option ng-selected="allCtrl.pagination.itemsPerPage === 50" value="50">50</option>
+            <option ng-selected="allCtrl.pagination.itemsPerPage === 100" value="100">100</option>
           </select>
         </label>
       </div>

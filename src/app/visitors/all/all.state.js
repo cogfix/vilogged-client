@@ -6,6 +6,14 @@ angular.module('visitors')
         parent: 'visitors',
         templateUrl: 'app/visitors/all/all.html',
         controller: 'VisitorAllCtrl',
-        controllerAs: 'visitorAllCtrl'
+        controllerAs: 'allCtrl',
+        resolve: {
+          currentState: function (visitorService) {
+            return visitorService.getState()
+              .catch(function () {
+                return {};
+              });
+          }
+        }
       });
   });

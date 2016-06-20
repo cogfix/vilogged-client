@@ -1,8 +1,19 @@
 <div class="page-header">
-  <h1>
-    Users
-  </h1>
-</div><!-- /.page-header -->
+  <div class="row">
+    <div class="col-sm-7">
+      <h1>
+        Users
+      </h1>
+    </div>
+    <div class="col-sm-5">
+      <div class="input-group">
+        <input class="form-control" ng-model="allCtrl.q" ng-change="allCtrl.searchPage()">
+        <span ng-click="allCtrl.searchPage()" class="input-group-addon">Search</span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /.page-header -->
 
 <div class="row">
   <div class="col-sm-12">
@@ -73,10 +84,25 @@
             </th>
             <th>Acions</th>
           </tr>
+          <tr>
+            <th></th>
+            <th ng-repeat="filterField in allCtrl.filterFields">
+              <input
+                ng-if="filterField.filter"
+                class="form-control"
+                ng-model="allCtrl.search[filterField.field]"
+                ng-change="allCtrl.startSearch(filterField.field)">
+            </th>
+            <th>
+              <button class="btn btn-primary btn-xs pointer" ng-click="allCtrl.clear()">
+                Clear Search
+              </button>
+            </th>
+          </tr>
           </thead>
 
           <tbody>
-          <tr ng-repeat="item in allCtrl.users">
+          <tr ng-repeat="item in allCtrl.items">
             <td ng-bind="$index + 1 + ((allCtrl.pagination.currentPage-1) * allCtrl.pagination.itemsPerPage)"></td>
             <td ng-bind="item.first_name"></td>
             <td ng-bind="item.last_name"></td>
@@ -162,3 +188,4 @@
     </div>
   </div><!-- /.col -->
 </div><!-- /.row -->
+
