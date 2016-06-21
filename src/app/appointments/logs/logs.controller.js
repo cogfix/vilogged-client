@@ -26,22 +26,82 @@ angular.module('appointments')
         label_code: (new Date().getTime()).toString().slice(0, -1)
       })
         .then(function () {
-          $state.go('appointments.all')
+          $state.go('appointments.all');
         })
         .catch(function (reason) {
-
+          console.log(reason);
+          if (Object.prototype.toString.call(reason) === '[object Object]' && reason.detail) {
+            log.error(reason.detail || reason);
+          } else {
+            log.error('unknownError');
+          }
         });
-    }
+    };
+
+    vm.checkOut = function () {
+      var currentLog =  angular.copy(vm.item.latest);
+      var appointment = angular.copy(vm.item);
+      appointment.visitor = vm.item.visitor._id;
+      appointment.host = vm.item.host._id;
+      appointment.is_expired = true;
+      currentLog.check_out = new Date().toJSON();
+      appointmentService.saveLog(currentLog)
+        .then(function () {
+          return appointmentService.save(appointment);
+        })
+        .then(function () {
+          $state.go('appointments.all');
+        })
+        .catch(function (reason) {
+          console.log(reason);
+          if (Object.prototype.toString.call(reason) === '[object Object]' && reason.detail) {
+            log.error(reason.detail || reason);
+          } else {
+            log.error('unknownError');
+          }
+        });
+    };
 
     vm.printLabel = function () {
       var dlg = dialogs.create('app/appointments/logs/partials/pass-template.html', 'PrintLabelCtrl', vm.item, 'lg');
-
       dlg.result.then(function (name) {
 
       }, function () {
 
       });
-    }
+    };
+
+    vm.updateApp = function (appointment, type) {
+      console.log(appointment);
+      var currentAppointment = angular.copy(vm.item);
+      appointment.is_approved = type === 'true';
+      appointment.host = vm.item.host._id;
+      appointment.visitor = vm.item.visitor._id;
+      appointmentService.save(appointment)
+        .then(function (response) {
+          if (response.is_approved === true) {
+            vm.item.status = appointmentService.status.UPCOMING;
+          } else if (response.is_approved === false) {
+            vm.item.status = appointmentService.status.REJECTED;
+          }
+          vm.item._rev = response._rev;
+          vm.item.is_approved = response.is_approved;
+          vm.item.is_expired = response.is_expired;
+          if (vm.item.status === appointmentService.status.UPCOMING) {
+            appointmentService.sms(currentAppointment, 'approval');
+            appointmentService.email(currentAppointment, 'approval');
+          }
+        })
+        .catch(function (reason) {
+          console.log(reason);
+          if (Object.prototype.toString.call(reason) === '[object Object]' && reason.detail) {
+            log.error(reason.detail || reason);
+          } else {
+            log.error('unknownError');
+          }
+        })
+    };
+
   })
   .controller('PrintLabelCtrl', function ($scope, $modalInstance, data, $timeout) {
 

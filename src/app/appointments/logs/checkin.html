@@ -56,6 +56,28 @@
     ng-if="logCtrl.item.status === logCtrl.status.UPCOMING">
     <i class="fa fa-check-square-o"></i> Check In
   </button>
+  <button
+    class="btn btn-success pull-right"
+    ng-click="logCtrl.checkOut(item)"
+    ng-if="logCtrl.item.status === logCtrl.status.IN_PROGRESS">
+    <i class="fa fa-check-square-o"></i> Check Out
+  </button>
+
+  <div class="pull-right" ng-if="logCtrl.item.status === logCtrl.status.PENDING || logCtrl.item.status === logCtrl.status.REJECTED">
+    <button
+      class="btn btn-success"
+      type="button"
+      ng-click="logCtrl.updateApp(logCtrl.item, 'true')">
+      <i class="fa fa-check"></i> Approve
+    </button>
+    <button
+      class="btn btn-danger"
+      type="button"
+      ng-click="logCtrl.updateApp(logCtrl.item, 'false')">
+      <i class="fa fa-times"></i> Reject
+    </button>
+  </div>
+
 </div>
 
 <div class="hr hr12 dotted"></div>

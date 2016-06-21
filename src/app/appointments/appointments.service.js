@@ -135,7 +135,9 @@ angular.module('appointments')
     self.validate = function (object) {
       return validationService.validateFields(self.model, object, object._id)
         .then(function (response) {
-          return validationService.eliminateEmpty(angular.merge({}, response));
+          var validateTime = self.dateTimeValidation(object.start_time, object.end_time, 'time', object);
+          var validateDate = self.dateTimeValidation(object.start_date, object.end_date, 'date', object);
+          return validationService.eliminateEmpty(angular.merge({}, response, validateDate, validateTime));
         });
     };
 

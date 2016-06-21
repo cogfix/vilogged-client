@@ -21,6 +21,7 @@ angular.module('appointments')
     vm.viewModel.end_date = new Date();
     vm.viewModel.start_time = new Date();
     vm.viewModel.end_time = moment().add(30, 'm').toDate();
+    vm.viewModel.purpose = vm.viewModel.purpose || 'official';
     vm.teamMembers = [];
     vm.column = (12/COLUMN);
     vm.selected = {}; // hold selected user/visitor profile from typeahead
