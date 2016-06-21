@@ -19,7 +19,8 @@ angular.module('users')
     vm.errorMsg = {};
     vm.viewModel = {};
     vm.passwordMode = false;
-    vm.model = userService.model;
+    vm.column = (12/COLUMN);
+    vm.model = angular.copy(userService.model);
     if ($state.current.name === 'users.changePassword') {
       vm.column = 12;
       vm.passwordMode = true;
