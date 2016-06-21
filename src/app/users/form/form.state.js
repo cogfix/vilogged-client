@@ -21,7 +21,7 @@ angular.module('users')
       })
       .state('users.changePassword', {
         parent: 'users',
-        url: '/edit?_id',
+        url: '/update-password',
         templateUrl: 'app/users/form/form.html',
         controller: 'FormCtrl',
         controllerAs: 'formCtrl',

@@ -18,10 +18,17 @@ angular.module('users')
     var vm = this;
     vm.errorMsg = {};
     vm.viewModel = {};
-    vm.column = (12/COLUMN);
-
+    vm.passwordMode = false;
     vm.model = userService.model;
-
+    if ($state.current.name === 'users.changePassword') {
+      vm.column = 12;
+      vm.passwordMode = true;
+      for (var modelKey in vm.model) {
+        if (vm.model.hasOwnProperty(modelKey) && ['password', 'password2'].indexOf(modelKey) === -1) {
+          vm.model[modelKey].hidden = true;
+        }
+      }
+    }
     departmentService.choices()
       .then(function (response) {
         vm.model.department.choices = response;
@@ -34,6 +41,9 @@ angular.module('users')
       instance: this
     });
     var id = $stateParams._id;
+    if (vm.passwordMode) {
+      id = currentUser._id;
+    }
 
     if (id) {
       userService.get(id)
