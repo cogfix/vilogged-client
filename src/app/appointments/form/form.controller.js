@@ -105,14 +105,19 @@ angular.module('appointments')
         if (new Date(vm.viewModel.start_time).getTime() > new Date(vm.viewModel.end_time).getTime()) {
           vm.viewModel.end_time = moment(vm.viewModel.start_time).add(30, 'm');
         }
-        extraValidation = appointmentService.dateTimeValidation(vm.viewModel.start_time, vm.viewModel.end_time, 'time');
+        extraValidation = appointmentService.dateTimeValidation(vm.viewModel.start_time, vm.viewModel.end_time, 'time',
+          vm.viewModel);
       } else if (['start_date', 'end_date'].indexOf(fieldName) !== -1) {
         vm.errorMsg['start_date'] = [];
         vm.errorMsg['end_date'] = [];
         if (new Date(vm.viewModel.start_date).getTime() > new Date(vm.viewModel.end_date).getTime()) {
           vm.viewModel.end_date = vm.viewModel.start_date;
         }
-        extraValidation = appointmentService.dateTimeValidation(vm.viewModel.start_date, vm.viewModel.end_date, 'date');
+        extraValidation = appointmentService.dateTimeValidation(vm.viewModel.start_date, vm.viewModel.end_date, 'date',
+          vm.viewModel);
+      } else if (fieldName === 'purpose') {
+        extraValidation = appointmentService.dateTimeValidation(vm.viewModel.start_date, vm.viewModel.end_date, 'date',
+          vm.viewModel);
       }
 
       if (vm.model.hasOwnProperty(fieldName)) {

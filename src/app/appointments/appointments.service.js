@@ -139,7 +139,8 @@ angular.module('appointments')
         });
     };
 
-    self.dateTimeValidation = function (startTime, endTime, type) {
+    self.dateTimeValidation = function (startTime, endTime, type, viewModel) {
+
       var errorMsg = {};
       var msg = [];
       if (!validationService.isEmpty(startTime) && !validationService.isEmpty(endTime)) {
@@ -150,12 +151,33 @@ angular.module('appointments')
         } else if (startTime.getTime() === endTime.getTime()) {
 
         }
+
         if (msg.length) {
           errorMsg['start_'+type] = msg;
         } else {
           errorMsg['start_'+type] = [];
         }
       }
+      if (viewModel.purpose === 'personal') {
+        var dayOfWeek = moment(new Date()).weekday();
+        var nameOfDay = moment.weekdaysShort(dayOfWeek);
+
+        var visitStartTime = ($filter('date')(viewModel.start_time, 'HH:mm:ss')).substr(0,2);
+        var visitEndTime = ($filter('date')(viewModel.end_time, 'HH:mm:ss')).substr(0,2);
+
+        if (nameOfDay !== 'Tue' && nameOfDay !== 'Thu') {
+          msg.push('Personal visitors are only allowed on Tuesday and Thursday between 1pm and 3pm');
+        } else if (visitStartTime < 13 || visitStartTime > 15 || visitEndTime > 15) {
+          msg.push('Personal visits are only allowed between the hours of 1pm and 3pm on Tuesday and Thursday');
+        }
+
+        if (msg.length) {
+          errorMsg['purpose'] = msg;
+        } else {
+          errorMsg['purpose'] = [];
+        }
+      }
+
       return errorMsg;
     };
 
