@@ -8,10 +8,17 @@ angular.module('users')
     changesService,
     currentState,
     utility,
-    table
+    table,
+    aclService,
+    $state
   ) {
     var vm = this;
     var params = currentState || {};
+    var currentUser = userService.currentUser();
+    vm.permissions = aclService.hasPermission(currentUser, 'users');
+    if (!vm.permissions.read) {
+      $state.go('users.profile');
+    }
     vm.items = [];
     vm.search = {};
     vm.inProgress = false;

@@ -178,7 +178,7 @@
                   <i class="ace-icon fa fa-pencil bigger-130"></i>
                 </a>
 
-                <span ng-click="allCtrl.remove(item._id)" class="red pointer">
+                <span ng-click="allCtrl.remove(item._id)" class="red pointer" ng-if="allCtrl.permissions.remove">
                   <i class="ace-icon fa fa-trash-o bigger-130"></i>
                 </span>
               </div>

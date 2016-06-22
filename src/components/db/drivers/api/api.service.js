@@ -1,5 +1,5 @@
 angular.module('db')
-  .service('apiService', function ($http, configService, $cookies, log, $q, utility) {
+  .service('apiService', function ($http, configService, $cookies, log, $q, utility, $rootScope) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     var BASE_URL = configService.api.url;
     var TIMEOUT = 90000; //1.5 minutes
@@ -9,7 +9,7 @@ angular.module('db')
         Authorization: ''
       }
     };
-  
+
     this.put = function (table, data) {
       var deferred = $q.defer();
 
@@ -34,7 +34,7 @@ angular.module('db')
         });
       return deferred.promise;
     };
-  
+
     self.post = function (table, data) {
       var deferred = $q.defer();
       $http.post([BASE_URL, table].join('/'), data, updateHeader(table))
@@ -57,7 +57,7 @@ angular.module('db')
         });
       return deferred.promise;
     };
-  
+
     self.all = function (table, options) {
       options = options || {};
       var deferred = $q.defer();
@@ -82,7 +82,7 @@ angular.module('db')
 
       return deferred.promise;
     };
-  
+
     self.get = function (table, id, options) {
       options = options || {};
       var deferred = $q.defer();
@@ -107,7 +107,7 @@ angular.module('db')
 
       return deferred.promise;
     };
-  
+
     self.remove = function (table, id, options) {
       //return apiFactory.remove({_table: table, _param: id}).$promise;
       var deferred = $q.defer();
@@ -151,7 +151,7 @@ angular.module('db')
 
     function updateHeader (table) {
       var header = {
-        Authorization: ['Token', $cookies.getObject('vi-token')].join(' ')
+        Authorization: ['Token', $rootScope.token].join(' ')
       };
       if (angular.isDefined(table) && table === 'login') {
         delete header.Authorization;

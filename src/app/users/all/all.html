@@ -18,7 +18,7 @@
 <div class="row">
   <div class="col-sm-12">
     <div class="custom-form-save clearfix">
-      <a class="btn btn-primary pull-right" ui-sref="users.add">
+      <a class="btn btn-primary pull-right" ui-sref="users.add" ng-if="allCtrl.permissions.create">
         <i class="fa fa-plus-circle"></i>
         Create
       </a>
@@ -111,16 +111,16 @@
             <td ng-bind="item.department.name"></td>
             <td ng-bind="item.date_joined | date:'yyyy-MM-dd'"></td>
             <td>
-              <div class="hidden-sm hidden-xs action-buttons">
+              <div class="hidden-sm hidden-xs action-buttons" ng-if="allCtrl.permissions.read">
                 <a ui-sref="users.detail({_id: item._id})" class="blue">
                   <i class="ace-icon fa fa-eye bigger-130"></i>
                 </a>
 
-                <a ui-sref="users.edit({_id: item._id})" class="green">
+                <a ui-sref="users.edit({_id: item._id})" class="green" ng-if="allCtrl.permissions.update">
                   <i class="ace-icon fa fa-pencil bigger-130"></i>
                 </a>
 
-                <a ng-click="allCtrl.remove(item._id)" class="red pointer">
+                <a ng-click="allCtrl.remove(item._id)" class="red pointer" ng-if="allCtrl.permissions.remove">
                   <i class="ace-icon fa fa-trash-o bigger-130"></i>
                 </a>
               </div>

@@ -29,19 +29,49 @@ angular
     'settings',
     'cache',
     'ngVPrint',
-    'ngCsv'
+    'ngCsv',
+    'acl',
+    'local'
 	])
-	.run(function ($rootScope, $state, log, authService, $window, $interval) {
+	.run(function (
+    $rootScope,
+    $state,
+    log,
+    authService,
+    $window,
+    $interval,
+    utility
+  ) {
 		log.persist.load();
 		$rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
       if ($rootScope.resetTimer) {
         $interval.cancel($rootScope.resetTimer);
       }
+      if (utility.isEmptyObject($rootScope.currentUser) || $rootScope.token === '' || $rootScope.token === undefined) {
+        localforage.getItem('vi-token')
+          .then(function (response) {
+            $rootScope.token = response
+          })
+          .catch(function (error) {
+            $rootScope.token = '';
+          });
 
-      if (!authService.loggedIn()) {
-        $window.location.href = '#/login';
-      } else {
-        $rootScope.currentUser = authService.currentUser();
+        localforage.getItem('vi-user')
+          .then(function (response) {
+            if (
+              response !== null && response !== undefined &&
+              Object.prototype.toString.call(response) === '[object Object]' &&
+              response._id
+            ) {
+              $rootScope.currentUser = response;
+            } else {
+              authService.logout();
+            }
+
+          })
+          .catch(function () {
+            authService.logout();
+          });
       }
 		});
 	})
@@ -65,4 +95,14 @@ angular
         }
       };
     });
-  }]);
+  }])
+  .config(function () {
+    localforage.config({
+      /*driver      : localforage.WEBSQL, // Force WebSQL; same as using setDriver()*/
+      name        : 'viLogged',
+      version     : 1.0,
+      size        : 4980736, // Size of database, in bytes. WebSQL-only for now.
+      storeName   : 'localStore', // Should be alphanumeric, with underscores.
+      description : 'local storage db for viLogged'
+    });
+  });

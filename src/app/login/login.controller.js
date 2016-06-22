@@ -3,12 +3,11 @@
 angular.module('login')
   .controller('LoginCtrl', function($state, config, loginService, $rootScope, log, $scope) {
     var vm = this;
-    $scope.data = undefined;
     $rootScope.loginMode = true;
     vm.credentials = {};
 
     function loggedInMode () {
-      $rootScope.loginMode = false;
+      $scope.loginMode = false;
       $state.go('home');
       log.success('authSuccess');
     }
@@ -36,7 +35,7 @@ angular.module('login')
             }
           })
           .catch(function (reason) {
-            $rootScope.loginMode = true;
+            $scope.loginMode = true;
             if (reason && reason.detail) {
               log.error(reason.detail);
             } else if (reason) {

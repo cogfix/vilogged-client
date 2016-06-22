@@ -125,17 +125,17 @@ angular.module('utility')
 
       return interval + ' ' + intervalType;
     };
-  
+
     this.compileTemplate = function(_replacements, template, _delimiter) {
-    
+
       function pregQuote(str) {
         return (str + '').replace(/([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:])/g, "\\$1");
       }
-    
+
       var objectTest = Object.prototype.toString.call(_replacements) === '[object Object]';
       var replacements = objectTest ? _replacements : {};
       var delimiter = _delimiter === undefined ? '&&' : _delimiter;
-    
+
       (Object.keys(replacements))
         .forEach(function(key) {
           var patternString = pregQuote(delimiter+key+delimiter);
@@ -143,7 +143,7 @@ angular.module('utility')
         });
       return template;
     };
-  
+
     this.getFileName = function(prefix, ext) {
       prefix = (prefix || '').toLowerCase().replace(/ /g, '-');
       ext = ext || '.csv';

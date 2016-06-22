@@ -4,15 +4,18 @@ angular.module('appointments')
   .controller('AppointmentsAllCtrl', function (
     appointmentService,
     changesService,
+    userService,
     currentState,
     dialog,
     log,
     utility,
     table,
-    $filter
+    $filter,
+    aclService
   ) {
     var vm = this;
     var params = currentState || {};
+    vm.permissions = aclService.hasPermission(userService.currentUser(), 'appointments');
     vm.items = [];
     vm.search = {};
     vm.inProgress = false;

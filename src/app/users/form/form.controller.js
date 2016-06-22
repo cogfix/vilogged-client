@@ -11,16 +11,23 @@ angular.module('users')
     $scope,
     $window,
     $timeout,
-    dialogs
+    dialogs,
+    aclService
   ) {
     var currentUser = userService.currentUser();
+    //debugger;
     var COLUMN = 2;
     var vm = this;
+    var id = $stateParams._id;
+    vm.permissions = aclService.hasPermission(currentUser, 'users');
+    if (!vm.permissions.create && id !== currentUser._id) {
+      $state.go('users.profile');
+    }
     vm.errorMsg = {};
     vm.viewModel = {};
     vm.passwordMode = false;
     vm.column = (12/COLUMN);
-    vm.model = angular.copy(userService.model);
+    vm.model = _.clone(userService.model);
     if ($state.current.name === 'users.changePassword') {
       vm.column = 12;
       vm.passwordMode = true;
@@ -41,7 +48,7 @@ angular.module('users')
     vm.form = formService.modelToForm(vm.model, COLUMN, {
       instance: this
     });
-    var id = $stateParams._id;
+
     if (vm.passwordMode) {
       id = currentUser._id;
     }
@@ -68,9 +75,7 @@ angular.module('users')
           if (utility.isEmptyObject(response)) {
             userService.save(vm.viewModel)
               .then(function (response) {
-                if (response._id === currentUser._id) {
-                  userService.updateCurrentUser(response);
-                }
+                userService.updateCurrentUser(response);
                 $state.go('users.all');
               })
               .catch(function (reason) {

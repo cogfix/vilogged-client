@@ -1,5 +1,5 @@
 angular.module('auth')
-  .service('authService', function ($q, $cookies, log, dbService) {
+  .service('authService', function ($q, $rootScope, log, dbService, $window) {
     var self = this;
 
     self.login = function (username, password) {
@@ -9,32 +9,40 @@ angular.module('auth')
             return $q.reject(response);
           }
           var data = response;
-          $cookies.putObject('vi-token', data.token);
-          $cookies.putObject('vi-user', data.user);
+          localforage.setItem('vi-token', data.token);
+          localforage.setItem('vi-user', data.user);
+          $rootScope.currentUser = data.user;
           return response;
         });
     };
 
     self.logout = function () {
-      $cookies.remove('vi-token');
-      $cookies.remove('vi-user');
+      localforage.removeItem('vi-token');
+      localforage.removeItem('vi-user');
+      $rootScope.currentUser = {};
+      $rootScope.token = '';
+      $window.location.href = '#/login';
     };
 
     self.loggedIn = function () {
-      return angular.isDefined($cookies.getObject('vi-token'));
+      $rootScope.currentUser = $rootScope.currentUser || {};
+      return Object.keys($rootScope.currentUser) > 0;
     };
 
     self.currentUser = function () {
-      return $cookies.getObject('vi-user')
+      return $rootScope.currentUser;
     };
 
     self.updateCurrentUser = function (user) {
       var currentUser = self.currentUser();
-      for (var key in user) {
-        if (user.hasOwnProperty(key)) {
-          currentUser[key] = user[key];
+      if (user._id === currentUser._id) {
+        for (var key in user) {
+          if (user.hasOwnProperty(key)) {
+            currentUser[key] = user[key];
+          }
         }
+        localforage.setItem('vi-user', currentUser);
+        $rootScope.currentUser = currentUser;
       }
-      $cookies.putObject('vi-user', currentUser);
     }
   });
