@@ -15,6 +15,11 @@ angular.module('settings')
           link: 'settings',
           icon: 'fa fa-cogs',
           order: 8
+        },
+        resolve: {
+          permissions: function ($rootScope, aclService) {
+            return aclService.getPermissions($rootScope.currentUser, 'users');
+          }
         }
       })
   });

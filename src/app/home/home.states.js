@@ -13,6 +13,11 @@ angular.module('home')
 					menu: true,
 					icon: 'fa fa-home',
 					order: 1
-				}
+				},
+        resolve: {
+          permissions: function ($rootScope, aclService) {
+            return aclService.getPermissions($rootScope.currentUser, 'users');
+          }
+        }
 			});
 		});

@@ -12,6 +12,11 @@ angular.module('appointments')
           icon: 'fa fa-newspaper-o',
           link: 'appointments.all',
           order: 3
+        },
+        resolve: {
+          permissions: function ($rootScope, aclService) {
+            return aclService.getPermissions($rootScope.currentUser, 'appointments');
+          }
         }
       });
   });

@@ -1,5 +1,5 @@
 angular.module('auth')
-  .service('authService', function ($q, $rootScope, log, dbService, $window) {
+  .service('authService', function ($q, $rootScope, log, dbService, $window, $cookies) {
     var self = this;
 
     self.login = function (username, password) {
@@ -11,7 +11,9 @@ angular.module('auth')
           var data = response;
           localforage.setItem('vi-token', data.token);
           localforage.setItem('vi-user', data.user);
+          $cookies.putObject('vi-token', data.token);
           $rootScope.currentUser = data.user;
+          $rootScope.$broadcast('loggedIn', data);
           return response;
         });
     };
@@ -21,6 +23,7 @@ angular.module('auth')
       localforage.removeItem('vi-user');
       $rootScope.currentUser = {};
       $rootScope.token = '';
+      $cookies.remove('vi-token');
       $window.location.href = '#/login';
     };
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('acl')
-  .service('aclService', function (dbService) {
+  .service('aclService', function (dbService, $q) {
     var self = this;
     var TABLE = 'permissions';
 
@@ -72,13 +72,35 @@ angular.module('acl')
       }
     };
 
-    self.hasPermission = function (user, module) {
+    function getUserPermissions (user, module) {
       if (user.is_superuser) {
-        return true;
+        return {
+          create: true,
+          remove: true,
+          update: true,
+          read: true,
+          export: true,
+          tableSearch: true
+        };
       } else if (!user.is_superuser && user.is_staff) {
         return permissions.staff[module] || {};
       } else {
         return permissions.members[module] || {};
+      }
+    }
+
+    self.getPermissions = function (user, module) {
+      if (user) {
+        return $q.when(getUserPermissions(user, module));
+      } else {
+        return localforage.getItem('vi-user')
+          .then(function (user) {
+            user = user || {};
+            return getUserPermissions(user, module);
+          })
+          .catch(function () {
+            return {}
+          });
       }
     };
 

@@ -12,6 +12,11 @@ angular.module('visitors')
           icon: 'fa fa-street-view',
           link: 'visitors.all',
           order: 4
+        },
+        resolve: {
+          permissions: function ($rootScope, aclService) {
+            return aclService.getPermissions($rootScope.currentUser, 'visitors');
+          }
         }
       });
   });

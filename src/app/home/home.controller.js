@@ -6,9 +6,13 @@ angular.module('viLogged')
 		log,
 		utility,
 		dialog,
-		appointmentService
+		appointmentService,
+    $rootScope,
+    $state
 	) {
-
+    if (!$rootScope.currentUser.is_superuser && !$rootScope.currentUser.is_staff) {
+      $state.go('users.profile');
+    }
 		var vm = this; //view models
     vm.eventSources = [];
     vm.uiConfig = {

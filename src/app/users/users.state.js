@@ -12,6 +12,11 @@ angular.module('users')
           icon: 'fa fa-users',
           link: 'users.all',
           order: 2
+        },
+        resolve: {
+          permissions: function ($rootScope, aclService) {
+            return aclService.getPermissions($rootScope.currentUser, 'users');
+          }
         }
       });
   });

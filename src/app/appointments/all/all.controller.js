@@ -11,11 +11,11 @@ angular.module('appointments')
     utility,
     table,
     $filter,
-    aclService
+    permissions
   ) {
     var vm = this;
     var params = currentState || {};
-    vm.permissions = aclService.hasPermission(userService.currentUser(), 'appointments');
+    vm.permissions = permissions;
     vm.items = [];
     vm.search = {};
     vm.inProgress = false;

@@ -14,6 +14,11 @@ angular.module('company')
           order: 7,
           link: 'company.all',
           icon: 'fa fa-building'
+        },
+        resolve: {
+          permissions: function ($rootScope, aclService) {
+            return aclService.getPermissions($rootScope.currentUser, 'users');
+          }
         }
       })
   });

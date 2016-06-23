@@ -7,11 +7,14 @@ angular.module('users')
     $stateParams,
     appointmentService,
     utility,
-    log
+    log,
+    permissions
   ) {
     var vm = this;
+    vm.permissions = permissions;
+    var currentUser = authService.currentUser();
     var id = $stateParams._id;
-    if (id) {
+    if (id && (vm.permissions.create || vm.permissions.update)) {
       userService.get(id)
         .then(function (response) {
           vm.profile = response;
@@ -20,20 +23,20 @@ angular.module('users')
 
         });
     } else {
-      vm.profile = authService.currentUser();
+      vm.profile = currentUser;
+      id = vm.profile._id;
     }
 
     vm.getInProgress = function () {
       id = id || authService.currentUser()._id;
       appointmentService.inProgress({host: id})
         .then(function (response) {
-
           vm.inProgress = response.results;
         })
     };
 
     vm.getUpcoming = function () {
-      id = id || authService.currentUser()._id;
+      id = id || currentUser._id;
       appointmentService.upcoming({host: id})
         .then(function (response) {
           vm.upcoming = response.results;
@@ -41,7 +44,7 @@ angular.module('users')
     };
 
     vm.getAwaitingApproval = function () {
-      id = id || authService.currentUser()._id;
+      id = id || currentUser._id;
       appointmentService.awaitingApproval({host: id})
         .then(function (response) {
           vm.awaitingApproval = response.results;
@@ -49,7 +52,7 @@ angular.module('users')
     };
 
     vm.getRejected = function () {
-      id = id || authService.currentUser()._id;
+      id = id || currentUser._id;
       appointmentService.rejected({host: id})
         .then(function (response) {
           vm.rejected = response.results;
@@ -61,7 +64,7 @@ angular.module('users')
     };
 
     vm.updateApp = function (appointment, type) {
-      var currentAppointment = angular.copy(appointment);
+      var currentAppointment = _.clone(appointment);
       appointment.is_approved = type === 'true';
       appointment.host = currentAppointment.host._id;
       appointment.visitor = currentAppointment.visitor._id;
@@ -86,7 +89,6 @@ angular.module('users')
       vm.getAwaitingApproval();
     }
     loadAll();
-
   })
   .controller('RemoveUserProfileCtrl', function (userService, $state, $stateParams, authService) {
     var id = $stateParams._id;

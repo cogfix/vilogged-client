@@ -12,14 +12,13 @@ angular.module('users')
     $window,
     $timeout,
     dialogs,
-    aclService
+    permissions
   ) {
     var currentUser = userService.currentUser();
-    //debugger;
     var COLUMN = 2;
     var vm = this;
     var id = $stateParams._id;
-    vm.permissions = aclService.hasPermission(currentUser, 'users');
+    vm.permissions = permissions;
     if (!vm.permissions.create && id !== currentUser._id) {
       $state.go('users.profile');
     }
@@ -60,6 +59,12 @@ angular.module('users')
           vm.viewModel.department = vm.viewModel.department._id || '';
           vm.model.password.required = false;
           vm.model.password2.required = false;
+          if (!currentUser.is_superuser) {
+            vm.model.is_superuser.hidden = true;
+          }
+          if (!currentUser.is_staff) {
+            vm.model.is_staff.hidden = true;
+          }
           vm.form = formService.modelToForm(vm.model, COLUMN, {
             instance: this
           });

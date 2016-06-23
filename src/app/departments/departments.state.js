@@ -12,6 +12,11 @@ angular.module('departments')
           icon: 'fa fa-bank',
           link: 'departments.all',
           order: 6
+        },
+        resolve: {
+          permissions: function ($rootScope, aclService) {
+            return aclService.getPermissions($rootScope.currentUser, 'users');
+          }
         }
       });
   });

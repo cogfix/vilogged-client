@@ -9,13 +9,12 @@ angular.module('users')
     currentState,
     utility,
     table,
-    aclService,
+    permissions,
     $state
   ) {
     var vm = this;
     var params = currentState || {};
-    var currentUser = userService.currentUser();
-    vm.permissions = aclService.hasPermission(currentUser, 'users');
+    vm.permissions = permissions;
     if (!vm.permissions.read) {
       $state.go('users.profile');
     }

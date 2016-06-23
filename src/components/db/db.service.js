@@ -5,20 +5,20 @@
  * @desc
  */
 angular.module('db')
-  .service('dbService', function(config, pouchDB, driverService, utility, $cookies) {
-  
+  .service('dbService', function(config, pouchDB, driverService, utility, $rootScope) {
+
     var self = this;
 
     var db = driverService.get();
-  
+
     self.get = function (table, id, option) {
       return db.get(table, id, option);
     };
-  
+
     self.all = function (table, option) {
       return db.all(table, option);
     };
-  
+
     self.save = function (table, doc, option) {
       option = option || {};
       option.extra = option.hasOwnProperty('extra') ? option.extra : true;
@@ -38,17 +38,17 @@ angular.module('db')
 
       return db.put(table, doc, option);
     };
-  
+
     self.remove = function (table, id) {
       return db.remove(table, id);
     };
-  
+
     self.currentUser = function () {
-      return $cookies.getObject('vi-user')
+      return $rootScope.currentUser;
     };
-  
+
     self.db = db;
-  
+
     self.tables = {
       APPOINTMENT: 'appointment',
       APPOINTMENT_LOGS: 'appointment-logs',

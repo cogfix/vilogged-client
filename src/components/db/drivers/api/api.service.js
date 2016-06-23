@@ -1,14 +1,9 @@
 angular.module('db')
-  .service('apiService', function ($http, configService, $cookies, log, $q, utility, $rootScope) {
+  .service('apiService', function ($http, configService, log, $q, utility, $cookies) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     var BASE_URL = configService.api.url;
     var TIMEOUT = 90000; //1.5 minutes
-    var self = this, httpConfig = {
-      timeout: TIMEOUT,
-      headers: {
-        Authorization: ''
-      }
-    };
+    var self = this;
 
     this.put = function (table, data) {
       var deferred = $q.defer();
@@ -151,7 +146,7 @@ angular.module('db')
 
     function updateHeader (table) {
       var header = {
-        Authorization: ['Token', $rootScope.token].join(' ')
+        Authorization: ['Token', $cookies.getObject('vi-token')].join(' ')
       };
       if (angular.isDefined(table) && table === 'login') {
         delete header.Authorization;

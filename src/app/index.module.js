@@ -42,20 +42,19 @@ angular
     $interval,
     utility
   ) {
-		log.persist.load();
+		$rootScope.$on('loggedIn', function (event, data) {
+      $rootScope.currentUser = data.user;
+    });
 		$rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
       if ($rootScope.resetTimer) {
         $interval.cancel($rootScope.resetTimer);
       }
-      if (utility.isEmptyObject($rootScope.currentUser) || $rootScope.token === '' || $rootScope.token === undefined) {
-        localforage.getItem('vi-token')
-          .then(function (response) {
-            $rootScope.token = response
-          })
-          .catch(function (error) {
-            $rootScope.token = '';
-          });
-
+      if (
+        Object.prototype.toString.call($rootScope.currentUser) === '[object Object]' &&
+        (Object.keys($rootScope.currentUser)).length > 0
+      ) {
+        //nothing here
+      } else {
         localforage.getItem('vi-user')
           .then(function (response) {
             if (
@@ -64,10 +63,9 @@ angular
               response._id
             ) {
               $rootScope.currentUser = response;
-            } else {
+            }  else {
               authService.logout();
             }
-
           })
           .catch(function () {
             authService.logout();
