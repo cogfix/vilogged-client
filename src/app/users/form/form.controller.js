@@ -26,7 +26,7 @@ angular.module('users')
     vm.viewModel = {};
     vm.passwordMode = false;
     vm.column = (12/COLUMN);
-    vm.model = _.clone(userService.model);
+    vm.model = _.cloneDeep(userService.model);
     if ($state.current.name === 'users.changePassword') {
       vm.column = 12;
       vm.passwordMode = true;
@@ -52,6 +52,13 @@ angular.module('users')
       id = currentUser._id;
     }
 
+    function setAccessHidden (type) {
+      if (currentUser[type] === false) {
+        return true;
+      }
+      return false;
+    }
+
     if (id) {
       userService.get(id)
         .then(function (response) {
@@ -59,12 +66,8 @@ angular.module('users')
           vm.viewModel.department = vm.viewModel.department._id || '';
           vm.model.password.required = false;
           vm.model.password2.required = false;
-          if (!currentUser.is_superuser) {
-            vm.model.is_superuser.hidden = true;
-          }
-          if (!currentUser.is_staff) {
-            vm.model.is_staff.hidden = true;
-          }
+          vm.model.is_superuser.hidden = setAccessHidden('is_superuser');
+          vm.model.is_staff.hidden = setAccessHidden('is_superuser');
           vm.form = formService.modelToForm(vm.model, COLUMN, {
             instance: this
           });

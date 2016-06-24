@@ -3,17 +3,20 @@
 angular.module('form')
   .service('formService', function (utility) {
     var self = this;
-  
+
     self.chunk = function (array, size) {
       size = size || 2;
       return utility.chunk(array, size);
     };
-  
+
     self.modelToForm = function (model, column, options) {
       options = options || {};
       var forms = [];
       for (var key in model) {
-        if (model.hasOwnProperty(key) && !model[key].hasOwnProperty('hidden')) {
+        if (
+          (model.hasOwnProperty(key) && (!model[key].hasOwnProperty('hidden')) ||
+          (model[key].hasOwnProperty('hidden') && model[key].hidden === false))
+        ) {
           var modelOptions = options[key] || {};
           model[key].fieldName = model[key].fieldName || key;
           model[key].options = model[key].options || {};
@@ -23,16 +26,16 @@ angular.module('form')
       }
       return self.chunk(forms, column);
     };
-  
+
     self.placeholder = function (label, placeholder) {
       var defaultHolder = ['Enter', label, 'Here'].join(' ');
       return placeholder || defaultHolder;
     };
-  
+
     self.isEmpty = function (data) {
       return data === undefined || data === '' || data === null;
     };
-  
+
     self.phonePrefixes = function () {
       return [
         "0701",
@@ -65,7 +68,7 @@ angular.module('form')
         "Others"
       ]
     };
-  
+
     self.eliminateEmpty = function (response) {
       var hash = {};
       for (var key in response) {
@@ -75,7 +78,7 @@ angular.module('form')
       }
       return hash;
     };
-  
+
     self.mergeErrorMsg = function (dest, src) {
       for (var key in src) {
         if (src.hasOwnProperty(key) && dest.hasOwnProperty(key)) {

@@ -226,9 +226,22 @@ ul.vi-nav{
   }
 }
 
+@media screen {
+  #printSection {
+    display: none;
+  }
+}
+
+@media all {
+  .page-break	{ display: none; }
+}
+
 @media print {
   body * {
     visibility: hidden;
+    padding:0 !important;
+    margin:0 !important;
+    overflow:hidden !important;
   }
 
   #printSection, #printSection * {
@@ -240,6 +253,7 @@ ul.vi-nav{
     left: 0;
     top: 0;
   }
+  .page-break	{ display: block; page-break-before: always; }
 }
 
 .appointment-legend {

@@ -1,7 +1,7 @@
 <div class="clearfix">
   <button class="btn btn-primary" ng-print print-element-id="printThisElement"><i class="fa fa-print"></i> Print</button>
 </div>
-<div id="printThisElement" style="width: 300px; height: 470px; border: 2px solid #000; padding-left: 10px; padding-right: 10px; margin:10px auto 20px;">
+<div id="printThisElement" style="width: 300px; height: 470px; border: 2px solid #000; padding-left: 10px !important; padding-right: 10px !important; margin:10px auto 20px; !important">
   <div style="padding-top: 10px;">
     <div style="font-size: 16px; font-weight: bold; float: left;">Visitor Pass</div>
     <div style="float: right;">
@@ -11,16 +11,16 @@
   </div>
   <div>
     <div>
-      <div style="width: 100%; margin-top: 5%; margin-bottom: 5%; max-height: 210px">
+      <div style="width: 100%; margin-top: 5% !important; margin-bottom: 5%; max-height: 210px">
         <h3 style="text-align: center; font-weight: bold">{{ appointment.purpose | uppercase }}</h3>
         <img ng-if="((appointment).visitor).image" ng-src="{{ appointment.visitor.image }}" alt="" width="100%"
-             style="margin:auto; width: 244px; height: 150px; display: block" class="img-responsive"/>
+             style="margin:auto !important; width: 244px; height: 150px; display: block" class="img-responsive"/>
         <img ng-if="!((appointment).visitor).image" ng-src="../../assets/avatars/place_holder.jpg" alt=""
-             style="margin:auto; width: 244px; height: 150px; display: block" class="img-responsive"/>
+             style="margin:auto !important; width: 244px; height: 150px; display: block" class="img-responsive"/>
       </div>
     </div>
     <div style="font-size: 16px;">
-      <div style="top-bottom: 10px">Name: {{ appointment.visitor.first_name }} {{ appointment.visitor.last_name }}</div>
+      <div style="margin-bottom: 10px !important;">Name: {{ appointment.visitor.first_name }} {{ appointment.visitor.last_name }}</div>
       <div>Host: {{ appointment.host.first_name }} {{ appointment.host.last_name }}</div>
       <div>Department: {{ (((appointment).host).department).name }}</div>
       <div ng-if="((((appointment).host).department).floor) !== null">Floor: <strong>{{ ((((appointment).host).department).floor) }}</strong></div>
@@ -30,6 +30,6 @@
     </div>
     <div style="clear: both"></div>
   </div>
-  <img id="barcode" style="max-height:80px; margin-top: 10px; width:100%">
+  <img id="barcode" style="max-height:80px; margin-top: 10px !important; width:100%">
 </div>
 

@@ -104,14 +104,12 @@ angular.module('appointments')
 
   })
   .controller('PrintLabelCtrl', function ($scope, $modalInstance, data, $timeout) {
-
     $scope.appointment = data;
     var appointment = $scope.appointment.logs[0] || {};
     var labelCode = appointment.label_code.toString();
     if (labelCode.length > 12) {
       labelCode = labelCode.slice(0, -1)
     }
-    //JsBarcode("#barcode", "Hi!");
     $timeout(function () {
       JsBarcode("#barcode")
         .options({font: "OCR-B"}) // Will affect all barcodes
@@ -123,8 +121,5 @@ angular.module('appointments')
         .render();
 
     }, 2000)
-
-  })
-  .controller('CheckOutCtrl', function (appointmentService) {
 
   });
