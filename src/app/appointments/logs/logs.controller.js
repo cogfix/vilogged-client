@@ -63,7 +63,7 @@ angular.module('appointments')
     };
 
     vm.printLabel = function () {
-      var dlg = dialogs.create('app/appointments/logs/partials/pass-template.html', 'PrintLabelCtrl', vm.item, 'lg');
+      var dlg = dialogs.create('app/appointments/logs/partials/pass-template.html', 'PrintLabelCtrl', vm.item, {size: 'md'});
       dlg.result.then(function (name) {
 
       }, function () {
@@ -120,6 +120,11 @@ angular.module('appointments')
         })
         .render();
 
-    }, 2000)
+    }, 2000);
+    $scope.printThis = function () {
+      $timeout(function () {
+        jQuery( "#printThisElement" ).print();
+      }, 200);
 
+    }
   });

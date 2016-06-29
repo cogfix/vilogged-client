@@ -49,7 +49,6 @@ angular.module('vi.camera')
           if (navigator.mozGetUserMedia) {
             videoElement.mozSrcObject = stream;
           } else {
-            var vendorURL = window.URL || window.webkitURL;
             videoElement.src = window.URL.createObjectURL(stream);
           }
           // Just to make sure it autoplays
