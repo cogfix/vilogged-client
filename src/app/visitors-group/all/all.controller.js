@@ -1,7 +1,17 @@
 'use strict';
 
 angular.module('visitorsGroup')
-  .controller('VisitorsGroupAllCtrl', function (visitorsGroupService) {
+  .controller('VisitorsGroupAllCtrl', function (
+    visitorsGroupService,
+    authService,
+    $state,
+    log
+  ) {
+    var user = authService.currentUser();
+    if (!user.is_superuser || !user.is_staff) {
+      log.error('unauthorizedAccess');
+      $state.go('users.profile');
+    }
     var vm = this;
     vm.users = [];
     vm.pagination = {

@@ -8,8 +8,16 @@ angular.module('settings')
     databaseSettings,
     ldapSettings,
     smsSettings,
-    systemSettings
+    systemSettings,
+    authService,
+    $state,
+    log
   ) {
+    var user = authService.currentUser();
+    if (!user.is_superuser && !user.is_staff) {
+      log.error('unauthorizedAccess');
+      $state.go('users.profile');
+    }
     var vm = this;
     var COLUMN = 2;
     var types = {
@@ -59,10 +67,15 @@ angular.module('settings')
 
     vm.save = function () {
       settingService.save(vm.viewModel)
-        .then(function (response) {
-          console.log(response);
+        .then(function () {
+          log.success('entrySaved');
         })
         .catch(function (error) {
+          if (Object.prototype.toString.call(error) === '[object Object]' && error.hasOwnProperty('detail')) {
+            log.error(error.detail);
+          } else {
+            log.error('unknownError');
+          }
           console.log(error);
         })
     }

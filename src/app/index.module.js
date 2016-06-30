@@ -39,8 +39,7 @@ angular
     log,
     authService,
     $window,
-    $interval,
-    utility
+    $interval
   ) {
 		$rootScope.$on('loggedIn', function (event, data) {
       $rootScope.currentUser = data.user;

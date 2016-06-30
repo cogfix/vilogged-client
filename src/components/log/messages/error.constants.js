@@ -46,5 +46,9 @@ angular.module('log')
       title: 'Server Offline',
       message: 'Please, check your connection again, it looks like you are offline',
       remedy: 'check if your internet connection or the api server is running'
+    },
+    accessDenied: {
+      title: 'Access Denied',
+      message: 'you don\'t have the right permission to view this page'
     }
   });

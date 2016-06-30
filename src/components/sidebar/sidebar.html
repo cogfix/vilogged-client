@@ -2,7 +2,7 @@
 
 <ul class="nav nav-list">
   <li ng-repeat="item in sidebarCtrl.items">
-    <a ui-sref="{{ item.link }}">
+    <a ui-sref="{{ item.link }}" ng-if="item.menu === true">
       <i class="menu-icon {{ item.icon }}"></i>
       <span class="menu-text" ng-bind="item.label"> </span>
     </a>
