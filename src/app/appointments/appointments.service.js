@@ -5,7 +5,6 @@ angular.module('appointments')
     dbService,
     validationService,
     cache,
-    pouchdb,
     $filter,
     utility,
     messenger
@@ -243,14 +242,13 @@ angular.module('appointments')
       cache.VIEW_KEY = TABLE;
       return cache;
     };
-
+  
     this.setState = function (doc) {
-      doc._id = CACHEDB;
-      return pouchdb.save(doc);
+      return localforage.setItem(CACHEDB, doc);
     };
-
+  
     this.getState = function () {
-      return pouchdb.get(CACHEDB);
+      return localforage.getItem(CACHEDB);
     };
 
     function outLookCalenderTemplate() {
@@ -329,7 +327,7 @@ angular.module('appointments')
         subject: 'Appointment Created.',
         message: msg
       });
-    }
+    };
 
     this.email = function (appointment, type) {
       var fields = self.msgFields(type, appointment);
@@ -348,5 +346,5 @@ angular.module('appointments')
         subject: 'Appointment Created.',
         message: msg
       });
-    }
+    };
   });

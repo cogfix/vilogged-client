@@ -5,7 +5,7 @@
  * @desc
  */
 angular.module('db')
-  .service('dbService', function(config, pouchDB, driverService, utility, $rootScope) {
+  .service('dbService', function(config, driverService, utility, $rootScope) {
 
     var self = this;
 

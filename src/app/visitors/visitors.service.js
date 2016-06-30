@@ -1,8 +1,7 @@
 angular.module('visitors')
   .service('visitorService', function (
     dbService,
-    validationService,
-    pouchdb
+    validationService
   ) {
     var TABLE = 'visitor'
     var CACHEDB = [TABLE, '_cache'].join('');
@@ -191,21 +190,21 @@ angular.module('visitors')
       }
       return hash;
     }
-
+  
     this.setState = function (doc) {
-      doc._id = CACHEDB;
-      return pouchdb.save(doc);
+      return localforage.setItem(CACHEDB, doc);
     };
-
+  
     this.getState = function () {
-      return pouchdb.get(CACHEDB);
+      return localforage.getItem(CACHEDB);
     };
 
   })
   .service('visitorGroupsService', function (dbService) {
     var self = this;
     var TABLE = 'visitor-group';
-
+    var CACHEDB = [TABLE, '_cache'].join('');
+    
     self.get = function (id, option) {
       return dbService.get(TABLE, id, option);
     };
@@ -221,13 +220,12 @@ angular.module('visitors')
     self.save = function (id, option) {
       return dbService.save(TABLE, id, option);
     };
-
+  
     this.setState = function (doc) {
-      doc._id = CACHEDB;
-      return pouchdb.save(doc);
+      return localforage.setItem(CACHEDB, doc);
     };
-
+  
     this.getState = function () {
-      return pouchdb.get(CACHEDB);
+      return localforage.getItem(CACHEDB);
     };
   });

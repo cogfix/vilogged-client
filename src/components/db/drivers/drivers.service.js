@@ -1,12 +1,11 @@
 angular.module('db')
-  .service('driverService', function (config, apiService, couchDBService, pouchDBbService) {
+  .service('driverService', function (config, apiService, couchDBService) {
     var self = this;
   
     self.getService = function () {
       return {
         api: apiService,
-        couchDB: couchDBService,
-        pouchDB: pouchDBbService
+        couchDB: couchDBService
       }
     };
   

@@ -4,7 +4,9 @@ angular
 	.module('viLogged', [
 		'ngSanitize',
     'ngCookies',
+    'ngAnimate',
 		'core',
+    'angular-loading-bar',
 		'breadcrumbs',
 		'sidebar',
 		'navbar',
@@ -102,4 +104,8 @@ angular
       storeName   : 'localStore', // Should be alphanumeric, with underscores.
       description : 'local storage db for viLogged'
     });
-  });
+  })
+  .config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.parentSelector = '#main-container';
+    //cfpLoadingBarProvider.spinnerTemplate = '<div><span class="fa fa-spinner">Custom Loading Message...</div>';
+  }]);
