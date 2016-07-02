@@ -14,6 +14,7 @@ angular.module('visitorsGroup')
     vm.errorMsg = {};
     vm.viewModel = {};
     vm.column = (12/COLUMN);
+    vm.isSaving = false;
 
     vm.model = visitorsGroupService.model;
 
@@ -31,21 +32,26 @@ angular.module('visitorsGroup')
     }
 
     vm.save = function () {
+      vm.isSaving = true;
       visitorsGroupService.validate(vm.viewModel)
         .then(function (response) {
           if (utility.isEmptyObject(response)) {
             visitorsGroupService.save(vm.viewModel)
-              .then(function (response) {
+              .then(function () {
+                vm.isSaving = false;
                 $state.go('visitorsGroup.all');
               })
               .catch(function (reason) {
+                vm.isSaving = false;
                 angular.merge(vm.errorMsg, reason)
               });
           } else {
+            vm.isSaving = false;
             vm.errorMsg = response;
           }
         })
         .catch(function (reason) {
+          vm.isSaving = false;
           console.log(reason);
         });
     };

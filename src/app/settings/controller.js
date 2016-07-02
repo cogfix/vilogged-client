@@ -63,14 +63,17 @@ angular.module('settings')
       })
       .catch(function (reason) {
 
-      })
+      });
 
     vm.save = function () {
+      vm.isSaving = true;
       settingService.save(vm.viewModel)
         .then(function () {
+          vm.isSaving = false;
           log.success('entrySaved');
         })
         .catch(function (error) {
+          vm.isSaving = false;
           if (Object.prototype.toString.call(error) === '[object Object]' && error.hasOwnProperty('detail')) {
             log.error(error.detail);
           } else {

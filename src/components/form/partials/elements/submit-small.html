@@ -1,6 +1,11 @@
 <div class="custom-form-save clearfix">
-  <button ng-click="formCtrl.save()" class="btn btn-success btn-xs pull-right">
-    <i class="fa fa-save"></i> Save
+  <button ng-disabled="formCtrl.isSaving" ng-click="formCtrl.save()" class="btn btn-success btn-xs pull-right">
+    <span ng-hide="formCtrl.isSaving">
+      <i class="fa fa-save"></i> Save
+    </span>
+    <span ng-show="formCtrl.isSaving">
+      <i class="fa fa-spinner fa-spin"></i> Saving
+    </span>
   </button>
   <button type="button" ng-click="formCtrl.cancel()" class="btn btn-danger btn-xs pull-right margin-10-r">
     <i class="fa fa-times"></i> Cancel

@@ -27,6 +27,7 @@ angular.module('users')
     vm.passwordMode = false;
     vm.column = (12/COLUMN);
     vm.model = _.cloneDeep(userService.model);
+    vm.isSaving = false;
     if ($state.current.name === 'users.changePassword') {
       vm.column = 12;
       vm.passwordMode = true;
@@ -78,22 +79,27 @@ angular.module('users')
     }
 
     vm.save = function () {
+      vm.isSaving = true;
       userService.validate(vm.viewModel)
         .then(function (response) {
           if (utility.isEmptyObject(response)) {
             userService.save(vm.viewModel)
               .then(function (response) {
+                vm.isSaving = false;
                 userService.updateCurrentUser(response);
                 $state.go('users.all');
               })
               .catch(function (reason) {
+                vm.isSaving = false;
                 angular.merge(vm.errorMsg, reason)
               });
           } else {
+            vm.isSaving = false;
             vm.errorMsg = response;
           }
         })
         .catch(function (reason) {
+          vm.isSaving = false;
           console.log(reason);
         });
     };
@@ -156,6 +162,7 @@ angular.module('users')
     cameraService
   ) {
     var vm = data.vm;
+    vm.isSaving = false;
     // var $timeout = data.$timeout;
     $scope.takeImage = vm.viewModel.image;
 
@@ -183,6 +190,7 @@ angular.module('users')
     }
 
     $scope.setFiles = function (element, field) {
+      vm.isSaving = true;
       var fileToUpload = element.files[0];
       if (fileToUpload.type.match('image*')) {
         var reader = new $window.FileReader();
@@ -218,7 +226,10 @@ angular.module('users')
             $scope.takeImage =  canvas.toDataURL("image/png");
           }, 1000)
         };
+        vm.isSaving = false;
         reader.readAsDataURL(fileToUpload);
+      } else {
+        vm.isSaving = false;
       }
     };
   });

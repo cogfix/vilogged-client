@@ -23,6 +23,7 @@ angular.module('appointments')
     vm.viewModel.end_time = moment().add(30, 'm').toDate();
     vm.viewModel.purpose = vm.viewModel.purpose || 'official';
     vm.teamMembers = [];
+    vm.isSaving = false;
     vm.column = (12/COLUMN);
     vm.selected = {}; // hold selected user/visitor profile from typeahead
 
@@ -55,6 +56,7 @@ angular.module('appointments')
     }
 
     vm.save = function () {
+      vm.isSaving = true;
       appointmentService.validate(vm.viewModel)
         .then(function (response) {
           validateVisitationTime();
@@ -82,18 +84,21 @@ angular.module('appointments')
                   appointmentService.sms(currentAppointment, 'created');
                   appointmentService.email(currentAppointment, 'created');
                 }
-
+                vm.isSaving = false;
                 $state.go('appointments.all');
               })
               .catch(function (reason) {
+                vm.isSaving = false;
                 reloadData();
                 angular.merge(vm.errorMsg, reason)
               });
           } else {
+            vm.isSaving = false;
             vm.errorMsg = response;
           }
         })
         .catch(function (reason) {
+          vm.isSaving = false;
           console.log(reason);
         });
     };
@@ -304,6 +309,7 @@ angular.module('appointments')
     vm.form = formService.modelToForm(vm.model, COLUMN);
 
     vm.save = function () {
+      vm.isSaving = true;
       if (!vm.viewModel._id) {
         vm.viewModel.phone = visitorService.getPhone(vm.viewModel['phone.prefix'], vm.viewModel['phone.suffix']);
         visitorService.validate(vm.viewModel)
@@ -322,9 +328,11 @@ angular.module('appointments')
               }
               visitorService.save(vm.viewModel)
                 .then(function (visitorProfile) {
+                  vm.isSaving = false;
                   $modalInstance.close(visitorProfile);
                 })
                 .catch(function (reason) {
+                  vm.isSaving = false;
                   angular.merge(vm.errorMsg, reason);
                 });
             } else {
@@ -335,6 +343,7 @@ angular.module('appointments')
             console.log(reason);
           });
       } else {
+        vm.isSaving = false;
         $modalInstance.close(vm.viewModel);
       }
     };

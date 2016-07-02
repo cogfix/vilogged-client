@@ -14,7 +14,7 @@ angular.module('departments')
     vm.errorMsg = {};
     vm.viewModel = {};
     vm.column = (12/COLUMN);
-
+    vm.isSaving = false;
     vm.model = departmentService.model;
 
     vm.form = formService.modelToForm(vm.model, COLUMN);
@@ -31,21 +31,26 @@ angular.module('departments')
     }
 
     vm.save = function () {
+      vm.isSaving = true;
       departmentService.validate(vm.viewModel)
         .then(function (response) {
           if (utility.isEmptyObject(response)) {
             departmentService.save(vm.viewModel)
               .then(function (response) {
+                vm.isSaving = false;
                 $state.go('departments.all');
               })
               .catch(function (reason) {
+                vm.isSaving = false;
                 angular.merge(vm.errorMsg, reason)
               });
           } else {
+            vm.isSaving = false;
             vm.errorMsg = response;
           }
         })
         .catch(function (reason) {
+          vm.isSaving = false;
           console.log(reason);
         });
     };

@@ -17,6 +17,7 @@ angular.module('visitors')
     var COLUMN = 2;
     var vm = this;
     vm.upload = {status: true};
+    vm.isSaving = false;
     vm.errorMsg = {};
     vm.viewModel = {};
     vm.viewModel.company = vm.viewModel.company || {};
@@ -52,6 +53,7 @@ angular.module('visitors')
       });
 
     vm.save = function () {
+      vm.isSaving = true;
       vm.viewModel.phone = visitorService.getPhone(vm.viewModel['phone.prefix'], vm.viewModel['phone.suffix']);
       visitorService.validate(vm.viewModel)
         .then(function (response) {
@@ -69,16 +71,20 @@ angular.module('visitors')
             }
             visitorService.save(vm.viewModel)
               .then(function () {
+                vm.isSaving = false;
                 $state.go('visitors.all');
               })
               .catch(function (reason) {
+                vm.isSaving = false;
                 angular.merge(vm.errorMsg, reason);
               });
           } else {
+            vm.isSaving = false;
             vm.errorMsg = response;
           }
         })
         .catch(function (reason) {
+          vm.isSaving = false;
           console.log(reason);
         });
     };
@@ -174,6 +180,7 @@ angular.module('visitors')
     cameraService
   ) {
     var vm = data.vm;
+    vm.isSaving = false;
     // var $timeout = data.$timeout;
     $scope.takeImage = vm.viewModel.image;
 
@@ -201,6 +208,7 @@ angular.module('visitors')
     }
 
     $scope.setFiles = function (element, field) {
+      vm.isSaving = true;
       var fileToUpload = element.files[0];
       if (fileToUpload.type.match('image*')) {
         var reader = new $window.FileReader();
@@ -236,7 +244,10 @@ angular.module('visitors')
             $scope.takeImage =  canvas.toDataURL("image/png");
           }, 1000)
         };
+        vm.isSaving = false;
         reader.readAsDataURL(fileToUpload);
+      } else {
+        vm.isSaving = false;
       }
     };
 

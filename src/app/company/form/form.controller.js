@@ -13,6 +13,7 @@ angular.module('company')
     vm.errorMsg = {};
     vm.viewModel = {};
     vm.column = (12/COLUMN);
+    vm.isSaving = false;
 
     vm.model = companyService.model;
 
@@ -30,22 +31,26 @@ angular.module('company')
     }
 
     vm.save = function () {
+      vm.isSaving = true;
       companyService.validate(vm.viewModel)
         .then(function (response) {
-          console.log(response);
           if (utility.isEmptyObject(response)) {
             companyService.save(vm.viewModel)
-              .then(function (response) {
+              .then(function () {
+                vm.isSaving = false;
                 $state.go('company.all');
               })
               .catch(function (reason) {
+                vm.isSaving = false;
                 angular.merge(vm.errorMsg, reason)
               });
           } else {
+            vm.isSaving = false;
             vm.errorMsg = response;
           }
         })
         .catch(function (reason) {
+          vm.isSaving = false;
           console.log(reason);
         });
     };

@@ -25,6 +25,10 @@ angular.module('log')
     recordRemovedSuccessfully: {
       title: 'Record Removed',
       message: 'Record Removed Successfully'
+    },
+    entrySaved: {
+      title: 'Record Saved',
+      message: 'Settings Successfully saved'
     }
 
   });

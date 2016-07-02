@@ -1,3 +1,12 @@
+<style>
+  #loading-bar .bar {
+    background: #000000;
+    top: 0;
+    left: 0;
+    height: 5px;
+  }
+</style>
+<div id="site-loading-bar-custom"></div>
 <div class="main-container">
   <div class="main-content">
     <div class="row">
@@ -44,9 +53,15 @@
                           <span class="lbl"> Remember Me</span>
                         </label>
 
-                        <button type="submit" class="width-35 pull-right btn btn-sm btn-primary">
-                          <i class="ace-icon fa fa-key"></i>
-                          <span class="bigger-110">Login</span>
+                        <button ng-disabled="loginCtrl.loginClicked" type="submit" class="width-35 pull-right btn btn-sm btn-primary">
+                          <span ng-hide="loginCtrl.loginClicked">
+                            <i class="ace-icon fa fa-key"></i>
+                            <span class="bigger-110">Login</span>
+                          </span>
+                          <span ng-show="loginCtrl.loginClicked">
+                            <i class="ace-icon fa fa-spinner fa-spin"></i>
+                            <span class="bigger-110">Login</span>
+                          </span>
                         </button>
                       </div>
 
