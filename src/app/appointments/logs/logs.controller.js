@@ -103,10 +103,29 @@ angular.module('appointments')
     };
 
   })
-  .controller('PrintLabelCtrl', function ($scope, $modalInstance, data, $timeout) {
+  .controller('PrintLabelCtrl', function (
+    $scope,
+    $modalInstance,
+    data,
+    $timeout,
+    appointmentService
+  ) {
     $scope.appointment = data;
     var appointment = $scope.appointment.logs[0] || {};
-    var labelCode = appointment.label_code.toString();
+    var labelCode =  (new Date().getTime()).toString().slice(0, -1);
+    if (appointment.label_code) {
+      labelCode = appointment.label_code.toString();
+    } else {
+      // save label if not exists
+      appointmentService.saveLog({
+        appointment: appointment._id,
+        label_code: labelCode
+      })
+        .catch(function (reason) {
+          console.log(reason);
+        });
+    }
+
     if (labelCode.length > 12) {
       labelCode = labelCode.slice(0, -1)
     }
