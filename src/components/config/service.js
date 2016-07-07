@@ -19,10 +19,26 @@ angular.module('m.config')
     };
 
     this.api = {
-      url: self.apiUrl()
+      url: self.apiUrl(),
+      baseUrl: getBaseUrl()
     };
 
     function isEmpty (value) {
       return value === undefined || value === '' || value === null;
     }
+
+    function getBaseUrl () {
+      var protocol = $window.location.protocol;
+      var hostname = $window.location.hostname;
+      var port = $window.location.port;
+
+      return [
+        protocol,
+        '//',
+        hostname,
+        ':',
+        port
+      ].join('');
+    }
+
   });
