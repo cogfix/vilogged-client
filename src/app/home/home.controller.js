@@ -8,13 +8,40 @@ angular.module('viLogged')
 		dialog,
 		appointmentService,
     $rootScope,
-    $state
+    $state,
+    $compile,
+    $scope
 	) {
     if (!$rootScope.currentUser.is_superuser && !$rootScope.currentUser.is_staff) {
       $state.go('users.profile');
     }
 		var vm = this; //view models
     vm.eventSources = [];
+
+    function getCalendarEvents (appointments) {
+      appointments = appointments || [];
+      var events = [];
+      var i = appointments.length;
+      while (i--) {
+        var appointment = appointments[i];
+        events.unshift({
+          id: appointment._id,
+          start: new Date([appointment.start_date, appointment.start_time].join(' ')),
+          end: new Date([appointment.start_date, appointment.end_time].join(' ')),
+          allDay: false,
+          title: [
+            appointment.visitor.first_name,
+            appointment.visitor.last_name,
+            'and',
+            appointment.host.first_name,
+            appointment.host.last_name
+          ].join(' ')
+        })
+      }
+      vm.eventSources.push(events);
+    }
+
+
     vm.uiConfig = {
       calendar:{
         height: 390,
@@ -25,10 +52,24 @@ angular.module('viLogged')
           right: 'today prev,next'
         },
         dayClick: function (day) {
-
+          console.log(day);
         },
-        eventDrop: function () {},
-        eventResize: function () {}
+        eventClick: function (e) {
+         $state.go('appointments.detail', {
+           _id: e.id
+         })
+        },
+        eventDrop: function (e) {
+          console.log(e);
+        },
+        eventResize: function (e) {
+          console.log(e);
+        },
+        eventRender: function( event, element, view ) {
+          element.attr({'tooltip': event.title,
+            'tooltip-append-to-body': true});
+          $compile(element)($scope);
+        }
       }
     };
 
@@ -43,6 +84,7 @@ angular.module('viLogged')
       appointmentService.upcoming()
         .then(function (response) {
           vm.upcoming = response.results;
+          getCalendarEvents(vm.upcoming);
         })
     };
 
