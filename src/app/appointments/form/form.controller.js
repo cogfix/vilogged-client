@@ -283,7 +283,8 @@ angular.module('appointments')
     $modalInstance,
     data,
     visitorService,
-    formService
+    formService,
+    utility
   ) {
     var vm = this;
     var COLUMN = 1;
@@ -396,53 +397,44 @@ angular.module('appointments')
 
     vm.foundInList = {};
 
+    function searchName (query) {
+      return visitorService.all({q: query, 'only-fields': 'first_name,last_name,phone'})
+        .then(function (response) {
+          return response.results.map(function (row) {
+            vm.foundInList[row._id] = row;
+            return {name: [[row.last_name, row.first_name].join(' '), row.phone].join('<br>'), _id: row._id};
+          });
+        })
+        .catch(function (reason) {
+          console.log(reason);
+        });
+    }
+
+    function onNameSelect ($item) {
+      vm.viewModel = vm.foundInList[$item._id];
+      vm.viewModel['company.name'] = vm.viewModel.company.name;
+      vm.viewModel['company.address'] = vm.viewModel.company.address;
+      var phone = visitorService.recoverPhone(vm.viewModel.phone);
+      vm.viewModel = angular.merge({}, vm.viewModel, phone);
+    }
+
     vm.typeahead = {
       last_name: {
-        get: function (query) {
-          return visitorService.all({q: query, 'only-fields': 'first_name,last_name,phone'})
-            .then(function (response) {
-              return response.results.map(function (row) {
-                vm.foundInList[row._id] = row;
-                return {name: [row.last_name, row.first_name].join(' '), _id: row._id};
-              });
-            })
-            .catch(function (reason) {
-              console.log(reason);
-            });
-        },
-        onSelect: function ($item) {
-          console.log($item);
-        },
+        get: searchName,
+        onSelect: onNameSelect,
         editable: true,
         disabled: false
+      },
+      first_name: {
+        get: searchName,
+        onSelect: onNameSelect,
+        editable: true
       },
       'phone.suffix': {
         get: function (entry) {
           var prefix = vm.viewModel['phone.prefix'] || '';
           console.log(vm.viewModel)
           var query = [prefix, entry].join('')
-          return visitorService.all({q: query, 'only-fields': 'first_name,last_name,phone'})
-            .then(function (response) {
-              return response.results.map(function (row) {
-                vm.foundInList[row._id] = row;
-                return {name: [[row.last_name, row.first_name].join(' '), row.phone].join('<br>'), _id: row._id};
-              });
-            })
-            .catch(function (reason) {
-              console.log(reason);
-            });
-        },
-        onSelect: function ($item) {
-          vm.viewModel = vm.foundInList[$item._id];
-          vm.viewModel['company.name'] = vm.viewModel.company.name;
-          vm.viewModel['company.address'] = vm.viewModel.company.address;
-          var phone = visitorService.recoverPhone(vm.viewModel.phone);
-          vm.viewModel = angular.merge({}, vm.viewModel, phone);
-        },
-        editable: true
-      },
-      first_name: {
-        get: function (query) {
           return visitorService.all({q: query, 'only-fields': 'first_name,last_name,phone'})
             .then(function (response) {
               return response.results.map(function (row) {

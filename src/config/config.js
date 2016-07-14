@@ -14,7 +14,7 @@ angular.module('config', [])
       "api":
         {
           "url":"",
-          "port":"8000",
+          "port":"7010",
           "path":"/api/v1",
           "auth":""
         },
