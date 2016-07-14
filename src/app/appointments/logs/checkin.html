@@ -39,12 +39,15 @@
   <button
     class="infobox infobox-blue3 pointer"
     ng-click="logCtrl.printLabel()"
+    ng-if="(logCtrl.item.status === logCtrl.status.IN_PROGRESS || logCtrl.item.status === logCtrl.status.UPCOMING)
+    && logCtrl.can.print"
     >
     <div class="infobox-icon">
       <i class="ace-icon fa fa-print"></i>
     </div>
 
-    <div class="infobox-data">
+    <div
+      class="infobox-data">
       <span class="infobox-data-content">
         <h3>Print Badge</h3>
       </span>
@@ -53,13 +56,13 @@
   <button
     class="btn btn-success pull-right"
     ng-click="logCtrl.checkIn(item)"
-    ng-if="logCtrl.item.status === logCtrl.status.UPCOMING">
+    ng-if="(logCtrl.item.status === logCtrl.status.UPCOMING) && logCtrl.can.checkIn">
     <i class="fa fa-check-square-o"></i> Check In
   </button>
   <button
     class="btn btn-success pull-right"
     ng-click="logCtrl.checkOut(item)"
-    ng-if="logCtrl.item.status === logCtrl.status.IN_PROGRESS">
+    ng-if="logCtrl.item.status === logCtrl.status.IN_PROGRESS && logCtrl.can.checkOut">
     <i class="fa fa-check-square-o"></i> Check Out
   </button>
 

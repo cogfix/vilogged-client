@@ -5,10 +5,18 @@ angular.module('appointments')
     appointmentService,
     $stateParams,
     $state,
-    dialogs
+    dialogs,
+    authService
   ) {
     var vm = this;
+    var currentUser = authService.currentUser();
     vm.teamMembers = [];
+    vm.can = {
+      print: (currentUser.is_superuser || currentUser.is_staff),
+      checkIn:  (currentUser.is_superuser || currentUser.is_staff),
+      checkOut:  (currentUser.is_superuser || currentUser.is_staff)
+    };
+
     vm.status = appointmentService.status;
     appointmentService.get($stateParams._id)
       .then(function (response) {
