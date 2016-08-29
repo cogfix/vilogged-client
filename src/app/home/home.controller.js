@@ -77,6 +77,7 @@ angular.module('viLogged')
 			appointmentService.inProgress()
         .then(function (response) {
           vm.inProgress = response.results;
+          getCalendarEvents(vm.inProgress);
         });
 		};
 
