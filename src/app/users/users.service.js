@@ -153,7 +153,7 @@ angular.module('users')
       return validationService.validateField(self.model[fieldName], fieldData, id);
     };
 
-    self.validate = function (object) {
+    self.validate = function (object, model) {
       var passw = {};
       if (object.hasOwnProperty('password')) {
         if (object.password === '') {
@@ -163,7 +163,8 @@ angular.module('users')
           passw.password2 = ['Passwords does not match'];
         }
       }
-      return validationService.validateFields(self.model, object, object._id)
+      model = model || self.model;
+      return validationService.validateFields(model, object, object._id)
         .then(function (response) {
           return validationService.eliminateEmpty(angular.merge({}, response, passw));
         });
