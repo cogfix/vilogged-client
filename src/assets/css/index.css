@@ -276,18 +276,20 @@ ul.vi-nav{
 }
 #loading-bar .bar {
   background: #000000;
-  top: inherit;
-  left: inherit;
   width: 100%;
   height: 5px;
+  /*top: inherit;
+  left: inherit;
+  */
 }
 #loading-bar-spinner {
   display: block;
   position: fixed;
   z-index: 10002;
-  top: inherit;
-  left: inherit;
   right: 10px;
+  /*top: inherit;
+  left: inherit;
+  */
 }
 .fc-day {
   cursor: pointer;
