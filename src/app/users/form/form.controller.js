@@ -80,7 +80,7 @@ angular.module('users')
 
     vm.save = function () {
       vm.isSaving = true;
-      userService.validate(vm.viewModel)
+      userService.validate(vm.viewModel, vm.model)
         .then(function (response) {
           if (utility.isEmptyObject(response)) {
             userService.save(vm.viewModel)
