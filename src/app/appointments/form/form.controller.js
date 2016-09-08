@@ -15,6 +15,7 @@ angular.module('appointments')
   ) {
     var COLUMN = 2;
     var vm = this;
+    var currentUser = userService.currentUser();
     vm.errorMsg = {};
     vm.viewModel = {};
     vm.viewModel.start_date = new Date();
@@ -29,6 +30,13 @@ angular.module('appointments')
 
     vm.model = appointmentService.model;
     vm.form = formService.modelToForm(vm.model, COLUMN);
+    
+    if (!currentUser.is_superuser && !currentUser.is_staff) {
+      vm.selected.host = currentUser;
+      vm.viewModel.host = [currentUser.last_name, currentUser.first_name].join(' ');
+      vm.model.host.formType = 'text';
+    }
+    
     vm.visitor = {
       exists: !formService.isEmpty($stateParams.visitor),
       _id: $stateParams.visitor
@@ -192,7 +200,7 @@ angular.module('appointments')
           vm.selected.host = $item;
         },
         editable: false,
-        disabled: false
+        disabled: !currentUser.is_superuser || !currentUser.is_staff
       },
       visitor: {
         get: function (query) {
@@ -236,6 +244,9 @@ angular.module('appointments')
 
     function reloadData (response) {
       if (response) {
+        if (response.is_expired) {
+          $state.go('appointments.all');
+        }
         vm.viewModel = response;
         vm.selected.host = vm.viewModel.host;
         vm.selected.visitor = vm.viewModel.visitor;

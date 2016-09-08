@@ -12,8 +12,17 @@ angular.module('appointments')
       })
       .state('appointments.checkout', {
         url: '/checkout?_id',
-        templateUrl: 'app/appointments/logs/checkout.html',
+        templateUrl: 'app/appointments/logs/checkin.html',
         controller: 'CheckOutCtrl',
-        controllerAs: 'logCtrl'
+        controllerAs: 'logCtrl',
+        resolve: {
+          appointmentResponse: function (appointmentService, $stateParams, log) {
+            return appointmentService.get($stateParams._id)
+              .catch(function (reason) {
+                log.error(reason.detail);
+                return {};
+              });
+          }
+        }
       });
   });

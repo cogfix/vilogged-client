@@ -16,6 +16,7 @@ angular.module('appointments')
     var vm = this;
     var params = currentState || {};
     vm.permissions = permissions;
+    vm.currentUser = userService.currentUser();
     vm.items = [];
     vm.search = {};
     vm.inProgress = false;
@@ -118,7 +119,7 @@ angular.module('appointments')
         var col = sort(column);
         option.order_by = col[column].reverse ? column : ['-', column].join('');
       }
-      if (filterParams && Object.prototype.toString.call(filterParams) === '[object Object]') {
+      if (filterParams && utility.is.object(filterParams)) {
         for (var key in filterParams) {
           if (filterParams.hasOwnProperty(key)) {
             option[key] = filterParams[key];

@@ -132,21 +132,21 @@
                   </button>
                   <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close" style="">
                     <li>
-                      <a title="" data-rel="tooltip" class="tooltip-info" ui-sref="users.detail({_id: item._id})" data-original-title="View">
+                      <a title="" data-rel="tooltip" class="tooltip-info" ui-sref="users.detail({_id: item._id})" ng-if="allCtrl.permissions.read" data-original-title="View">
                         <span class="blue">
 												  <i class="ace-icon fa fa-search-plus bigger-120"></i>
                         </span>
                       </a>
                     </li>
                     <li>
-                      <a title="" data-rel="tooltip" class="tooltip-success" ui-sref="users.edit({_id: item._id})" data-original-title="Edit">
+                      <a title="" data-rel="tooltip" class="tooltip-success" ui-sref="users.edit({_id: item._id})" ng-if="allCtrl.permissions.update" data-original-title="Edit">
                         <span class="green">
                           <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
                         </span>
                       </a>
                     </li>
                     <li>
-                      <a title="" data-rel="tooltip" class="tooltip-error" ng-click="allCtrl.remove(item._id)" data-original-title="Delete">
+                      <a title="" data-rel="tooltip" class="tooltip-error" ng-click="allCtrl.remove(item._id)" ng-if="allCtrl.permissions.remove" data-original-title="Delete">
                         <span class="red">
                           <i class="ace-icon fa fa-trash-o bigger-120"></i>
                         </span>

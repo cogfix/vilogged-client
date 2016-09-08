@@ -150,5 +150,17 @@ angular.module('utility')
       var now = $filter('date')(new Date(), 'yyyy-MM-dd-HH-mm-ss');
       return prefix + '-' + now + ext;
     };
+    
+    this.is = {
+      object: function (object) {
+        return Object.prototype.toString.call(object) === '[object Object]';
+      },
+      array: function () {
+        return Object.prototype.toString.call(object) === '[object Array]';
+      },
+      string: function () {
+        return Object.prototype.toString.call(object) === '[object String]';
+      }
+    }
 
   });

@@ -164,17 +164,17 @@
             </td>
             <td>
               <div class="hidden-sm hidden-xs action-buttons">
-                <a ng-if="item.status === allCtrl.status.UPCOMING" class="badge badge-info" ui-sref="appointments.checkin({_id: item._id})">
+                <a ng-if="item.status === allCtrl.status.UPCOMING && (allCtrl.currentUser.is_superuser || allCtrl.currentUser.is_staff)" class="badge badge-info" ui-sref="appointments.checkin({_id: item._id})">
                   Checkin
                 </a>
-                <a ng-if="item.status === allCtrl.status.IN_PROGRESS" class="badge badge-info" ui-sref="appointments.checkin({_id: item._id})">
+                <a ng-if="item.status === allCtrl.status.IN_PROGRESS && (allCtrl.currentUser.is_superuser || allCtrl.currentUser.is_staff)" class="badge badge-info" ui-sref="appointments.checkout({_id: item._id})">
                   Check out
                 </a>
                 <a ui-sref="appointments.detail({_id: item._id})" class="blue">
                   <i class="ace-icon fa fa-eye bigger-130"></i>
                 </a>
 
-                <a ui-sref="appointments.edit({_id: item._id})" class="green">
+                <a ng-if="item.status !== allCtrl.status.EXPIRED" ui-sref="appointments.edit({_id: item._id})" class="green">
                   <i class="ace-icon fa fa-pencil bigger-130"></i>
                 </a>
 
@@ -196,14 +196,14 @@
                         </span>
                       </a>
                     </li>
-                    <li>
+                    <li ng-if="item.status !== allCtrl.status.EXPIRED && allCtrl.permissions.update">
                       <a title="" data-rel="tooltip" class="tooltip-success" ui-sref="appointments.edit({_id: item._id})" data-original-title="Edit">
                         <span class="green">
                           <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
                         </span>
                       </a>
                     </li>
-                    <li>
+                    <li ng-if="allCtrl.permissions.remove">
                       <a title="" data-rel="tooltip" class="tooltip-error" ui-sref="appointments.remove({_id: item._id})" data-original-title="Delete">
                         <span class="red">
                           <i class="ace-icon fa fa-trash-o bigger-120"></i>

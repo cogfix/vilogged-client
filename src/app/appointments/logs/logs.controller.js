@@ -6,7 +6,9 @@ angular.module('appointments')
     $stateParams,
     $state,
     dialogs,
-    authService
+    authService,
+    appointmentLogsService,
+    log
   ) {
     var vm = this;
     var currentUser = authService.currentUser();
@@ -28,88 +30,44 @@ angular.module('appointments')
       });
 
     vm.checkIn = function () {
-      appointmentService.saveLog({
-        checked_in: new Date().toJSON(),
-        appointment: vm.item._id,
-        label_code: (new Date().getTime()).toString().slice(0, -1)
-      })
-        .then(function () {
-          $state.go('appointments.all');
-        })
-        .catch(function (reason) {
-          console.log(reason);
-          if (Object.prototype.toString.call(reason) === '[object Object]' && reason.detail) {
-            log.error(reason.detail || reason);
-          } else {
-            log.error('unknownError');
-          }
-        });
+      appointmentLogsService.checkIn(vm, appointmentService, $state, log);
     };
 
     vm.checkOut = function () {
-      var currentLog =  angular.copy(vm.item.latest);
-      var appointment = angular.copy(vm.item);
-      appointment.visitor = vm.item.visitor._id;
-      appointment.host = vm.item.host._id;
-      appointment.is_expired = true;
-      currentLog.check_out = new Date().toJSON();
-      appointmentService.saveLog(currentLog)
-        .then(function () {
-          return appointmentService.save(appointment);
-        })
-        .then(function () {
-          $state.go('appointments.all');
-        })
-        .catch(function (reason) {
-          console.log(reason);
-          if (Object.prototype.toString.call(reason) === '[object Object]' && reason.detail) {
-            log.error(reason.detail || reason);
-          } else {
-            log.error('unknownError');
-          }
-        });
+      appointmentLogsService.checkOut(vm, appointmentService, $state, log);
     };
 
     vm.printLabel = function () {
-      var dlg = dialogs.create('app/appointments/logs/partials/pass-template.html', 'PrintLabelCtrl', vm.item, {size: 'md'});
-      dlg.result.then(function (name) {
-
-      }, function () {
-
-      });
+      appointmentService.get($stateParams._id)
+        .then(function (response) {
+          vm.item = response;
+          var dlg = dialogs.create('app/appointments/logs/partials/pass-template.html', 'PrintLabelCtrl', response, {size: 'md'});
+          dlg.result.then(function (name) {
+    
+          }, function () {
+    
+          });
+        })
+        .catch(function (reason) {
+      
+        });
     };
 
     vm.updateApp = function (appointment, type) {
-      console.log(appointment);
-      var currentAppointment = angular.copy(vm.item);
-      appointment.is_approved = type === 'true';
-      appointment.host = vm.item.host._id;
-      appointment.visitor = vm.item.visitor._id;
-      appointmentService.save(appointment)
-        .then(function (response) {
-          if (response.is_approved === true) {
-            vm.item.status = appointmentService.status.UPCOMING;
-          } else if (response.is_approved === false) {
-            vm.item.status = appointmentService.status.REJECTED;
-          }
-          vm.item._rev = response._rev;
-          vm.item.is_approved = response.is_approved;
-          vm.item.is_expired = response.is_expired;
-          if (vm.item.status === appointmentService.status.UPCOMING) {
-            appointmentService.sms(currentAppointment, 'approval');
-            appointmentService.email(currentAppointment, 'approval');
-          }
-        })
-        .catch(function (reason) {
-          console.log(reason);
-          if (Object.prototype.toString.call(reason) === '[object Object]' && reason.detail) {
-            log.error(reason.detail || reason);
-          } else {
-            log.error('unknownError');
-          }
-        })
+      appointmentLogsService.updateApp(vm, appointment, type,  appointmentService);
     };
 
+  })
+  .controller('CheckOutCtrl', function (
+    appointmentService,
+    $state,
+    appointmentLogsService,
+    appointmentResponse,
+    log
+  ) {
+    var vm = this;
+    vm.item = appointmentResponse;
+    appointmentLogsService.checkOut(vm, appointmentService, $state, log);
   })
   .controller('PrintLabelCtrl', function (
     $scope,
@@ -126,7 +84,7 @@ angular.module('appointments')
     } else {
       // save label if not exists
       appointmentService.saveLog({
-        appointment: appointment._id,
+        appointment: data._id,
         label_code: labelCode
       })
         .catch(function (reason) {
