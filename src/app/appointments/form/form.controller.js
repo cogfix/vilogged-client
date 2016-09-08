@@ -28,7 +28,7 @@ angular.module('appointments')
     vm.column = (12/COLUMN);
     vm.selected = {}; // hold selected user/visitor profile from typeahead
 
-    vm.model = appointmentService.model;
+    vm.model =  _.cloneDeep(appointmentService.model);
     vm.form = formService.modelToForm(vm.model, COLUMN);
     
     if (!currentUser.is_superuser && !currentUser.is_staff) {

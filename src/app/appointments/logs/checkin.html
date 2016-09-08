@@ -193,8 +193,10 @@
               <div>
                 <!-- #section:pages/profile.picture -->
             <span class="profile-picture">
-              <img ng-if="!logCtrl.item.visitor.image" id="avatar" class="editable img-responsive" alt="" src="../assets/avatars/profile-pic.jpg" />
-              <img style="max-height: 180px" ng-if="logCtrl.item.visitor.image" id="avatar" class="editable img-responsive" alt="" ng-src="{{ logCtrl.item.visitor.image }}" />
+              <a ui-sref="visitors.edit({_id: logCtrl.item.visitor._id, app: logCtrl.item._id})" nf-if="logCtrl.currentUser.is_superuser || logCtrl.currentUser.is_staff">
+                <img ng-if="!logCtrl.item.visitor.image" id="avatar" class="editable img-responsive" alt="" src="../assets/avatars/profile-pic.jpg" />
+                <img style="max-height: 180px" ng-if="logCtrl.item.visitor.image" id="avatar" class="editable img-responsive" alt="" ng-src="{{ logCtrl.item.visitor.image }}" />
+              </a>
             </span>
 
                 <!-- /section:pages/profile.picture -->

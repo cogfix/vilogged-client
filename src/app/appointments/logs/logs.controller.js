@@ -11,7 +11,7 @@ angular.module('appointments')
     log
   ) {
     var vm = this;
-    var currentUser = authService.currentUser();
+    var currentUser = vm.currentUser = authService.currentUser();
     vm.teamMembers = [];
     vm.can = {
       print: (currentUser.is_superuser || currentUser.is_staff),

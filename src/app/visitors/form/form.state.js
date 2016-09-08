@@ -13,7 +13,7 @@ angular.module('visitors')
       })
       .state('visitors.edit', {
         parent: 'visitors',
-        url: '/edit?_id&visitor',
+        url: '/edit?_id&app',
         templateUrl: 'app/visitors/form/form.html',
         controller: 'VFormCtrl',
         controllerAs: 'formCtrl',

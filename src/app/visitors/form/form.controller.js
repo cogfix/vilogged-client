@@ -72,7 +72,14 @@ angular.module('visitors')
             visitorService.save(vm.viewModel)
               .then(function () {
                 vm.isSaving = false;
-                $state.go('visitors.all');
+                if ($stateParams.app) {
+                  $state.go('appointments.detail', {
+                    _id: $stateParams.app
+                  });
+                } else {
+                  $state.go('visitors.all');
+                }
+                
               })
               .catch(function (reason) {
                 vm.isSaving = false;
