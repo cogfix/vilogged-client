@@ -39,7 +39,7 @@ angular.module('utility')
     };
 
     this.isEmptyObject = function (obj) {
-      return toString.call(obj) === '[object Object]' && Object.keys(obj).length === 0;
+      return Object.prototype.toString.call(obj) === '[object Object]' && Object.keys(obj).length === 0;
     };
 
     this.contains = function (str, subStr) {
@@ -155,10 +155,10 @@ angular.module('utility')
       object: function (object) {
         return Object.prototype.toString.call(object) === '[object Object]';
       },
-      array: function () {
+      array: function (object) {
         return Object.prototype.toString.call(object) === '[object Array]';
       },
-      string: function () {
+      string: function (object) {
         return Object.prototype.toString.call(object) === '[object String]';
       }
     }

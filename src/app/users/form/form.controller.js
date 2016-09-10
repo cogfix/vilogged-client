@@ -115,7 +115,7 @@ angular.module('users')
             return response;
           })
           .then(function (response) {
-            if (toString.call(response) === '[object Object]') {
+            if (utility.is.object(response)) {
               vm.errorMsg['password'] = response.password || [];
               vm.errorMsg['password2'] = response.password2 || [];
             } else {

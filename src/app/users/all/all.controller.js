@@ -35,7 +35,7 @@ angular.module('users')
     }
     init();
     function sort (column) {
-      if (vm.orderByColumn.hasOwnProperty(column) && Object.prototype.toString.call(vm.orderByColumn[column]) === '[object Object]') {
+      if (vm.orderByColumn.hasOwnProperty(column) && utility.is.object(vm.orderByColumn[column])) {
         vm.orderByColumn[column].reverse = !vm.orderByColumn[column].reverse;
       } else {
         vm.orderByColumn = {};
@@ -51,7 +51,7 @@ angular.module('users')
 
     vm.updateView = function (input) {
       var urlParams = input || {};
-      if (Object.prototype.toString.call(input) === '[object String]') {
+      if (utility.is.string(input)) {
         urlParams = {column: input};
       }
       vm.inProgress = true;
@@ -119,7 +119,7 @@ angular.module('users')
         var col = sort(column);
         option.order_by = col[column].reverse ? column : ['-', column].join('');
       }
-      if (filterParams && Object.prototype.toString.call(filterParams) === '[object Object]') {
+      if (filterParams && utility.is.object(filterParams)) {
         for (var key in filterParams) {
           if (filterParams.hasOwnProperty(key)) {
             option[key] = filterParams[key];

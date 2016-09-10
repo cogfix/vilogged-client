@@ -41,7 +41,8 @@ angular
     log,
     authService,
     $window,
-    $interval
+    $interval,
+    utility
   ) {
 		$rootScope.$on('loggedIn', function (event, data) {
       $rootScope.currentUser = data.user;
@@ -51,7 +52,7 @@ angular
         $interval.cancel($rootScope.resetTimer);
       }
       if (
-        Object.prototype.toString.call($rootScope.currentUser) === '[object Object]' &&
+        utility.is.object($rootScope.currentUser) &&
         (Object.keys($rootScope.currentUser)).length > 0
       ) {
         //nothing here
@@ -60,7 +61,7 @@ angular
           .then(function (response) {
             if (
               response !== null && response !== undefined &&
-              Object.prototype.toString.call(response) === '[object Object]' &&
+              utility.is.object(response) === '[object Object]' &&
               response._id
             ) {
               $rootScope.currentUser = response;

@@ -34,7 +34,7 @@ angular.module('appointments')
     }
     init();
     function sort (column) {
-      if (vm.orderByColumn.hasOwnProperty(column) && Object.prototype.toString.call(vm.orderByColumn[column]) === '[object Object]') {
+      if (vm.orderByColumn.hasOwnProperty(column) && utility.is.object(vm.orderByColumn[column])) {
         vm.orderByColumn[column].reverse = !vm.orderByColumn[column].reverse;
       } else {
         vm.orderByColumn = {};
@@ -50,7 +50,7 @@ angular.module('appointments')
 
     vm.updateView = function (input) {
       var urlParams = input || {};
-      if (Object.prototype.toString.call(input) === '[object String]') {
+      if (utility.is.string(input)) {
         urlParams = {column: input};
       }
       vm.inProgress = true;

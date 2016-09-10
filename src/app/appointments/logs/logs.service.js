@@ -15,7 +15,7 @@ angular.module('appointments')
         })
         .catch(function (reason) {
           console.log(reason);
-          if (Object.prototype.toString.call(reason) === '[object Object]' && reason.detail) {
+          if (utility.is.object(reason) && reason.detail) {
             log.error(reason.detail || reason);
           } else {
             log.error('unknownError');

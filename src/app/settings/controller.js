@@ -11,6 +11,7 @@ angular.module('settings')
     systemSettings,
     authService,
     $state,
+    utility,
     log
   ) {
     var user = authService.currentUser();
@@ -74,7 +75,7 @@ angular.module('settings')
         })
         .catch(function (error) {
           vm.isSaving = false;
-          if (Object.prototype.toString.call(error) === '[object Object]' && error.hasOwnProperty('detail')) {
+          if (utility.is.object(error) && error.hasOwnProperty('detail')) {
             log.error(error.detail);
           } else {
             log.error('unknownError');
