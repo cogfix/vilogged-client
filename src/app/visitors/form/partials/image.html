@@ -1,0 +1,9 @@
+<div class="row">
+  <div class="col-sm-3 col-sm-offset-9">
+    <span class="margin-10-b">Click image to edit </span>
+     <span class="profile-picture pointer" ng-click="formCtrl.openImageDialog()">
+       <img ng-if="!formCtrl.viewModel.image" class="editable img-responsive" alt="" src="../assets/avatars/place_holder.jpg"/>
+       <img ng-if="formCtrl.viewModel.image" id="avatar" class="editable img-responsive" alt="" ng-src="{{ formCtrl.viewModel.image }}"/>
+     </span>
+  </div>
+</div>

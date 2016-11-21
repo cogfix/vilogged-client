@@ -1,0 +1,68 @@
+<div class="navbar-container" id="navbar-container">
+  <!-- #section:basics/sidebar.mobile.toggle -->
+  <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+    <span class="sr-only">Toggle sidebar</span>
+
+    <span class="icon-bar"></span>
+
+    <span class="icon-bar"></span>
+
+    <span class="icon-bar"></span>
+  </button>
+
+  <!-- /section:basics/sidebar.mobile.toggle -->
+  <div class="navbar-header pull-left">
+    <!-- #section:basics/navbar.layout.brand -->
+    <a ui-sref="home" class="navbar-brand">
+      viLogged VMS
+    </a>
+
+  </div>
+
+  <!-- #section:basics/navbar.dropdown -->
+  <div class="navbar-buttons navbar-header pull-right" role="navigation">
+    <ul class="nav vi-nav">
+
+      <li class="light-blue">
+        <a data-toggle="dropdown" class="dropdown-toggle pointer">
+          <img style="height: 32px; width: 32px;" ng-if="currentUser.image" class="nav-user-photo" ng-src="{{ currentUser.image }}"  />
+          <img ng-show="!currentUser.image" class="nav-user-photo" src="../../assets/avatars/avatar2.png"  />
+								<span class="user-info" ng-bind="currentUser.first_name || currentUser.last_name || currentUser.username">
+
+								</span>
+
+          <i class="ace-icon fa fa-caret-down"></i>
+        </a>
+
+        <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+          <li>
+            <a ui-sref="users.changePassword">
+              <i class="ace-icon fa fa-cog"></i>
+              Change Password
+            </a>
+          </li>
+
+          <li>
+            <a ui-sref="users.profile">
+              <i class="ace-icon fa fa-user"></i>
+              Profile
+            </a>
+          </li>
+
+          <li class="divider"></li>
+
+          <li>
+            <a ui-sref="logout">
+              <i class="ace-icon fa fa-power-off"></i>
+              Logout
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <!-- /section:basics/navbar.user_menu -->
+    </ul>
+  </div>
+
+  <!-- /section:basics/navbar.dropdown -->
+</div><!-- /.navbar-container -->

@@ -1,0 +1,248 @@
+<div class="page-header">
+  <div class="row">
+    <div class="col-sm-7">
+      <h1>
+        Appointments
+      </h1>
+    </div>
+    <div class="col-sm-5">
+      <div class="input-group">
+        <input class="form-control" ng-model="allCtrl.q" ng-change="allCtrl.searchPage()">
+        <span ng-click="allCtrl.searchPage()" class="input-group-addon">Search</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="custom-form-save clearfix">
+      <a class="btn btn-primary pull-right" ui-sref="appointments.add">
+        <i class="fa fa-plus-circle"></i>
+        Create
+      </a>
+
+      <a
+        class="btn btn-primary pull-right margin-10-r pointer"
+        ng-csv="allCtrl.getList()"
+        csv-header="allCtrl.header"
+        lazy-load="true"
+        filename="{{ allCtrl.filename }}"
+      >
+        <i class="fa fa-file-excel-o"></i>
+        Export
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="row" ng-if="allCtrl.items.length === 0 && !allCtrl.is_active_search">
+  <div class="col-sm-12">
+    <div class="alert alert-info">
+      <i class="fa fa-exclamation-circle"></i> No Data Found
+    </div>
+  </div>
+</div>
+
+<div class="row" ng-if="allCtrl.items.length > 0 || allCtrl.is_active_search">
+  <div class="col-xs-12">
+    <!-- PAGE CONTENT BEGINS -->
+    <div class="row">
+      <div class="col-xs-12">
+        <table id="simple-table" class="table table-striped table-bordered table-hover">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>
+              <span class="pointer block" ng-click="allCtrl.updateView('host')">Host
+                <span ng-show="allCtrl.orderByColumn['host']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['host'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['host'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>
+              <span class="pointer block" ng-click="allCtrl.updateView('visitor')">Visitor
+                <span ng-show="allCtrl.orderByColumn['visitor']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['visitor'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['visitor'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>
+              <span class="pointer block" ng-click="allCtrl.updateView('start_date')">Start Date
+                <span ng-show="allCtrl.orderByColumn['start_date']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['start_date'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['start_date'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>
+              <span class="pointer block" ng-click="allCtrl.updateView('end_date')">End Date
+                <span ng-show="allCtrl.orderByColumn['end_date']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['end_date'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['end_date'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>
+              <span class="pointer block" ng-click="allCtrl.updateView('start_time')">Start Time
+                <span ng-show="allCtrl.orderByColumn['start_time']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['start_time'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['start_time'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>
+              <span class="pointer block" ng-click="allCtrl.updateView('end_time')">End Time
+                <span ng-show="allCtrl.orderByColumn['end_time']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['end_time'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['end_time'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>
+              <span class="pointer block" ng-click="allCtrl.updateView('is_approved')">Status
+                <span ng-show="allCtrl.orderByColumn['is_approved']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['is_approved'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['is_approved'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>Acions</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th ng-repeat="filterField in allCtrl.filterFields">
+              <input
+                ng-if="filterField.filter && (!filterField.type || filterField.type === 'text')"
+                class="form-control"
+                ng-model="allCtrl.search[filterField.field]"
+                ng-change="allCtrl.startSearch(filterField.field)">
+
+              <span
+                ng-if="filterField.filter && filterField.type === 'date'"
+                class="form-control"
+                uib-datepicker-popup
+                ng-model="allCtrl.search[filterField.field]"
+                ng-change="allCtrl.startSearch(filterField.field)"
+                is-open="allCtrl.date[filterField.field].opened"
+                ng-click="allCtrl.date[filterField.field].open($event)"
+                close-text="Close">
+                <i class="fa fa-calendar"></i>
+              </span>
+
+            </th>
+            <th>
+              <button class="btn btn-primary btn-xs pointer" ng-click="allCtrl.clear()">
+                Clear Search
+              </button>
+            </th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr ng-repeat="item in allCtrl.items">
+            <td ng-bind="$index + 1 + ((allCtrl.pagination.currentPage-1) * allCtrl.pagination.itemsPerPage)"></td>
+            <td>
+              <a
+                ui-sref="appointments.detail({_id: item._id})"
+                ng-bind="item.host.last_name+' '+item.host.first_name">
+
+              </a>
+            </td>
+            <td ng-bind="item.visitor.last_name+' '+item.visitor.first_name"></td>
+            <td ng-bind="item.start_date"></td>
+            <td ng-bind="item.end_date"></td>
+            <td ng-bind="item.start_time"></td>
+            <td ng-bind="item.end_time"></td>
+            <td>
+              <span class="label" ng-class="{
+              'label-success arrowed-in arrowed-in-right': [allCtrl.status.UPCOMING, allCtrl.status.IN_PROGRESS].indexOf(item.status) >= 0,
+              'label-danger arrowed-right arrowed-in': [allCtrl.status.REJECTED, allCtrl.status.EXPIRED].indexOf(item.status) >= 0,
+              'label-default arrowed arrowed-right': item.status === allCtrl.status.PENDING
+              }">
+                <span ng-if="item.status === allCtrl.status.UPCOMING">Upcoming</span>
+                <span ng-if="item.status === allCtrl.status.REJECTED">Rejected</span>
+                <span ng-if="item.status === allCtrl.status.PENDING">Pending</span>
+                <span ng-if="item.status === allCtrl.status.EXPIRED">Expired</span>
+                <span ng-if="item.status === allCtrl.status.IN_PROGRESS">In Progress</span>
+              </span>
+            </td>
+            <td>
+              <div class="hidden-sm hidden-xs action-buttons">
+                <a ng-if="item.status === allCtrl.status.UPCOMING && (allCtrl.currentUser.is_superuser || allCtrl.currentUser.is_staff)" class="badge badge-info" ui-sref="appointments.checkin({_id: item._id})">
+                  Checkin
+                </a>
+                <a ng-if="item.status === allCtrl.status.IN_PROGRESS && (allCtrl.currentUser.is_superuser || allCtrl.currentUser.is_staff)" class="badge badge-info" ui-sref="appointments.checkout({_id: item._id})">
+                  Check out
+                </a>
+                <a ui-sref="appointments.detail({_id: item._id})" class="blue">
+                  <i class="ace-icon fa fa-eye bigger-130"></i>
+                </a>
+
+                <a ng-if="item.status !== allCtrl.status.EXPIRED" ui-sref="appointments.edit({_id: item._id})" class="green">
+                  <i class="ace-icon fa fa-pencil bigger-130"></i>
+                </a>
+
+                <span ng-click="allCtrl.remove(item._id)" class="red pointer" ng-if="allCtrl.permissions.remove">
+                  <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                </span>
+              </div>
+
+              <div class="hidden-md hidden-lg">
+                <div class="inline pos-rel">
+                  <button data-position="auto" data-toggle="dropdown" class="btn btn-minier btn-yellow dropdown-toggle" aria-expanded="false">
+                    <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close" style="">
+                    <li>
+                      <a title="" data-rel="tooltip" class="tooltip-info" ui-sref="appointments.detail({_id: item._id})" data-original-title="View">
+                        <span class="blue">
+												  <i class="ace-icon fa fa-search-plus bigger-120"></i>
+                        </span>
+                      </a>
+                    </li>
+                    <li ng-if="item.status !== allCtrl.status.EXPIRED && allCtrl.permissions.update">
+                      <a title="" data-rel="tooltip" class="tooltip-success" ui-sref="appointments.edit({_id: item._id})" data-original-title="Edit">
+                        <span class="green">
+                          <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+                        </span>
+                      </a>
+                    </li>
+                    <li ng-if="allCtrl.permissions.remove">
+                      <a title="" data-rel="tooltip" class="tooltip-error" ui-sref="appointments.remove({_id: item._id})" data-original-title="Delete">
+                        <span class="red">
+                          <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div><!-- /.span -->
+    </div><!-- /.row -->
+    <div class="row">
+      <div class="col-xs-11">
+        <uib-pagination
+          total-items="allCtrl.pagination.totalItems"
+          ng-model="allCtrl.pagination.currentPage"
+          max-size="allCtrl.pagination.maxSize"
+          class="allCtrl.pagination-sm pull-right"
+          boundary-links="true"
+          rotate="false"
+          ng-change="allCtrl.updateView()"
+          items-per-page="allCtrl.pagination.itemsPerPage"
+          num-pages="allCtrl.pagination.numPages" >
+        </uib-pagination>
+      </div>
+      <div class="col-xs-1">
+        <label class="pull-right">
+          <select ng-model="allCtrl.pagination.itemsPerPage" ng-change="allCtrl.updateView()" class="form-control input-sm">
+            <option ng-selected="allCtrl.pagination.itemsPerPage === 10" value="10">10</option>
+            <option ng-selected="allCtrl.pagination.itemsPerPage === 25" value="25">25</option>
+            <option ng-selected="allCtrl.pagination.itemsPerPage === 50" value="50">50</option>
+            <option ng-selected="allCtrl.pagination.itemsPerPage === 100" value="100">100</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </div><!-- /.col -->
+</div><!-- /.row -->

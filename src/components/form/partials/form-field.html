@@ -1,0 +1,8 @@
+<label ng-bind="elem.label"></label> <strong class="text-danger" ng-if="elem.required">*</strong>
+<div class="form-input" ng-include="'components/form/partials/elements/'+(elem.formType || 'text')+'.html'"></div>
+<div class="text-danger error-div" ng-if="formCtrl.errorMsg[elem.fieldName].length">
+
+  <span ng-repeat="error in formCtrl.errorMsg[elem.fieldName]">
+    <i class="fa fa-exclamation-triangle"></i> {{ error }}
+  </span>
+</div>

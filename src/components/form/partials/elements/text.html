@@ -1,0 +1,6 @@
+<input
+  class="form-control"
+  ng-model="formCtrl.viewModel[elem.fieldName]"
+  ng-blur="formCtrl.validateField(elem.fieldName)"
+  ng-disabled="formCtrl.typeahead[elem.fieldName].disabled"
+  placeholder="{{ formCtrl.placeholder(elem.label, elem.placeholder) }}">

@@ -1,0 +1,14 @@
+node_modules/
+bower_components/
+.sass-cache/
+.tmp/
+src/config/config.js
+dist/config/config.js
+
+coverage
+npm-debug.log
+.idea
+.DS_Store
+vi-client.out.log
+vilogged.tar.gz
+*.zip

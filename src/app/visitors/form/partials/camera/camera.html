@@ -1,0 +1,65 @@
+<div style="padding: 20px;">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-6 center">
+          <div style="padding: 10px">
+            <label for="image">Image</label>
+            <div>
+              <span ng-if="formCtrl.upload.status">Activate Camera</span>
+              <span ng-if="!formCtrl.upload.status">Activate Image Upload</span>
+              <label class="switch">
+                <input ng-model="formCtrl.upload.status" type="checkbox">
+                <i></i>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 center">
+          <button class="btn btn-danger btn-lg btn-block" type="button" ng-click="closeWindow()">
+            Cancel <i class="fa fa-times-circle-o"></i>
+          </button>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="margin-10-r clearfix">
+            <div class="pull-right">
+              <div ng-if="formCtrl.upload.status">
+                <div style="margin-bottom: 10px;">
+                  <input id="image" type="file" ng-model-instant
+                         onchange="angular.element(this).scope().setFiles(this, 'image')">
+                </div>
+                <div>
+                  <button ng-if="formCtrl.upload.status" ng-click="closeCameraNow()" class="btn btn-info btn-block">Save and Close <i class="fa fa-save"></i></button>
+                </div>
+              </div>
+
+              <div ng-if="!formCtrl.upload.status">
+                <div vi-camera>
+                  <div camera-control-snapshot></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="margin-10-l clearfix">
+            <div class="pull-left">
+              <div ng-if="formCtrl.upload.status">
+                <img ng-if="formCtrl.viewModel.image" ng-src="{{ formCtrl.viewModel.image }}">
+              </div>
+              <div ng-if="!formCtrl.upload.status">
+                <div ng-if="!takeImage">
+                  <img class="editable img-responsive" alt="" src="../assets/avatars/place_holder.jpg"/>
+                </div>
+                <canvas></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

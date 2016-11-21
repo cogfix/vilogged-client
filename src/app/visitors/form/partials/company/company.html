@@ -1,0 +1,10 @@
+<input
+  type="text"
+  ng-model="formCtrl.viewModel['company.name']"
+  placeholder="Enter Company name"
+  uib-typeahead="company for company in formCtrl.getCompanies($viewValue)"
+  typeahead-loading="loadingCompanies"
+  typeahead-on-select="formCtrl.updateCompany($item, $model, $label)"
+  class="form-control">
+
+<i ng-show="loadingCompanies" class="fa fa-refresh"></i>

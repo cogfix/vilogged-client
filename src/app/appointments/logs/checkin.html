@@ -1,0 +1,301 @@
+<div class="space-6"></div>
+<div class="well well-sm clearfix">
+  <div class="infobox infobox-blue">
+    <div class="infobox-icon">
+      <i class="ace-icon fa fa-calendar"></i>
+    </div>
+
+    <div class="infobox-data">
+      <span class="infobox-data-content">Arrival Date</span>
+      <div class="infobox-content">
+        <span ng-bind="::logCtrl.item.start_date"></span>
+      </div>
+    </div>
+  </div>
+  <div class="infobox infobox-brown">
+    <div class="infobox-icon">
+      <i class="ace-icon fa fa-clock-o"></i>
+    </div>
+
+    <div class="infobox-data">
+      <span class="infobox-data-content">Arrival Time</span>
+      <div class="infobox-content">
+        <span ng-bind="::logCtrl.item.start_time"></span>
+      </div>
+    </div>
+  </div>
+  <div class="infobox infobox-brown">
+    <div class="infobox-icon">
+      <i class="ace-icon fa fa-clock-o"></i>
+    </div>
+
+    <div class="infobox-data">
+      <span class="infobox-data-content">Departure Time</span>
+      <div class="infobox-content">
+        <span ng-bind="::logCtrl.item.end_time"></span>
+      </div>
+    </div>
+  </div>
+  <button
+    class="infobox infobox-blue3 pointer"
+    ng-click="logCtrl.printLabel()"
+    ng-if="(logCtrl.item.status === logCtrl.status.IN_PROGRESS || logCtrl.item.status === logCtrl.status.UPCOMING)
+    && logCtrl.can.print"
+    >
+    <div class="infobox-icon">
+      <i class="ace-icon fa fa-print"></i>
+    </div>
+
+    <div
+      class="infobox-data">
+      <span class="infobox-data-content">
+        <h3>Print Badge</h3>
+      </span>
+    </div>
+  </button>
+  <button
+    class="btn btn-success pull-right"
+    ng-click="logCtrl.checkIn(item)"
+    ng-if="(logCtrl.item.status === logCtrl.status.UPCOMING) && logCtrl.can.checkIn">
+    <i class="fa fa-check-square-o"></i> Check In
+  </button>
+  <button
+    class="btn btn-success pull-right"
+    ng-click="logCtrl.checkOut(item)"
+    ng-if="logCtrl.item.status === logCtrl.status.IN_PROGRESS && logCtrl.can.checkOut">
+    <i class="fa fa-check-square-o"></i> Check Out
+  </button>
+
+  <div class="pull-right" ng-if="logCtrl.item.status === logCtrl.status.PENDING || logCtrl.item.status === logCtrl.status.REJECTED">
+    <button
+      class="btn btn-success"
+      type="button"
+      ng-click="logCtrl.updateApp(logCtrl.item, 'true')">
+      <i class="fa fa-check"></i> Approve
+    </button>
+    <button
+      class="btn btn-danger"
+      type="button"
+      ng-click="logCtrl.updateApp(logCtrl.item, 'false')">
+      <i class="fa fa-times"></i> Reject
+    </button>
+  </div>
+
+</div>
+
+<div class="hr hr12 dotted"></div>
+<div class="row">
+  <div class="col-sm-6">
+    <div class="row">
+      <div class="col-sm-12">
+        <h3 class="page-header">Host Detail</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+
+        <div>
+          <div id="user-profile-1" class="user-profile row">
+            <div class="col-sm-4 center">
+              <div>
+                <!-- #section:pages/profile.picture -->
+            <span class="profile-picture">
+              <img ng-if="!logCtrl.item.host.image" id="avatar" class="editable img-responsive" alt="" src="../assets/avatars/profile-pic.jpg" />
+              <img style="max-height: 250px" ng-if="logCtrl.item.host.image" id="avatar" class="editable img-responsive" alt="" ng-src="{{ logCtrl.item.host.image }}" />
+            </span>
+
+                <!-- /section:pages/profile.picture -->
+                <div class="space-4"></div>
+              </div>
+
+              <div class="space-6"></div>
+
+            </div>
+
+            <div class="col-sm-8">
+
+
+              <!-- #section:pages/profile.info -->
+              <div class="profile-user-info profile-user-info-striped">
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> First Name </div>
+
+                  <div class="profile-info-value">
+                    <span class="editable" id="first_name" ng-bind="logCtrl.item.host.first_name "></span>
+                  </div>
+                </div>
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Last Name </div>
+
+                  <div class="profile-info-value">
+                    <span class="editable" id="last_name" ng-bind="logCtrl.item.host.last_name"></span>
+                  </div>
+                </div>
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Username </div>
+
+                  <div class="profile-info-value">
+                    <span class="editable" id="username" ng-bind="logCtrl.item.host.username"></span>
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Email </div>
+
+                  <div class="profile-info-value" ng-bind="logCtrl.item.host.email">
+
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Gender </div>
+
+                  <div class="profile-info-value" ng-bind="logCtrl.item.host.gender">
+
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Joined </div>
+
+                  <div class="profile-info-value">
+                    <span class="editable" id="signup" ng-bind="logCtrl.item.host.date_joined | date:'yyyy/MM/dd'">2010/06/20</span>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- /section:pages/profile.info -->
+              <div class="space-20"></div>
+
+
+              <div class="space-6"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAGE CONTENT ENDS -->
+      </div><!-- /.col -->
+    </div><!-- /.row -->
+  </div>
+  <div class="col-sm-6">
+    <div class="row">
+      <div class="col-sm-12">
+        <h3 class="page-header">Guest Detail</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+
+        <div>
+          <div id="user-profile-1" class="user-profile row">
+            <div class="col-sm-4 center">
+              <div>
+                <!-- #section:pages/profile.picture -->
+            <span class="profile-picture">
+              <a ui-sref="visitors.edit({_id: logCtrl.item.visitor._id, app: logCtrl.item._id})" nf-if="logCtrl.currentUser.is_superuser || logCtrl.currentUser.is_staff">
+                <img ng-if="!logCtrl.item.visitor.image" id="avatar" class="editable img-responsive" alt="" src="../assets/avatars/profile-pic.jpg" />
+                <img style="max-height: 180px" ng-if="logCtrl.item.visitor.image" id="avatar" class="editable img-responsive" alt="" ng-src="{{ logCtrl.item.visitor.image }}" />
+              </a>
+            </span>
+
+                <!-- /section:pages/profile.picture -->
+                <div class="space-4"></div>
+              </div>
+
+              <div class="space-6"></div>
+            </div>
+
+            <div class="col-sm-8">
+
+
+              <!-- #section:pages/profile.info -->
+              <div class="profile-user-info profile-user-info-striped">
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> First Name </div>
+
+                  <div class="profile-info-value">
+                    <span class="editable" id="first_name" ng-bind="logCtrl.item.visitor.first_name "></span>
+                  </div>
+                </div>
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Last Name </div>
+
+                  <div class="profile-info-value">
+                    <span class="editable" id="last_name" ng-bind="logCtrl.item.visitor.last_name"></span>
+                  </div>
+                </div>
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Email </div>
+
+                  <div class="profile-info-value" ng-bind="logCtrl.item.visitor.email">
+
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Gender </div>
+
+                  <div class="profile-info-value" ng-bind="logCtrl.item.visitor.gender">
+
+                  </div>
+                </div>
+
+                <div class="profile-info-row">
+                  <div class="profile-info-name"> Created </div>
+
+                  <div class="profile-info-value">
+                    <span class="editable" id="signup" ng-bind="logCtrl.item.visitor.created | date:'yyyy/MM/dd'">2010/06/20</span>
+                  </div>
+                </div>
+                <div class="profile-info-row">
+                  <div class="profile-info-name">  </div>
+
+                  <div class="profile-info-value">
+                    <span class="editable" id="signup" >&nbsp;</span>
+                  </div>
+                </div>
+
+
+              </div>
+
+              <!-- /section:pages/profile.info -->
+              <div class="space-20"></div>
+
+
+              <div class="space-6"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAGE CONTENT ENDS -->
+      </div><!-- /.col -->
+    </div><!-- /.row -->
+  </div>
+</div>
+
+<div class="row" ng-if="logCtrl.teamMembers.length > 0">
+  <div class="col-sm-12">
+    <h3 class="page-header">
+      Team Members (Visitor Group)
+    </h3>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Last Name</th>
+        <th>First Name</th>
+        <th>Phone</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="item in logCtrl.teamMembers">
+        <td ng-bind="$index + 1"></td>
+        <td ng-bind="item.last_name"></td>
+        <td ng-bind="item.first_name"></td>
+        <td ng-bind="item.phone"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

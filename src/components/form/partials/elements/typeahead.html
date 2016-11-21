@@ -1,0 +1,11 @@
+<input
+  type="text"
+  class="form-control"
+  ng-model="formCtrl.viewModel[elem.fieldName]"
+  placeholder="{{ formCtrl.placeholder(elem.label, elem.placeholder) }}"
+  uib-typeahead="data for data in formCtrl.typeahead[elem.fieldName].list | filter:$viewValue"
+  typeahead-loading="loadingRemoteData"
+  typeahead-on-select="formCtrl.typeahead[elem.fieldName].onSelect($item, $model, $label)"
+  class="form-control">
+
+<i ng-show="loadingRemoteData" class="fa fa-refresh"></i>

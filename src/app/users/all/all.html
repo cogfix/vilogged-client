@@ -1,0 +1,191 @@
+<div class="page-header">
+  <div class="row">
+    <div class="col-sm-7">
+      <h1>
+        Users
+      </h1>
+    </div>
+    <div class="col-sm-5">
+      <div class="input-group">
+        <input class="form-control" ng-model="allCtrl.q" ng-change="allCtrl.searchPage()">
+        <span ng-click="allCtrl.searchPage()" class="input-group-addon">Search</span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /.page-header -->
+
+<div class="row">
+  <div class="col-sm-12">
+    <div class="custom-form-save clearfix">
+      <a class="btn btn-primary pull-right" ui-sref="users.add" ng-if="allCtrl.permissions.create">
+        <i class="fa fa-plus-circle"></i>
+        Create
+      </a>
+
+      <a
+        class="btn btn-primary pull-right margin-10-r pointer"
+        ng-csv="allCtrl.getList()"
+        csv-header="allCtrl.header"
+        lazy-load="true"
+        filename="{{ allCtrl.filename }}"
+      >
+        <i class="fa fa-file-excel-o"></i>
+        Export
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <!-- PAGE CONTENT BEGINS -->
+    <div class="row">
+      <div class="col-xs-12">
+        <table id="simple-table" class="table table-striped table-bordered table-hover">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>
+              <span class="pointer block" ng-click="allCtrl.updateView('first_name')">First Name
+                <span ng-show="allCtrl.orderByColumn['first_name']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['first_name'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['first_name'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>
+              <span class="pointer block" ng-click="allCtrl.updateView('last_name')">Last Name
+                <span ng-show="allCtrl.orderByColumn['last_name']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['last_name'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['last_name'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>
+              <span class="pointer block" ng-click="allCtrl.updateView('username')">Username
+                <span ng-show="allCtrl.orderByColumn['username']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['username'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['username'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>
+              <span class="pointer block" ng-click="allCtrl.updateView('email')">Email
+                <span ng-show="allCtrl.orderByColumn['email']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['email'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['email'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>Department</th>
+            <th>
+              <span class="pointer block" ng-click="allCtrl.updateView('date_joined')">Date Created
+                <span ng-show="allCtrl.orderByColumn['date_joined']"
+                      ng-class="{'fa fa-long-arrow-up': allCtrl.orderByColumn['date_joined'].reverse, 'fa fa-long-arrow-down': !allCtrl.orderByColumn['date_joined'].reverse}">
+                </span>
+              </span>
+            </th>
+            <th>Acions</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th ng-repeat="filterField in allCtrl.filterFields">
+              <input
+                ng-if="filterField.filter"
+                class="form-control"
+                ng-model="allCtrl.search[filterField.field]"
+                ng-change="allCtrl.startSearch(filterField.field)">
+            </th>
+            <th>
+              <button class="btn btn-primary btn-xs pointer" ng-click="allCtrl.clear()">
+                Clear Search
+              </button>
+            </th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <tr ng-repeat="item in allCtrl.items">
+            <td ng-bind="$index + 1 + ((allCtrl.pagination.currentPage-1) * allCtrl.pagination.itemsPerPage)"></td>
+            <td ng-bind="item.first_name"></td>
+            <td ng-bind="item.last_name"></td>
+            <td ng-bind="item.username"></td>
+            <td ng-bind="item.email"></td>
+            <td ng-bind="item.department.name"></td>
+            <td ng-bind="item.date_joined | date:'yyyy-MM-dd'"></td>
+            <td>
+              <div class="hidden-sm hidden-xs action-buttons" ng-if="allCtrl.permissions.read">
+                <a ui-sref="users.detail({_id: item._id})" class="blue">
+                  <i class="ace-icon fa fa-eye bigger-130"></i>
+                </a>
+
+                <a ui-sref="users.edit({_id: item._id})" class="green" ng-if="allCtrl.permissions.update">
+                  <i class="ace-icon fa fa-pencil bigger-130"></i>
+                </a>
+
+                <a ng-click="allCtrl.remove(item._id)" class="red pointer" ng-if="allCtrl.permissions.remove">
+                  <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                </a>
+              </div>
+
+              <div class="hidden-md hidden-lg">
+                <div class="inline pos-rel">
+                  <button data-position="auto" data-toggle="dropdown" class="btn btn-minier btn-yellow dropdown-toggle" aria-expanded="false">
+                    <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close" style="">
+                    <li>
+                      <a title="" data-rel="tooltip" class="tooltip-info" ui-sref="users.detail({_id: item._id})" ng-if="allCtrl.permissions.read" data-original-title="View">
+                        <span class="blue">
+												  <i class="ace-icon fa fa-search-plus bigger-120"></i>
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a title="" data-rel="tooltip" class="tooltip-success" ui-sref="users.edit({_id: item._id})" ng-if="allCtrl.permissions.update" data-original-title="Edit">
+                        <span class="green">
+                          <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+                        </span>
+                      </a>
+                    </li>
+                    <li>
+                      <a title="" data-rel="tooltip" class="tooltip-error" ng-click="allCtrl.remove(item._id)" ng-if="allCtrl.permissions.remove" data-original-title="Delete">
+                        <span class="red">
+                          <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                        </span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div><!-- /.span -->
+    </div><!-- /.row -->
+    <div class="row">
+      <div class="col-xs-11">
+        <uib-pagination
+          total-items="allCtrl.pagination.totalItems"
+          ng-model="allCtrl.pagination.currentPage"
+          max-size="allCtrl.pagination.maxSize"
+          class="allCtrl.pagination-sm pull-right"
+          boundary-links="true"
+          rotate="false"
+          ng-change="allCtrl.updateView()"
+          items-per-page="allCtrl.pagination.itemsPerPage"
+          num-pages="allCtrl.pagination.numPages" >
+        </uib-pagination>
+      </div>
+      <div class="col-xs-1">
+        <label class="pull-right">
+          <select ng-model="allCtrl.pagination.itemsPerPage" ng-change="allCtrl.updateView()" class="form-control input-sm">
+            <option ng-selected="allCtrl.pagination.itemsPerPage === 10" value="10">10</option>
+            <option ng-selected="allCtrl.pagination.itemsPerPage === 25" value="25">25</option>
+            <option ng-selected="allCtrl.pagination.itemsPerPage === 50" value="50">50</option>
+            <option ng-selected="allCtrl.pagination.itemsPerPage === 100" value="100">100</option>
+          </select>
+        </label>
+      </div>
+    </div>
+  </div><!-- /.col -->
+</div><!-- /.row -->
+

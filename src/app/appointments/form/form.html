@@ -1,0 +1,60 @@
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <div class="page-header">
+      <h1 class="clearfix">
+        Appointment Form
+        <div class="pull-right" ng-include="'components/form/partials/elements/submit-small.html'"></div>
+      </h1>
+    </div><!-- /.page-header -->
+
+    <form>
+      <div class="form-group" ng-repeat="form in formCtrl.form">
+        <div class="row">
+          <div ng-repeat="elem in form" class="col-sm-{{formCtrl.column}}">
+            <div class="custom-form" ng-include="'components/form/partials/form-field.html'" ng-if="!elem.custom"></div>
+            <div class="custom-form" ng-if="elem.custom" ng-include="elem.template"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-12">
+            <h3 class="page-header">
+              Team Members (Visitor Group)
+            </h3>
+            <div style="margin-bottom: 10px;" ng-include="'app/appointments/form/partials/groups.html'"></div>
+            <table class="table table-striped" ng-if="formCtrl.teamMembers.length > 0">
+              <thead>
+              <tr>
+                <th>#</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Phone</th>
+                <th>Action</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr ng-repeat="item in formCtrl.teamMembers">
+                <td ng-bind="$index + 1"></td>
+                <td ng-bind="item.last_name"></td>
+                <td ng-bind="item.first_name"></td>
+                <td ng-bind="item.phone"></td>
+                <td ng-click="formCtrl.removeMember(item)">
+                  <span>
+                    <i class="ace-icon fa fa-trash bigger-130"></i>
+                  </span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12" ng-include="'components/form/partials/elements/submit.html'"></div>
+      </div>
+    </form>
+  </div>
+</div>

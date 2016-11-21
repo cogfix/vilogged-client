@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <div class="page-header">
+      <h1 class="clearfix">
+        Visitors Profile Form
+        <div class="pull-right" ng-include="'components/form/partials/elements/submit-small.html'"></div>
+      </h1>
+    </div><!-- /.page-header -->
+
+    <form>
+      <div ng-include="'app/visitors/form/partials/image.html'"></div>
+
+      <div class="form-group" ng-repeat="form in formCtrl.form">
+        <div class="row">
+          <div ng-repeat="elem in form" class="col-sm-{{formCtrl.column}}" >
+            <div class="custom-form" ng-include="'components/form/partials/form-field.html'" ng-if="!elem.custom"></div>
+            <div class="custom-form" ng-if="elem.custom" ng-include="elem.template"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12" ng-include="'components/form/partials/elements/submit.html'"></div>
+      </div>
+    </form>
+  </div>
+</div>

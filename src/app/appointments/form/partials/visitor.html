@@ -1,0 +1,25 @@
+<div style="padding: 10px;">
+  <form>
+    <div class="form-group" ng-repeat="form in formCtrl.form">
+      <div class="row">
+        <div ng-repeat="elem in form" class="col-sm-{{formCtrl.column}}">
+          <div class="custom-form" ng-include="'components/form/partials/form-field.html'" ng-if="!elem.custom"></div>
+          <div class="custom-form" ng-if="elem.custom" ng-include="elem.template"></div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6">
+        <button ng-click="formCtrl.cancel()" type="button" class="btn btn-danger btn-block">
+          <i class="fa fa-times-circle"></i> Cancel
+        </button>
+      </div>
+      <div class="col-xs-6">
+        <button ng-click="formCtrl.save()" type="button" class="btn btn-primary btn-block">
+          <i class="fa fa-plus-circle"></i> Add
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
